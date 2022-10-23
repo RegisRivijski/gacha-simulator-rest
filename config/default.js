@@ -7,7 +7,7 @@ module.exports = {
     description: packageJson.description,
   },
   server: {
-    port: process.env.NODE_APP || 8005,
+    port: process.env.GACHA_SIMULATOR_REST_PORT,
   },
   db: {
     mongodb: {

@@ -3,19 +3,19 @@ const {
   TYPE_WEAPONS_NAME,
 } = require('../constants/index');
 
-const banners = require('../../data/banners/banners.json');
+const banners = require('../../staticData/data/banners/banners.json');
 
-const charactersEn = require('../../data/items/en/characters.json');
-const charactersRu = require('../../data/items/ru/characters.json');
-const charactersId = require('../../data/items/id/characters.json');
-const charactersKo = require('../../data/items/ko/characters.json');
-const charactersZhHans = require('../../data/items/zh-hans/characters.json');
+const charactersEn = require('../../staticData/data/items/en/characters.json');
+const charactersRu = require('../../staticData/data/items/ru/characters.json');
+const charactersId = require('../../staticData/data/items/id/characters.json');
+const charactersKo = require('../../staticData/data/items/ko/characters.json');
+const charactersZhHans = require('../../staticData/data/items/zh-hans/characters.json');
 
-const weaponsEn = require('../../data/items/en/weapons.json');
-const weaponsRu = require('../../data/items/ru/weapons.json');
-const weaponsId = require('../../data/items/id/weapons.json');
-const weaponsKo = require('../../data/items/ko/weapons.json');
-const weaponsZhHans = require('../../data/items/zh-hans/weapons.json');
+const weaponsEn = require('../../staticData/data/items/en/weapons.json');
+const weaponsRu = require('../../staticData/data/items/ru/weapons.json');
+const weaponsId = require('../../staticData/data/items/id/weapons.json');
+const weaponsKo = require('../../staticData/data/items/ko/weapons.json');
+const weaponsZhHans = require('../../staticData/data/items/zh-hans/weapons.json');
 
 module.exports = {
   getBanners() {

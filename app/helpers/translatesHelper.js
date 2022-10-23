@@ -1,8 +1,8 @@
 const _ = require('lodash');
 
-const en = require('../../translates/en.json');
-const uk = require('../../translates/uk.json');
-const ru = require('../../translates/ru.json');
+const en = require('../../staticData/translates/en.json');
+const uk = require('../../staticData/translates/uk.json');
+const ru = require('../../staticData/translates/ru.json');
 
 module.exports = {
   getTranslate(langCode) {
