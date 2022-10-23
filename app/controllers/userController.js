@@ -26,7 +26,7 @@ module.exports = {
         console.error('[ERROR] userController getUser UsersModel findOne:', e.message);
         ctx.throw(500, e.message);
       });
-    ctx.assert(userData.chatId, 404, 'User not found.');
+    ctx.assert(userData?.chatId, 404, 'User not found.');
 
     ctx.body = userData;
     ctx.status = 200;
@@ -45,7 +45,7 @@ module.exports = {
         console.error('[ERROR] userController changeUser UsersModel findOne:', e.message);
         ctx.throw(500, e.message);
       });
-    ctx.assert(userData.chatId, 404, 'User not found.');
+    ctx.assert(userData?.chatId, 404, 'User not found.');
 
     userData = documentsHelper.update(userData, fields);
 
@@ -69,7 +69,7 @@ module.exports = {
         console.error('[ERROR] userController getUser UsersModel findOne:', e.message);
         ctx.throw(500, e.message);
       });
-    ctx.assert(!userData.chatId, 400, 'User is already created.');
+    ctx.assert(!userData?.chatId, 400, 'User is already created.');
 
     const {
       firstName,
@@ -106,7 +106,7 @@ module.exports = {
         console.error('[ERROR] userController getProfile UsersModel findOne:', e.message);
         ctx.throw(500, e.message);
       });
-    ctx.assert(userData.chatId, 404, 'User not found.');
+    ctx.assert(userData?.chatId, 404, 'User not found.');
 
     const template = templatesModule.profile({ userData });
 
@@ -127,7 +127,7 @@ module.exports = {
         console.error('[ERROR] userController getHistory UsersModel findOne:', e.message);
         ctx.throw(500, e.message);
       });
-    ctx.assert(userData.chatId, 404, 'User not found.');
+    ctx.assert(userData?.chatId, 404, 'User not found.');
 
     const historyData = await HistoryModel.find({ chatId })
       .catch((e) => {
@@ -155,7 +155,7 @@ module.exports = {
         console.error('[ERROR] userController getInventory UsersModel findOne:', e.message);
         ctx.throw(500, e.message);
       });
-    ctx.assert(userData.chatId, 404, 'User not found.');
+    ctx.assert(userData?.chatId, 404, 'User not found.');
 
     const itemsData = await ItemsModel.find({ chatId })
       .catch((e) => {
