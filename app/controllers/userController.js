@@ -18,7 +18,7 @@ module.exports = {
   },
 
   async getUser(ctx, next) {
-    const { chatId } = ctx.params;
+    const { chatId } = ctx.request.params;
     ctx.assert(chatId, 400, 'chatId is required');
 
     const userData = await UsersModel.findOne({ chatId })
@@ -34,7 +34,7 @@ module.exports = {
   },
 
   async updateUser(ctx, next) {
-    const { chatId } = ctx.params;
+    const { chatId } = ctx.request.params;
     ctx.assert(chatId, 400, 'chatId is required');
 
     const { fields } = ctx.body;
@@ -61,7 +61,7 @@ module.exports = {
   },
 
   async addUser(ctx, next) {
-    const { chatId } = ctx.params;
+    const { chatId } = ctx.request.params;
     ctx.assert(chatId, 400, 'chatId is required');
 
     let userData = await UsersModel.findOne({ chatId })
@@ -98,7 +98,7 @@ module.exports = {
   },
 
   async getProfile(ctx, next) {
-    const { chatId } = ctx.params;
+    const { chatId } = ctx.request.params;
     ctx.assert(chatId, 400, 'chatId is required');
 
     const userData = await UsersModel.findOne({ chatId })
@@ -119,7 +119,7 @@ module.exports = {
   },
 
   async getHistory(ctx, next) {
-    const { chatId } = ctx.params;
+    const { chatId } = ctx.request.params;
     ctx.assert(chatId, 400, 'chatId is required');
 
     const userData = await UsersModel.findOne({ chatId })
@@ -147,7 +147,7 @@ module.exports = {
   },
 
   async getInventory(ctx, next) {
-    const { chatId } = ctx.params;
+    const { chatId } = ctx.request.params;
     ctx.assert(chatId, 400, 'chatId is required');
 
     const userData = await UsersModel.findOne({ chatId })
