@@ -1,12 +1,35 @@
+const _ = require('lodash');
+const ejs = require('ejs');
+
 const UsersModel = require('../models/users');
 const HistoryModel = require('../models/histories');
 const ItemsModel = require('../models/items');
 
 const documentsHelper = require('../helpers/documentsHelper');
+const translatesHelper = require('../helpers/translatesHelper');
+const bannersHelper = require('../helpers/bannersHelper');
+const itemsHelper = require('../helpers/itemsHelper');
+const userHelper = require('../helpers/usersHelper');
 
-const templatesModule = require('../modules/templates');
+const templates = require('../modules/templates');
+const minify = require('../modules/minify');
+
+const {
+  STANDARD_BANNER_TYPE_NAME,
+  CHARACTERS_BANNER_TYPE_NAME,
+  WEAPONS_BANNER_TYPE_NAME,
+  EVENT_BANNER_CATEGORY_NAME,
+  TYPE_CHARACTERS_NAME,
+  TYPE_WEAPONS_NAME,
+} = require('../constants/index');
 
 module.exports = {
+  /**
+   *
+   * @param ctx
+   * @param next
+   * @return {Promise<void>}
+   */
   async getUsers(ctx, next) {
     ctx.body = await UsersModel.find({})
       .catch((e) => {
@@ -17,6 +40,12 @@ module.exports = {
     await next();
   },
 
+  /**
+   *
+   * @param ctx
+   * @param next
+   * @return {Promise<void>}
+   */
   async getUser(ctx, next) {
     const { chatId } = ctx.request.params;
     ctx.assert(chatId, 400, 'chatId is required');
@@ -33,6 +62,12 @@ module.exports = {
     await next();
   },
 
+  /**
+   *
+   * @param ctx
+   * @param next
+   * @return {Promise<void>}
+   */
   async updateUser(ctx, next) {
     const { chatId } = ctx.request.params;
     ctx.assert(chatId, 400, 'chatId is required');
@@ -97,7 +132,13 @@ module.exports = {
     await next();
   },
 
-  async getProfile(ctx, next) {
+  /**
+   *
+   * @param ctx
+   * @param next
+   * @return {Promise<void>}
+   */
+  async getTgBotProfile(ctx, next) {
     const { chatId } = ctx.request.params;
     ctx.assert(chatId, 400, 'chatId is required');
 
@@ -108,17 +149,66 @@ module.exports = {
       });
     ctx.assert(userData?.chatId, 404, 'User not found.');
 
-    const template = templatesModule.profile({ userData });
+    const {
+      currentBannerIsValid,
+      currentBanner,
+    } = userHelper.validateCurrentBanner(userData);
+
+    if (!currentBannerIsValid) {
+      userData.currentBanner = currentBanner;
+      userData.save()
+        .catch((e) => {
+          console.error('[ERROR] userController getProfile UserModel userData save:', e.message);
+        });
+    }
+
+    const { languageCode } = userData;
+    const $t = translatesHelper.getTranslate(languageCode);
+
+    const activeEventBanners = bannersHelper.getActiveEventBanners();
+    const activeUniversalBanners = bannersHelper.getActiveUniversalBanners();
+
+    const currentBannerData = bannersHelper.getBannerData(currentBanner);
+    const currentBannerChances = bannersHelper.calculateDropChances({
+      type: currentBannerData.type,
+      fourStar: _.result(userData, [currentBannerData.type, 'fourStar'], 0),
+      fiveStar: _.result(userData, [currentBannerData.type, 'fiveStar'], 0),
+    });
+
+    let messageTemplate = ejs.render(templates.tgBot.profile, {
+      _,
+      $t,
+      itemsHelper,
+      userData,
+      activeEventBanners,
+      activeUniversalBanners,
+      currentBannerData,
+      currentBannerChances,
+      STANDARD_BANNER_TYPE_NAME,
+      CHARACTERS_BANNER_TYPE_NAME,
+      WEAPONS_BANNER_TYPE_NAME,
+      EVENT_BANNER_CATEGORY_NAME,
+      TYPE_CHARACTERS_NAME,
+      TYPE_WEAPONS_NAME,
+    });
+
+    messageTemplate = minify.minifyTgBot(messageTemplate);
 
     ctx.body = {
       userData,
-      template,
+      messageTemplate,
     };
     ctx.status = 200;
     await next();
   },
 
-  async getHistory(ctx, next) {
+  /**
+   *
+   * @param ctx
+   * @param next
+   * @return {Promise<void>}
+   */
+  async getTgBotHistory(ctx, next) {
     const { chatId } = ctx.request.params;
     ctx.assert(chatId, 400, 'chatId is required');
 
@@ -135,7 +225,9 @@ module.exports = {
         ctx.throw(500, e.message);
       });
 
-    const template = templatesModule.history({ userData, historyData });
+    const { languageCode } = userData;
+    const $t = translatesHelper.getTranslate(languageCode);
+    const template = ejs.render(templates.tgBot.history, { $t, userData, historyData });
 
     ctx.body = {
       userData,
@@ -146,7 +238,13 @@ module.exports = {
     await next();
   },
 
-  async getInventory(ctx, next) {
+  /**
+   *
+   * @param ctx
+   * @param next
+   * @return {Promise<void>}
+   */
+  async getTgBotInventory(ctx, next) {
     const { chatId } = ctx.request.params;
     ctx.assert(chatId, 400, 'chatId is required');
 
@@ -163,7 +261,9 @@ module.exports = {
         ctx.throw(500, e.message);
       });
 
-    const template = templatesModule.inventory({ userData, itemsData });
+    const { languageCode } = userData;
+    const $t = translatesHelper.getTranslate(languageCode);
+    const template = ejs.renderFile(templates.tgBot.inventory, { $t, userData, itemsData });
 
     ctx.body = {
       userData,

@@ -24,19 +24,14 @@ module.exports = {
       .put('/user/:chatId/admin', adminController.updateAdmin)
       .post('/user/:chatId/admin', adminController.addAdmin)
 
-      .get('/user/:chatId/profile', userController.getProfile)
+      .get('/tg-bot/user/:chatId/profile', userController.getTgBotProfile)
+      .get('/tg-bot/user/:chatId/history', userController.getTgBotHistory)
+      .get('/tg-bot/user/:chatId/inventory', userController.getTgBotInventory)
+      .get('/tg-bot/user/:chatId/primogems')
+      .get('/tg-bot/user/:chatId/wish')
+      .get('/tg-bot/user/:chatId/with-x10')
 
-      .get('/user/:chatId/history', userController.getHistory)
-
-      .get('/user/:chatId/inventory', userController.getInventory)
-
-      .get('/user/:chatId/primogems')
-
-      .get('/user/:chatId/wish')
-      .get('/user/:chatId/with-x10')
-
-      .get('/items/:type')
-
+      .get('/static/items/:type')
       .get('/static/banners')
       .get('/static/banners/active')
       .get('/static/chances/:type')

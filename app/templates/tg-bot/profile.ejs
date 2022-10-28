@@ -1,0 +1,80 @@
+<b>
+    <a href="tg://user?id=<%= userData.chatId; %>">
+        <%= userData.firstName; %>
+    </a>
+</b>
+
+, <%= $t('users.profile.hereIs'); %>\n\n
+
+<b><%= $t('users.profile.wallet'); %></b>\n
+<%= $t('users.profile.primogems'); %>: <%= userData.primogems; %> ✦\n
+<%= $t('users.profile.stardust'); %>: <%= userData.stardust; %> ✨\n
+<%= $t('users.profile.starglitter'); %>: <%= userData.starglitter; %> 🌟\n\n
+
+⏳<b><%= $t('banners.eventProfile'); %></b>\n
+<% activeEventBanners.forEach((banner) => { %>
+    <%
+        const bannersName = _.result(banner.translates, userData.languageCode, '')
+    %>
+
+    <% if (banner.objKey === userData.currentBanner) { %>
+        🔸 <i><b><%= bannersName %></b></i>\n
+        <% if (banner.type === CHARACTERS_BANNER_TYPE_NAME) { %>
+            <% Object.keys(banner.characters).forEach((rarity) => { %>
+                <% banner.characters[rarity].forEach((item) => { %>
+                    <%
+                        const itemData = itemsHelper.getItemData({
+                            langCode: userData.languageCode,
+                            objKey: item,
+                            type: TYPE_CHARACTERS_NAME,
+                        });
+                    %>
+                    <%= rarity %>⭐️ <%= itemData.name %> ↑\n
+                <% }); %>
+            <% }); %>
+        <% } else if (banner.type === WEAPONS_BANNER_TYPE_NAME) { %>
+            <% Object.keys(banner.weapons).forEach((rarity) => { %>
+                <% banner.weapons[rarity].forEach((item) => { %>
+                    <%
+                        const itemData = itemsHelper.getItemData({
+                            langCode: userData.languageCode,
+                            objKey: item,
+                            type: TYPE_WEAPONS_NAME,
+                        });
+                    %>
+                    <%= rarity %>⭐️ <%= itemData.name %> ↑\n
+                <% }); %>
+            <% }); %>
+        <% } %>
+    <% } else { %>
+        🔹 <i><%= bannersName %></i>\n
+    <% } %>
+<% }); %>
+
+♾️<b><%= $t('banners.universalProfile'); %></b>\n
+<% activeUniversalBanners.forEach((banner) => { %>
+    <%
+        const bannersName = _.result(banner.translates, userData.languageCode, '')
+    %>
+    <% if (banner.objKey === userData.currentBanner) { %>
+        🔸 <i><b><%= bannersName %></b></i>\n
+        <% if (banner.type === CHARACTERS_BANNER_TYPE_NAME) { %>
+            5⭐️ <%= $t('banners.allCharacters'); %> ↑\n
+        <% } else if (banner.type === WEAPONS_BANNER_TYPE_NAME) { %>
+            5⭐️ <%= $t('banners.allWeapons'); %> ↑\n
+        <% } %>
+    <% } else { %>
+        🔹 <i><%= bannersName %></i>\n
+    <% } %>
+<% }); %>
+
+\n<i><b><%= $t(`banners.${currentBannerData.type}`); %></b></i>\n
+<% currentBannerChances.forEach((chance) => { %>
+    <%= '⭐️'.repeat(chance.item) %><%= (Number(chance.chance) / 10).toFixed(1) %>%\n
+    <% if (chance.toGuarantee) { %>
+        <%= chance.toGuarantee %> <%= $t('users.profile.toGuarantor'); %>!\n
+    <% } %>
+    <% if (currentBannerData.type !== STANDARD_BANNER_TYPE_NAME && currentBannerData.category !== EVENT_BANNER_CATEGORY_NAME) { %>
+
+    <% } %>
+<% }); %>

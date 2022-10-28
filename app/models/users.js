@@ -10,6 +10,10 @@ module.exports = mongoose.model('users', new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  platform: {
+    type: Number,
+    default: 1,
+  },
   groupChatIds: {
     type: [Number],
     default: [],
