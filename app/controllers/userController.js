@@ -215,9 +215,12 @@ module.exports = {
   async getTgBotHistory(ctx, next) {
     const {
       chatId,
+    } = ctx.request.params;
+    let {
       page = 0,
     } = ctx.request.params;
     ctx.assert(chatId, 400, 'chatId is required');
+    page = Number(page);
 
     const userData = await UsersModel.findOne({ chatId })
       .catch((e) => {

@@ -12,36 +12,24 @@
     let tempYear;
 %>
 <% historyData.forEach((log) => { %>
-    <%
-        const year = log.created.getFullYear();
-        let day = log.created.getDate();
-        let month = log.created.getMonth() + 1;
-        let hours = log.created.getHours();
-        let minutes = log.created.getMinutes();;
-        day = day < 10 ? `0${day}` : day;
-        month = month < 10 ? `0${month}` : month;
-        hours = hours < 10 ? `0${hours}` : hours;
-        minutes = minutes < 10 ? `0${minutes}` : minutes
-    %>
-
-    <% if (tempDay !== day || tempMonth !== month || tempYear !== year) { %>
-        <code><%= day %>.<%= month %>.<%= year %></code><br>
+    <% if (tempDay !== log.day || tempMonth !== log.month || tempYear !== log.year) { %>
+        <code><%= log.day %>.<%= log.month %>.<%= log.year %></code><br>
     <% } %>
 
     <% if (log.action === USERS_HISTORY_ACTION_PRIMOGEMS) { %>
-        <code><%= hours %>:<%= minutes %></code> <%= $t('users.profile.primogemsEarned'); %><br>
+        <code><%= log.hours %>:<%= log.minutes %></code> <%= $t('users.profile.primogemsEarned'); %><br>
         +<%= log.currencyCount %> ✦ <%= $t('currency.primogems'); %><br>
     <% } else if (log.action === USERS_HISTORY_ACTION_WISH) { %>
-        <code><%= hours %>:<%= minutes %></code> <%= $t('wish.wish'); %> - <i><b><%= $t(`banners.${log.banner}`); %></b></i>
+        <code><%= log.hours %>:<%= log.minutes %></code> <%= $t('wish.wish'); %> - <i><b><%= $t(`banners.${log.banner}`); %></b></i>
         <br>
-        <a href="<%= log.itemData.url?.fandom %>"><%= '⭐️'.repeat(Number(log.itemData.rarity)) %>, <b><%= log.itemData.name %></b></a>
+        <a href="<%= log?.itemData?.url?.fandom %>"><%= '⭐️'.repeat(Number(log?.itemData?.rarity)) %>, <b><%= log?.itemData?.name %></b></a>
         <br>
     <% } %>
 
     <%
-        tempDay = day;
-        tempMonth = month;
-        tempYear = year;
+        tempDay = log.day;
+        tempMonth = log.month;
+        tempYear = log.year;
     %>
 <% }); %>
 
