@@ -11,6 +11,7 @@ const bannersHelper = require('../helpers/bannersHelper');
 const itemsHelper = require('../helpers/itemsHelper');
 const userHelper = require('../helpers/usersHelper');
 const historyHelper = require('../helpers/historyHelper');
+const inventoryHelper = require('../helpers/inventoryHelper');
 
 const templates = require('../modules/templates');
 const minify = require('../modules/minify');
@@ -297,23 +298,25 @@ module.exports = {
       });
     ctx.assert(userData?.chatId, 404, 'User not found.');
 
-    const itemsData = await ItemsModel.find({ chatId })
+    const { languageCode } = userData;
+    const $t = translatesHelper.getTranslate(languageCode);
+
+    const inventoryData = await ItemsModel.find({ chatId })
+      .then((itemsData) => inventoryHelper.makingInventoryTree(itemsData, languageCode))
       .catch((e) => {
         console.error('[ERROR] userController getInventory ItemsModel find:', e.message);
         ctx.throw(500, e.message);
       });
 
-    const { languageCode } = userData;
-    const $t = translatesHelper.getTranslate(languageCode);
-    let messageTemplate = ejs.renderFile(templates.tgBot.inventory, { $t, userData, itemsData });
+    let messageTemplate = ejs.render(templates.tgBot.inventory, {
+      $t,
+      userData,
+      inventoryData,
+    });
 
     messageTemplate = minify.minifyTgBot(messageTemplate);
 
-    ctx.body = {
-      userData,
-      itemsData,
-      messageTemplate,
-    };
+    ctx.body = messageTemplate;
     ctx.status = 200;
     await next();
   },
