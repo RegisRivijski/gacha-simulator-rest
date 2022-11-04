@@ -274,7 +274,6 @@ module.exports = {
 
     ctx.body = {
       userData,
-      historyData,
       messageTemplate,
     };
     ctx.status = 200;
@@ -316,7 +315,10 @@ module.exports = {
 
     messageTemplate = minify.minifyTgBot(messageTemplate);
 
-    ctx.body = messageTemplate;
+    ctx.body = {
+      userData,
+      messageTemplate,
+    };
     ctx.status = 200;
     await next();
   },
