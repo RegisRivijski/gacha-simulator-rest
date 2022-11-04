@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const {
   DEFAULT_BANNER_FOR_USERS,
 } = require('../constants/index');
@@ -19,5 +21,16 @@ module.exports = {
       currentBannerIsValid: false,
       currentBanner: DEFAULT_BANNER_FOR_USERS,
     };
+  },
+
+  getEventGuarantee(userData, bannerType, rarity) {
+    switch (rarity) {
+      case 4:
+        return _.result(userData, [bannerType, 'four'], false);
+      case 5:
+        return _.result(userData, [bannerType, 'five'], false);
+      default:
+        return false;
+    }
   },
 };

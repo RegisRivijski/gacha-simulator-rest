@@ -16,6 +16,12 @@
     "ecmaVersion": 12
   },
   "rules": {
+    "max-len": [
+      "error",
+      {
+        "code": 120
+      }
+    ],
     "no-console": [
       "error",
       {
@@ -29,6 +35,7 @@
     "no-case-declarations": "off",
     "import/no-extraneous-dependencies": "off",
     "linebreak-style": "off",
-    "import/no-unresolved": "off"
+    "import/no-unresolved": "off",
+    "object-curly-newline": "off"
   }
 }
