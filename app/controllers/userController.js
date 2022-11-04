@@ -227,12 +227,16 @@ module.exports = {
 
     const { languageCode } = userData;
     const $t = translatesHelper.getTranslate(languageCode);
-    const template = ejs.render(templates.tgBot.history, { $t, userData, historyData });
+    const messageTemplate = ejs.render(templates.tgBot.history, {
+      $t,
+      userData,
+      historyData,
+    });
 
     ctx.body = {
       userData,
       historyData,
-      template,
+      messageTemplate,
     };
     ctx.status = 200;
     await next();

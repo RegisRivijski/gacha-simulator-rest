@@ -7,6 +7,6 @@ module.exports = {
       collapseWhitespace: true,
       removeTagWhitespace: true,
     })
-      .replaceAll('\\n', '\n');
+      .replaceAll('<br>', '\n');
   },
 };

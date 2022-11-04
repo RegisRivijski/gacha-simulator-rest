@@ -1,0 +1,36 @@
+<b>
+    <a href="tg://user?id=<%= userData.chatId; %>">
+        <%= userData.firstName; %>
+    </a>
+</b>
+
+, <%= $t('users.history.hereIs'); %>!<br>
+
+<%
+    let tempDay;
+    let tempMonth;
+    let tempYear;
+%>
+<% historyData.forEach((log) => { %>
+    <%
+        const year = log.created.getFullYear();
+        let day = log.created.getDate();
+        let month = log.created.getMonth() + 1;
+        let hours = log.created.getHours();
+        let minutes = log.created.getMinutes();;
+        day = day < 10 ? `0${day}` : day;
+        month = month < 10 ? `0${month}` : month;
+        hours = hours < 10 ? `0${hours}` : hours;
+        minutes = minutes < 10 ? `0${minutes}` : minutes
+    %>
+
+    <% if (tempDay !== day || tempMonth !== month || tempYear !== year) { %>
+        <code><%= day %>.<%= month %>.<%= year %></code><br>
+    <% } %>
+
+    <%
+        tempDay = day;
+        tempMonth = month;
+        tempYear = year;
+    %>
+<% }); %>
