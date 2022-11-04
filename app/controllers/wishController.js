@@ -42,7 +42,7 @@ module.exports = {
       currentBanner,
     } = userHelper.validateCurrentBanner(userData);
 
-    const currentBannerData = bannersHelper.getBannerData(userData.currentBanner);
+    const currentBannerData = bannersHelper.getBannerData(currentBanner);
     const currentBannerType = _.result(currentBannerData, 'type');
     const currentBannerPrices = bannersHelper.getBannerPrices(currentBannerType);
 
