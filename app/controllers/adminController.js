@@ -10,7 +10,7 @@ module.exports = {
     const adminData = await AdminsModel.findOne({ chatId })
       .catch((e) => {
         console.error('[ERROR] adminController getAdmin AdminsModel findOne:', e.message);
-        ctx.throw(500, e.message);
+        ctx.throw(500);
       });
     ctx.assert(adminData.chatId, 404, 'Admin not found.');
 
@@ -29,7 +29,7 @@ module.exports = {
     let adminData = await AdminsModel.findOne({ chatId })
       .catch((e) => {
         console.error('[ERROR] adminController updateAdmin AdminsModel findOne:', e.message);
-        ctx.throw(500, e.message);
+        ctx.throw(500);
       });
     ctx.assert(adminData.chatId, 404, 'Admin not found.');
 
@@ -38,7 +38,7 @@ module.exports = {
     adminData = await adminData.save()
       .catch((e) => {
         console.error('[ERROR] adminController updateAdmin AdminsModel adminData save:', e.message);
-        ctx.throw(500, e.message);
+        ctx.throw(500);
       });
 
     ctx.body = adminData;
@@ -56,7 +56,7 @@ module.exports = {
     let adminData = await AdminsModel.findOne({ chatId })
       .catch((e) => {
         console.error('[ERROR] adminController addAdmin AdminsModel findOne:', e.message);
-        ctx.throw(500, e.message);
+        ctx.throw(500);
       });
     ctx.assert(adminData.chatId, 404, 'Admin not found.');
 
@@ -72,7 +72,7 @@ module.exports = {
     adminData = await adminData.save()
       .catch((e) => {
         console.error('[ERROR] adminController addAdmin AdminsModel adminData save:', e.message);
-        ctx.throw(500, e.message);
+        ctx.throw(500);
       });
 
     ctx.body = adminData;

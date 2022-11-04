@@ -26,6 +26,8 @@ const chancesType = require('../../staticData/data/chances/type.json');
 const chancesCharactersBanner = require('../../staticData/data/chances/standard.json');
 const chancesWeaponsBanner = require('../../staticData/data/chances/weapon.json');
 
+const fatesPrices = require('../../staticData/data/prices/fates.json');
+
 module.exports = {
   getBanners() {
     return banners;
@@ -94,5 +96,9 @@ module.exports = {
       default:
         return chancesCharactersBanner;
     }
+  },
+
+  getFatesPrices() {
+    return fatesPrices;
   },
 };

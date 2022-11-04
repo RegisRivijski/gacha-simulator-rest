@@ -8,6 +8,7 @@ const {
 const staticDataHelper = require('./staticDataHelper');
 
 const banners = staticDataHelper.getBanners();
+const bannersPrices = staticDataHelper.getFatesPrices();
 const bannersArray = Object.values(banners);
 
 module.exports = {
@@ -34,6 +35,10 @@ module.exports = {
 
   getBannerData(objKey) {
     return _.result(banners, objKey, {});
+  },
+
+  getBannerPrices(type) {
+    return _.result(bannersPrices, type, {});
   },
 
   calculateDropChances({ type = '', fourStar = 0, fiveStar = 0 }) {

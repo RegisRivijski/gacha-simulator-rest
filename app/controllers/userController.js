@@ -39,7 +39,7 @@ module.exports = {
     ctx.body = await UsersModel.find({})
       .catch((e) => {
         console.error('[ERROR] userController getUsers UsersModel find:', e.message);
-        ctx.throw(500, e.message);
+        ctx.throw(500);
       });
     ctx.status = 200;
     await next();
@@ -58,7 +58,7 @@ module.exports = {
     const userData = await UsersModel.findOne({ chatId })
       .catch((e) => {
         console.error('[ERROR] userController getUser UsersModel findOne:', e.message);
-        ctx.throw(500, e.message);
+        ctx.throw(500);
       });
     ctx.assert(userData?.chatId, 404, 'User not found.');
 
@@ -83,7 +83,7 @@ module.exports = {
     let userData = await UsersModel.findOne({ chatId })
       .catch((e) => {
         console.error('[ERROR] userController changeUser UsersModel findOne:', e.message);
-        ctx.throw(500, e.message);
+        ctx.throw(500);
       });
     ctx.assert(userData?.chatId, 404, 'User not found.');
 
@@ -92,7 +92,7 @@ module.exports = {
     userData = await userData.save()
       .catch((e) => {
         console.error('[ERROR] userController changeUser UsersModel userData save:', e.message);
-        ctx.throw(500, e.message);
+        ctx.throw(500);
       });
 
     ctx.body = userData;
@@ -107,7 +107,7 @@ module.exports = {
     let userData = await UsersModel.findOne({ chatId })
       .catch((e) => {
         console.error('[ERROR] userController getUser UsersModel findOne:', e.message);
-        ctx.throw(500, e.message);
+        ctx.throw(500);
       });
     ctx.assert(!userData?.chatId, 400, 'User is already created.');
 
@@ -129,7 +129,7 @@ module.exports = {
     userData = await userData.save()
       .catch((e) => {
         console.error('[ERROR] userController addUser UsersModel userData save:', e.message);
-        ctx.throw(500, e.message);
+        ctx.throw(500);
       });
 
     ctx.body = userData;
@@ -150,7 +150,7 @@ module.exports = {
     const userData = await UsersModel.findOne({ chatId })
       .catch((e) => {
         console.error('[ERROR] userController getProfile UsersModel findOne:', e.message);
-        ctx.throw(500, e.message);
+        ctx.throw(500);
       });
     ctx.assert(userData?.chatId, 404, 'User not found.');
 
@@ -226,7 +226,7 @@ module.exports = {
     const userData = await UsersModel.findOne({ chatId })
       .catch((e) => {
         console.error('[ERROR] userController getHistory UsersModel findOne:', e.message);
-        ctx.throw(500, e.message);
+        ctx.throw(500);
       });
     ctx.assert(userData?.chatId, 404, 'User not found.');
 
@@ -248,7 +248,7 @@ module.exports = {
         .then((data) => historyHelper.addingStaticData(data, languageCode))
         .catch((e) => {
           console.error('[ERROR] userController getHistory HistoryModel find:', e.message);
-          ctx.throw(500, e.message);
+          ctx.throw(500);
         }),
       // historyLogsCount
       HistoryModel.count({ chatId })
@@ -293,7 +293,7 @@ module.exports = {
     const userData = await UsersModel.findOne({ chatId })
       .catch((e) => {
         console.error('[ERROR] userController getInventory UsersModel findOne:', e.message);
-        ctx.throw(500, e.message);
+        ctx.throw(500);
       });
     ctx.assert(userData?.chatId, 404, 'User not found.');
 
@@ -304,7 +304,7 @@ module.exports = {
       .then((itemsData) => inventoryHelper.makingInventoryTree(itemsData, languageCode))
       .catch((e) => {
         console.error('[ERROR] userController getInventory ItemsModel find:', e.message);
-        ctx.throw(500, e.message);
+        ctx.throw(500);
       });
 
     let messageTemplate = ejs.render(templates.tgBot.inventory, {
