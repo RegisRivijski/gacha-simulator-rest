@@ -10,6 +10,7 @@ const translatesHelper = require('../helpers/translatesHelper');
 const bannersHelper = require('../helpers/bannersHelper');
 const itemsHelper = require('../helpers/itemsHelper');
 const userHelper = require('../helpers/usersHelper');
+const historyHelper = require('../helpers/historyHelper');
 
 const templates = require('../modules/templates');
 const minify = require('../modules/minify');
@@ -21,6 +22,9 @@ const {
   EVENT_BANNER_CATEGORY_NAME,
   TYPE_CHARACTERS_NAME,
   TYPE_WEAPONS_NAME,
+  USERS_HISTORY_ACTION_WISH,
+  USERS_HISTORY_ACTION_PRIMOGEMS,
+  USERS_HISTORY_LOGS_PER_PAGE,
 } = require('../constants/index');
 
 module.exports = {
@@ -209,7 +213,10 @@ module.exports = {
    * @return {Promise<void>}
    */
   async getTgBotHistory(ctx, next) {
-    const { chatId } = ctx.request.params;
+    const {
+      chatId,
+      page = 0,
+    } = ctx.request.params;
     ctx.assert(chatId, 400, 'chatId is required');
 
     const userData = await UsersModel.findOne({ chatId })
@@ -219,19 +226,47 @@ module.exports = {
       });
     ctx.assert(userData?.chatId, 404, 'User not found.');
 
-    const historyData = await HistoryModel.find({ chatId })
-      .catch((e) => {
-        console.error('[ERROR] userController getHistory HistoryModel find:', e.message);
-        ctx.throw(500, e.message);
-      });
-
     const { languageCode } = userData;
     const $t = translatesHelper.getTranslate(languageCode);
-    const messageTemplate = ejs.render(templates.tgBot.history, {
+
+    const [
+      historyData,
+      historyLogsCount,
+    ] = await Promise.all([
+      // historyData
+      HistoryModel.find({ chatId }, null, {
+        skip: page * USERS_HISTORY_LOGS_PER_PAGE,
+        limit: USERS_HISTORY_LOGS_PER_PAGE,
+        sort: {
+          created: -1,
+        },
+      })
+        .then((data) => historyHelper.addingStaticData(data, languageCode))
+        .catch((e) => {
+          console.error('[ERROR] userController getHistory HistoryModel find:', e.message);
+          ctx.throw(500, e.message);
+        }),
+      // historyLogsCount
+      HistoryModel.count({ chatId })
+        .catch((e) => {
+          console.error('[ERROR] userController getHistory HistoryModel count:', e.message);
+          return 0;
+        }),
+    ]);
+
+    const pagesCount = Math.ceil(historyLogsCount / USERS_HISTORY_LOGS_PER_PAGE);
+
+    let messageTemplate = ejs.render(templates.tgBot.history, {
       $t,
       userData,
       historyData,
+      page,
+      pagesCount,
+      USERS_HISTORY_ACTION_WISH,
+      USERS_HISTORY_ACTION_PRIMOGEMS,
     });
+
+    messageTemplate = minify.minifyTgBot(messageTemplate);
 
     ctx.body = {
       userData,
@@ -267,12 +302,14 @@ module.exports = {
 
     const { languageCode } = userData;
     const $t = translatesHelper.getTranslate(languageCode);
-    const template = ejs.renderFile(templates.tgBot.inventory, { $t, userData, itemsData });
+    let messageTemplate = ejs.renderFile(templates.tgBot.inventory, { $t, userData, itemsData });
+
+    messageTemplate = minify.minifyTgBot(messageTemplate);
 
     ctx.body = {
       userData,
       itemsData,
-      template,
+      messageTemplate,
     };
     ctx.status = 200;
     await next();

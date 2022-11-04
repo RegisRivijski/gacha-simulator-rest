@@ -28,9 +28,21 @@
         <code><%= day %>.<%= month %>.<%= year %></code><br>
     <% } %>
 
+    <% if (log.action === USERS_HISTORY_ACTION_PRIMOGEMS) { %>
+        <code><%= hours %>:<%= minutes %></code> <%= $t('users.profile.primogemsEarned'); %><br>
+        +<%= log.currencyCount %> ✦ <%= $t('currency.primogems'); %><br>
+    <% } else if (log.action === USERS_HISTORY_ACTION_WISH) { %>
+        <code><%= hours %>:<%= minutes %></code> <%= $t('wish.wish'); %> - <i><b><%= $t(`banners.${log.banner}`); %></b></i>
+        <br>
+        <a href="<%= log.itemData.url?.fandom %>"><%= '⭐️'.repeat(Number(log.itemData.rarity)) %>, <b><%= log.itemData.name %></b></a>
+        <br>
+    <% } %>
+
     <%
         tempDay = day;
         tempMonth = month;
         tempYear = year;
     %>
 <% }); %>
+
+<%= $t('users.history.page'); %> <%= page + 1 %>/<%= pagesCount %>
