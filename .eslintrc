@@ -27,7 +27,8 @@
       {
         "allow": [
           "error",
-          "info"
+          "info",
+          "table"
         ]
       }
     ],

@@ -16,7 +16,6 @@ mongoose.connect();
 const server = http.createServer(app.callback());
 
 server.listen(config.server.port, async () => {
-  // eslint-disable-next-line no-console
   console.table({
     Application: config.application.name,
     Version: config.application.version,

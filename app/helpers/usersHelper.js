@@ -11,7 +11,7 @@ const bannersKeys = bannersHelper.getActiveBanners()
 
 module.exports = {
   validateCurrentBanner({ currentBanner }) {
-    if (currentBanner in bannersKeys) {
+    if (bannersKeys.includes(currentBanner)) {
       return {
         currentBannerIsValid: true,
         currentBanner,

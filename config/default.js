@@ -6,6 +6,9 @@ module.exports = {
     version: packageJson.version,
     description: packageJson.description,
   },
+  languages: {
+    defaultLangCode: process.env.DEFAULT_LANGUAGE_CODE || 'en',
+  },
   server: {
     port: process.env.GACHA_SIMULATOR_REST_PORT,
   },

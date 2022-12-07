@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const config = require('config');
 
 const en = require('../../staticData/translates/en.json');
 const uk = require('../../staticData/translates/uk.json');
@@ -13,8 +14,9 @@ module.exports = {
       case 'be':
         return (key) => _.result(ru, key, '');
       case 'en':
-      default:
         return (key) => _.result(en, key, '');
+      default:
+        return this.getTranslate(config.languages.defaultLangCode);
     }
   },
 };

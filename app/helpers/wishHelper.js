@@ -21,4 +21,12 @@ module.exports = {
       ...newItemsData,
     };
   },
+
+  makeWishFewTimes(userData, wishesCount) {
+    const wishes = [];
+    for (let i = 0; i < wishesCount; i += 1) {
+      wishes.push(this.makeWish(userData));
+    }
+    return wishes;
+  },
 };
