@@ -4,6 +4,7 @@ const {
 } = require('../constants/index');
 
 const itemsHelper = require('./itemsHelper');
+const ItemsModel = require('../models/items');
 
 module.exports = {
   makingInventoryTree(items, langCode) {
@@ -50,5 +51,32 @@ module.exports = {
       charactersInv,
       weaponsInv,
     };
+  },
+
+  addingNewItem({ chatId, newItemObjKey, newItemType }) {
+    return ItemsModel.findOne({
+      chatId,
+      objKey: newItemObjKey,
+      type: newItemType,
+    })
+      .then((currentInventoryItem) => {
+        if (currentInventoryItem) {
+          // eslint-disable-next-line no-param-reassign
+          currentInventoryItem.count += 1;
+          return currentInventoryItem.save();
+        }
+        return new ItemsModel({
+          chatId,
+          type: newItemType,
+          objKey: newItemObjKey,
+          count: 1,
+        }).save();
+      });
+  },
+
+  addingManyNewItems({ chatId, newItems }) {
+    return Promise.all(
+      newItems.map((newItem) => this.addingNewItem({ chatId, ...newItem })),
+    );
   },
 };

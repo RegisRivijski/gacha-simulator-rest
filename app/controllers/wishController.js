@@ -7,12 +7,13 @@ const {
 
 const UsersModel = require('../models/users');
 const HistoryModel = require('../models/histories');
-const ItemsModel = require('../models/items');
 
+const documentsHelper = require('../helpers/documentsHelper');
 const translatesHelper = require('../helpers/translatesHelper');
 const userHelper = require('../helpers/usersHelper');
 const wishHelper = require('../helpers/wishHelper');
 const itemsHelper = require('../helpers/itemsHelper');
+const inventoryHelper = require('../helpers/inventoryHelper');
 const financialOperationsHelper = require('../helpers/financialOperationsHelper');
 
 const templates = require('../modules/templates');
@@ -47,7 +48,7 @@ module.exports = {
     const currentBannerPrices = bannersHelper.getBannerPrices(currentBannerType);
 
     const price = financialOperationsHelper.determinePrice(userData, currentBannerPrices);
-    const canBuy = Boolean(price.currency);
+    const canBuy = Boolean(price.key);
 
     const { languageCode } = userData;
     const $t = translatesHelper.getTranslate(languageCode);
@@ -63,35 +64,14 @@ module.exports = {
         type: newItem.newItemType,
       });
 
-      const currentInventoryItem = await ItemsModel.findOne({
+      await inventoryHelper.addingNewItem({
         chatId,
-        objKey: newItem.newItemObjKey,
-        type: newItem.newItemType,
+        ...newItem,
       })
         .catch((e) => {
-          console.error('[ERROR] wishController getWish ItemsModel findOne:', e.message);
+          console.error('[ERROR] wishController getWish inventoryHelper addingNewItem:', e.message);
           ctx.throw(500);
         });
-
-      if (currentInventoryItem) {
-        currentInventoryItem.count += 1;
-        currentInventoryItem.save()
-          .catch((e) => {
-            console.error('[ERROR] wishController getWish currentInventoryItem save:', e.message);
-            ctx.throw(500);
-          });
-      } else {
-        new ItemsModel({
-          chatId,
-          type: newItem.newItemType,
-          objKey: newItem.newItemObjKey,
-          count: 1,
-        }).save()
-          .catch((e) => {
-            console.error('[ERROR] wishController getWish new ItemsModel save', e.message);
-            ctx.throw(500);
-          });
-      }
 
       new HistoryModel({
         chatId,
@@ -99,8 +79,8 @@ module.exports = {
         banner: currentBanner,
         type: newItem.newItemType,
         objKey: newItem.newItemObjKey,
-        currency: price.currency,
-        currencyCount: price.cost,
+        currency: price.key,
+        currencyCount: price.value,
       }).save()
         .catch((e) => {
           console.error('[ERROR] wishController getWish new HistoryModel save', e.message);
@@ -109,7 +89,7 @@ module.exports = {
 
     if (!currentBannerIsValid || canBuy) {
       userData.currentBanner = currentBanner;
-      userData[price.currency] -= price.cost;
+      userData[price.key] -= price.value;
       userData.save()
         .catch((e) => {
           console.error('[ERROR] wishController getWish UserModel userData save:', e.message);
@@ -120,6 +100,7 @@ module.exports = {
       $t,
       userData,
       canBuy,
+      price,
       newItemData,
     });
 
@@ -145,7 +126,7 @@ module.exports = {
 
     const userData = await UsersModel.findOne({ chatId })
       .catch((e) => {
-        console.error('[ERROR] userController getProfile UsersModel findOne:', e.message);
+        console.error('[ERROR] wishController getWishX10 UsersModel findOne:', e.message);
         ctx.throw(500);
       });
     ctx.assert(userData?.chatId, 404, 'User not found.');
@@ -155,20 +136,55 @@ module.exports = {
       currentBanner,
     } = userHelper.validateCurrentBanner(userData);
 
-    if (!currentBannerIsValid) {
-      userData.currentBanner = currentBanner;
-      userData.save()
-        .catch((e) => {
-          console.error('[ERROR] userController getProfile UserModel userData save:', e.message);
-        });
-    }
+    const wishesCount = 10;
+    const currentBannerData = bannersHelper.getBannerData(currentBanner);
+    const currentBannerType = _.result(currentBannerData, 'type');
+    const currentBannerPrices = bannersHelper.getBannerPrices(currentBannerType);
+
+    const prices = financialOperationsHelper.determinePriceFewTimes(userData, currentBannerPrices, wishesCount);
+    const canBuy = Boolean(prices.length >= wishesCount);
 
     const { languageCode } = userData;
     const $t = translatesHelper.getTranslate(languageCode);
 
-    let messageTemplate = ejs.render(templates.tgBot.wish, {
+    let newItems;
+    let newItemsData;
+
+    if (canBuy) {
+      newItems = wishHelper.makeWishFewTimes(userData, wishesCount);
+      newItemsData = newItems.map((newItem) => itemsHelper.getItemData({
+        langCode: languageCode,
+        objKey: newItem.newItemObjKey,
+        type: newItem.newItemType,
+      }));
+
+      await inventoryHelper.addingManyNewItems({
+        chatId,
+        newItems,
+      })
+        .catch((e) => {
+          console.error('[ERROR] wishController getWish inventoryHelper addingNewItem:', e.message);
+          ctx.throw(500);
+        });
+    }
+
+    if (!currentBannerIsValid || canBuy) {
+      userData.currentBanner = currentBanner;
+      for (const price of prices) {
+        userData[price.key] -= price.value;
+      }
+      userData.save()
+        .catch((e) => {
+          console.error('[ERROR] wishController getWishX10 UserModel userData save:', e.message);
+        });
+    }
+
+    let messageTemplate = ejs.render(templates.tgBot.wishX10, {
       $t,
       userData,
+      canBuy,
+      newItemsData,
+      prices: documentsHelper.assignNumbersInObjectFromKeyValueArray(prices),
     });
 
     messageTemplate = minify.minifyTgBot(messageTemplate);

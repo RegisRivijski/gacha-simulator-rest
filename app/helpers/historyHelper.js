@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const {
   USERS_HISTORY_ACTION_WISH,
 } = require('../constants/index');
@@ -6,9 +8,9 @@ const itemsHelper = require('./itemsHelper');
 const timesHelper = require('./timeHelper');
 
 module.exports = {
-  addingStaticData(historyData, langCode) {
+  addingDataToLogsForTemplate(historyData, langCode) {
     return historyData.map(({ _doc }) => {
-      const log = { ..._doc };
+      const log = _.clone(_doc);
 
       log.year = _doc.created.getFullYear();
       log.day = timesHelper.addingZero(_doc.created.getDate());

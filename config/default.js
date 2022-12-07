@@ -7,10 +7,11 @@ module.exports = {
     description: packageJson.description,
   },
   languages: {
-    defaultLangCode: process.env.DEFAULT_LANGUAGE_CODE || 'en',
+    defaultLangCode: process.env.GACHA_SIMULATOR_REST_DEFAULT_LANGUAGE_CODE || 'en',
   },
   server: {
     port: process.env.GACHA_SIMULATOR_REST_PORT,
+    apiKey: process.env.GACHA_SIMULATOR_REST_API_KEY,
   },
   db: {
     mongodb: {

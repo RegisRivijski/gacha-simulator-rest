@@ -9,15 +9,31 @@ module.exports = {
    */
   determinePrice(wallet, cost) {
     const prices = documentsHelper.makeKeyValueArray(cost);
-    const orderedPrices = _.orderBy(prices, ['value'], ['desc']);
+    const orderedPrices = documentsHelper.orderArrayByValue(prices);
     for (const price of orderedPrices) {
-      if (price.key in wallet && wallet[price.key] >= price.value) {
-        return {
-          currency: price.key,
-          cost: price.value,
-        };
+      const walletValue = _.result(wallet, price.key, 0);
+      if (walletValue >= price.value) {
+        return price;
       }
     }
     return {};
+  },
+
+  /**
+   * @param wallet { currency_1: value, currency_2: value }
+   * @param cost   { currency_1: value, currency_2: value }
+   * @param count  10
+   */
+  determinePriceFewTimes(wallet, cost, count) {
+    const walletCloned = _.clone(wallet);
+    const prices = [];
+    for (let i = 0; i < count; i += 1) {
+      const price = this.determinePrice(walletCloned, cost);
+      if (!_.isEmpty(price)) {
+        walletCloned[price.key] -= price.value;
+        prices.push(price);
+      }
+    }
+    return prices;
   },
 };

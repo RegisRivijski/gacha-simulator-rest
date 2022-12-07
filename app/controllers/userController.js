@@ -245,7 +245,7 @@ module.exports = {
           created: -1,
         },
       })
-        .then((data) => historyHelper.addingStaticData(data, languageCode))
+        .then((data) => historyHelper.addingDataToLogsForTemplate(data, languageCode))
         .catch((e) => {
           console.error('[ERROR] userController getHistory HistoryModel find:', e.message);
           ctx.throw(500);

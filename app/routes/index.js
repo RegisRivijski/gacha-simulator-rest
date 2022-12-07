@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const koaBody = require('koa-body');
 
+const securityMiddlewares = require('../middlewares/security');
 const systemController = require('../controllers/systemController');
 const userController = require('../controllers/userController');
 const adminController = require('../controllers/adminController');
@@ -10,6 +11,7 @@ module.exports = {
   Router() {
     return new Router()
       .use(koaBody())
+      .use(securityMiddlewares.ApiKeysValidator)
 
       .get('/', systemController.about)
       .get('/ping', systemController.ping)
