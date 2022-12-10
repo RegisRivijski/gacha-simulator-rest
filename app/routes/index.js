@@ -28,6 +28,7 @@ module.exports = {
       .post('/user/:chatId/admin', adminController.addAdmin)
 
       .get('/tg-bot/user/:chatId/profile', userController.getTgBotProfile)
+      .get('/tg-bot/user/:chatId/history', userController.getTgBotHistory)
       .get('/tg-bot/user/:chatId/history/:page', userController.getTgBotHistory)
       .get('/tg-bot/user/:chatId/inventory', userController.getTgBotInventory)
       .get('/tg-bot/user/:chatId/primogems')
