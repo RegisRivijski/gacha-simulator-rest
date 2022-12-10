@@ -1,6 +1,7 @@
 const AdminsModel = require('../models/admins');
 const documentsHelper = require('../helpers/documentsHelper');
-const UsersModel = require("../models/users");
+
+const UsersModel = require('../models/users');
 
 module.exports = {
   async getAdmin(ctx, next) {

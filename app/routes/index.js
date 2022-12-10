@@ -32,7 +32,7 @@ module.exports = {
       .get('/tg-bot/user/:chatId/inventory', userController.getTgBotInventory)
       .get('/tg-bot/user/:chatId/primogems')
       .get('/tg-bot/user/:chatId/wish', wishController.getWish)
-      .get('/tg-bot/user/:chatId/with-x10', wishController.getWishX10)
+      .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10)
 
       .get('/static/items/:type')
       .get('/static/banners')
