@@ -54,17 +54,11 @@ module.exports = {
     const $t = translatesHelper.getTranslate(languageCode);
 
     let newItem;
-    let newItemData;
     let newItemInDatabase;
     let cashBackForDuplicate;
 
     if (canBuy) {
       newItem = wishHelper.makeWish(userData);
-      newItemData = itemsHelper.getItemData({
-        langCode: languageCode,
-        objKey: newItem.newItemObjKey,
-        type: newItem.newItemType,
-      });
 
       newItemInDatabase = await inventoryHelper.addingNewItem({
         chatId,
@@ -110,7 +104,7 @@ module.exports = {
       userData,
       canBuy,
       price,
-      newItemData,
+      newItemData: newItem.newItemData,
       cashBackTemplate: cashBackForDuplicate.cashBackTemplate,
     });
 
@@ -158,15 +152,9 @@ module.exports = {
     const $t = translatesHelper.getTranslate(languageCode);
 
     let newItems;
-    let newItemsData;
 
     if (canBuy) {
       newItems = wishHelper.makeWishFewTimes(userData, wishesCount);
-      newItemsData = newItems.map((newItem) => itemsHelper.getItemData({
-        langCode: languageCode,
-        objKey: newItem.newItemObjKey,
-        type: newItem.newItemType,
-      }));
 
       await inventoryHelper.addingManyNewItems({
         chatId,
@@ -193,7 +181,7 @@ module.exports = {
       $t,
       userData,
       canBuy,
-      newItemsData,
+      newItemsData: _.map(newItems, ({ newItemData }) => newItemData),
       prices: documentsHelper.assignNumbersInObjectFromKeyValueArray(prices),
     });
 

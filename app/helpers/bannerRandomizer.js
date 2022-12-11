@@ -63,7 +63,7 @@ module.exports = {
     }
 
     return {
-      newItems: [],
+      possibleNewItems: [],
       newItemType,
       newItemRarity,
     };
@@ -73,25 +73,25 @@ module.exports = {
     switch (newItemRarity) {
       case 3:
         return {
-          newItems: standardBannerData.weapons['3'],
+          possibleNewItems: standardBannerData.weapons['3'],
           newItemType: TYPE_WEAPONS_NAME,
           newItemRarity,
         };
       case 4:
         return {
-          newItems: standardBannerData[newItemType]['4'],
+          possibleNewItems: standardBannerData[newItemType]['4'],
           newItemType,
           newItemRarity,
         };
       case 5:
         return {
-          newItems: standardBannerData[newItemType]['5'],
+          possibleNewItems: standardBannerData[newItemType]['5'],
           newItemType,
           newItemRarity,
         };
       default:
         return {
-          newItems: [],
+          possibleNewItems: [],
           newItemType,
           newItemRarity,
         };
@@ -102,28 +102,28 @@ module.exports = {
     switch (newItemRarity) {
       case 3:
         return {
-          newItems: standardBannerData.weapons['3'],
+          possibleNewItems: standardBannerData.weapons['3'],
           newItemType: TYPE_WEAPONS_NAME,
           newItemRarity,
           newItemIsEvent,
         };
       case 4:
         return {
-          newItems: newItemIsEvent ? currentBannerData.characters['4'] : standardBannerData[newItemType]['4'],
+          possibleNewItems: newItemIsEvent ? currentBannerData.characters['4'] : standardBannerData[newItemType]['4'],
           newItemType: newItemIsEvent ? newItemType : TYPE_CHARACTERS_NAME,
           newItemRarity,
           newItemIsEvent,
         };
       case 5:
         return {
-          newItems: newItemIsEvent ? currentBannerData.characters['5'] : standardBannerData.characters['5'],
+          possibleNewItems: newItemIsEvent ? currentBannerData.characters['5'] : standardBannerData.characters['5'],
           newItemType: TYPE_CHARACTERS_NAME,
           newItemRarity,
           newItemIsEvent,
         };
       default:
         return {
-          newItems: [],
+          possibleNewItems: [],
           newItemType,
           newItemRarity,
           newItemIsEvent,
@@ -135,28 +135,28 @@ module.exports = {
     switch (newItemRarity) {
       case 3:
         return {
-          newItems: standardBannerData.weapons['3'],
+          possibleNewItems: standardBannerData.weapons['3'],
           newItemType: TYPE_WEAPONS_NAME,
           newItemRarity,
           newItemIsEvent,
         };
       case 4:
         return {
-          newItems: newItemIsEvent ? currentBannerData.weapons['4'] : standardBannerData[newItemType]['4'],
+          possibleNewItems: newItemIsEvent ? currentBannerData.weapons['4'] : standardBannerData[newItemType]['4'],
           newItemType: newItemIsEvent ? TYPE_WEAPONS_NAME : newItemType,
           newItemRarity,
           newItemIsEvent,
         };
       case 5:
         return {
-          newItems: newItemIsEvent ? currentBannerData.weapons['5'] : standardBannerData.weapons['5'],
+          possibleNewItems: newItemIsEvent ? currentBannerData.weapons['5'] : standardBannerData.weapons['5'],
           newItemType: TYPE_WEAPONS_NAME,
           newItemRarity,
           newItemIsEvent,
         };
       default:
         return {
-          newItems: [],
+          possibleNewItems: [],
           newItemType,
           newItemRarity,
           newItemIsEvent,
@@ -168,28 +168,28 @@ module.exports = {
     switch (newItemRarity) {
       case 3:
         return {
-          newItems: itemsHelper.getItemsByTypeAndRarity({ type: TYPE_WEAPONS_NAME, rarity: newItemRarity })
+          possibleNewItems: itemsHelper.getItemsByTypeAndRarity({ type: TYPE_WEAPONS_NAME, rarity: newItemRarity })
             .map(({ objKey }) => objKey),
           newItemType: TYPE_WEAPONS_NAME,
           newItemRarity,
         };
       case 4:
         return {
-          newItems: itemsHelper.getItemsByTypeAndRarity({ type: newItemType, rarity: newItemRarity })
+          possibleNewItems: itemsHelper.getItemsByTypeAndRarity({ type: newItemType, rarity: newItemRarity })
             .map(({ objKey }) => objKey),
           newItemType,
           newItemRarity,
         };
       case 5:
         return {
-          newItems: itemsHelper.getItemsByTypeAndRarity({ type: TYPE_CHARACTERS_NAME, rarity: newItemRarity })
+          possibleNewItems: itemsHelper.getItemsByTypeAndRarity({ type: TYPE_CHARACTERS_NAME, rarity: newItemRarity })
             .map(({ objKey }) => objKey),
           newItemType: TYPE_CHARACTERS_NAME,
           newItemRarity,
         };
       default:
         return {
-          newItems: [],
+          possibleNewItems: [],
           newItemType,
           newItemRarity,
         };
@@ -201,21 +201,21 @@ module.exports = {
       case 3:
       case 5:
         return {
-          newItems: itemsHelper.getItemsByTypeAndRarity({ type: TYPE_WEAPONS_NAME, rarity: newItemRarity })
+          possibleNewItems: itemsHelper.getItemsByTypeAndRarity({ type: TYPE_WEAPONS_NAME, rarity: newItemRarity })
             .map(({ objKey }) => objKey),
           newItemType: TYPE_WEAPONS_NAME,
           newItemRarity,
         };
       case 4:
         return {
-          newItems: itemsHelper.getItemsByTypeAndRarity({ type: newItemType, rarity: newItemRarity })
+          possibleNewItems: itemsHelper.getItemsByTypeAndRarity({ type: newItemType, rarity: newItemRarity })
             .map(({ objKey }) => objKey),
           newItemType,
           newItemRarity,
         };
       default:
         return {
-          newItems: [],
+          possibleNewItems: [],
           newItemType,
           newItemRarity,
         };
