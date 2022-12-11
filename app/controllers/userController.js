@@ -37,6 +37,10 @@ module.exports = {
    */
   async getUsers(ctx, next) {
     ctx.body = await UsersModel.find({})
+      .then((users) => {
+        users.map(({ chatId }) => chatId);
+      })
+      .then((chatIds) => chatIds.join('\n'))
       .catch((e) => {
         console.error('[ERROR] userController getUsers UsersModel find:', e.message);
         ctx.throw(500);
