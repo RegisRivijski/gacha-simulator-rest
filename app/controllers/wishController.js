@@ -1,19 +1,12 @@
 const _ = require('lodash');
 const ejs = require('ejs');
 
-const {
-  USERS_HISTORY_ACTION_WISH,
-} = require('../constants/index');
-
 const UsersModel = require('../models/users');
-const HistoryModel = require('../models/histories');
 
 const documentsHelper = require('../helpers/documentsHelper');
 const translatesHelper = require('../helpers/translatesHelper');
 const userHelper = require('../helpers/usersHelper');
 const wishHelper = require('../helpers/wishHelper');
-const itemsHelper = require('../helpers/itemsHelper');
-const inventoryHelper = require('../helpers/inventoryHelper');
 const financialOperationsHelper = require('../helpers/financialOperationsHelper');
 
 const templates = require('../modules/templates');
@@ -54,42 +47,27 @@ module.exports = {
     const $t = translatesHelper.getTranslate(languageCode);
 
     let newItem;
-    let newItemInDatabase;
     let cashBackForDuplicate;
 
     if (canBuy) {
-      newItem = wishHelper.makeWish(userData);
-
-      newItemInDatabase = await inventoryHelper.addingNewItem({
-        chatId,
-        ...newItem,
+      const wishData = await wishHelper.makeWish({
+        userData,
+        currentBanner,
+        price,
       })
         .catch((e) => {
-          console.error('[ERROR] wishController getWish inventoryHelper addingNewItem:', e.message);
+          console.error('[ERROR] wishController getWish wishHelper makeWish:', e.message);
           ctx.throw(500);
         });
-
-      cashBackForDuplicate = itemsHelper.getCashBackForDuplicate(newItemInDatabase);
-
-      new HistoryModel({
-        chatId,
-        action: USERS_HISTORY_ACTION_WISH,
-        banner: currentBanner,
-        type: newItem.newItemType,
-        objKey: newItem.newItemObjKey,
-        currency: price.key,
-        currencyCount: price.value,
-      }).save()
-        .catch((e) => {
-          console.error('[ERROR] wishController getWish new HistoryModel save', e.message);
-        });
+      newItem = wishData.newItem;
+      cashBackForDuplicate = wishData.cashBackForDuplicate;
     }
 
     if (!currentBannerIsValid || canBuy) {
       userData.currentBanner = currentBanner;
       userData[price.key] -= price.value;
 
-      if (cashBackForDuplicate) {
+      if (cashBackForDuplicate.price) {
         userData[cashBackForDuplicate.currency] += cashBackForDuplicate.price;
       }
 
@@ -151,25 +129,28 @@ module.exports = {
     const { languageCode } = userData;
     const $t = translatesHelper.getTranslate(languageCode);
 
-    let newItems;
+    let wishesData;
 
     if (canBuy) {
-      newItems = wishHelper.makeWishFewTimes(userData, wishesCount);
-
-      await inventoryHelper.addingManyNewItems({
-        chatId,
-        newItems,
+      wishesData = await wishHelper.makeWishFewTimes({
+        userData,
+        currentBanner,
+        prices,
       })
         .catch((e) => {
-          console.error('[ERROR] wishController getWish inventoryHelper addingNewItem:', e.message);
+          console.error('[ERROR] wishController getWishX10 wishHelper makeWishFewTimes:', e.message);
           ctx.throw(500);
         });
     }
 
     if (!currentBannerIsValid || canBuy) {
       userData.currentBanner = currentBanner;
-      for (const price of prices) {
+      for (const wishData of wishesData) {
+        const { price, cashBackForDuplicate } = wishData;
         userData[price.key] -= price.value;
+        if (cashBackForDuplicate.price) {
+          userData[cashBackForDuplicate.currency] += cashBackForDuplicate.price;
+        }
       }
       userData.save()
         .catch((e) => {
@@ -181,7 +162,7 @@ module.exports = {
       $t,
       userData,
       canBuy,
-      newItemsData: _.map(newItems, ({ newItemData }) => newItemData),
+      wishesData,
       prices: documentsHelper.assignNumbersInObjectFromKeyValueArray(prices),
     });
 
