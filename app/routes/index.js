@@ -24,9 +24,9 @@ module.exports = {
       .put('/user/:chatId', userController.updateUser)
       .post('/user/:chatId', userController.addUser)
 
-      .get('/user/:chatId/admin', adminController.getAdmin)
-      .put('/user/:chatId/admin', adminController.updateAdmin)
-      .post('/user/:chatId/admin', adminController.addAdmin)
+      .get('/admin/user/:chatId', adminController.getAdmin)
+      .put('/admin/user/:chatId', adminController.updateAdmin)
+      .post('/admin/user/:chatId', adminController.addAdmin)
 
       .get('/tg-bot/user/:chatId/profile', userController.getTgBotProfile)
       .get('/tg-bot/user/:chatId/history', userController.getTgBotHistory)
@@ -34,12 +34,6 @@ module.exports = {
       .get('/tg-bot/user/:chatId/inventory', userController.getTgBotInventory)
       .get('/tg-bot/user/:chatId/primogems')
       .get('/tg-bot/user/:chatId/wish', wishController.getWish)
-      .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10)
-
-      .get('/static/items/:type')
-      .get('/static/banners')
-      .get('/static/banners/active')
-      .get('/static/chances/:type')
-      .get('/static/prices/:type');
+      .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10);
   },
 };
