@@ -5,7 +5,7 @@ module.exports = {
 
   BOT_LINK: 'https://t.me/milvachatbot',
 
-  AVAILABLE_DEFAULT_LANG_CODES: ['uk', 'ru', 'be', 'en'],
+  AVAILABLE_DEFAULT_LANG_CODES: ['uk', 'ru', 'be', 'id', 'en'],
 
   PRIMOGEMS_REFERRAL_REWARD: 3200,
   PRIMOGEMS_GET_MAX: 1600,

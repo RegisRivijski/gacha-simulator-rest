@@ -16,6 +16,7 @@ module.exports = {
       case 'ru':
       case 'be':
         return (key) => _.result(ru, key, '');
+      case 'id':
       case 'en':
         return (key) => _.result(en, key, '');
       default:
