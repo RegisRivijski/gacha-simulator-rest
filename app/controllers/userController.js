@@ -29,25 +29,6 @@ const {
 } = require('../constants/index');
 
 module.exports = {
-  /**
-   *
-   * @param ctx
-   * @param next
-   * @return {Promise<void>}
-   */
-  async getUsers(ctx, next) {
-    ctx.body = await UsersModel.find({})
-      .then((users) => {
-        users.map(({ chatId }) => chatId);
-      })
-      .then((chatIds) => chatIds.join('\n'))
-      .catch((e) => {
-        console.error('[ERROR] userController getUsers UsersModel find:', e.message);
-        ctx.throw(500);
-      });
-    ctx.status = 200;
-    await next();
-  },
 
   /**
    *

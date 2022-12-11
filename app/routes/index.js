@@ -6,6 +6,7 @@ const systemController = require('../controllers/systemController');
 const userController = require('../controllers/userController');
 const adminController = require('../controllers/adminController');
 const wishController = require('../controllers/wishController');
+const analyticsController = require('../controllers/analyticsController');
 
 module.exports = {
   Router() {
@@ -17,7 +18,7 @@ module.exports = {
       .get('/ping', systemController.ping)
       .get('/memory', systemController.memory)
 
-      .get('/users', userController.getUsers)
+      .get('/getUsersAndGroupChats', analyticsController.getUsersAndGroupChats)
 
       .get('/user/:chatId', userController.getUser)
       .put('/user/:chatId', userController.updateUser)
