@@ -55,6 +55,8 @@ module.exports = {
 
     let newItem;
     let newItemData;
+    let newItemInDatabase;
+    let cashBackForDuplicate;
 
     if (canBuy) {
       newItem = wishHelper.makeWish(userData);
@@ -64,7 +66,7 @@ module.exports = {
         type: newItem.newItemType,
       });
 
-      await inventoryHelper.addingNewItem({
+      newItemInDatabase = await inventoryHelper.addingNewItem({
         chatId,
         ...newItem,
       })
@@ -72,6 +74,8 @@ module.exports = {
           console.error('[ERROR] wishController getWish inventoryHelper addingNewItem:', e.message);
           ctx.throw(500);
         });
+
+      cashBackForDuplicate = itemsHelper.getCashBackForDuplicate(newItemInDatabase);
 
       new HistoryModel({
         chatId,
@@ -90,6 +94,11 @@ module.exports = {
     if (!currentBannerIsValid || canBuy) {
       userData.currentBanner = currentBanner;
       userData[price.key] -= price.value;
+
+      if (cashBackForDuplicate) {
+        userData[cashBackForDuplicate.currency] += cashBackForDuplicate.price;
+      }
+
       userData.save()
         .catch((e) => {
           console.error('[ERROR] wishController getWish UserModel userData save:', e.message);
@@ -102,6 +111,7 @@ module.exports = {
       canBuy,
       price,
       newItemData,
+      cashBackTemplate: cashBackForDuplicate.cashBackTemplate,
     });
 
     messageTemplate = minify.minifyTgBot(messageTemplate);

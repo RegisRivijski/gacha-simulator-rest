@@ -1,0 +1,15 @@
+<b>
+    <a href="tg://user?id=<%= userData.chatId; %>">
+        <%= userData.firstName; %>
+    </a>
+</b>
+
+, <%= $t('wish.dropped'); %><br>
+
+<a href="<%= newItemData?.url?.fandom ?? ''; %>"><%= '⭐️'.repeat(newItemData.rarity); %> <b><%= newItemData.name; %></b></a>, +<%= cashBackTemplate; %>
+<br>
+<br>
+<%= newItemData.description; %>
+<br>
+<br>
+🔸<i>${bannerName}</i>

@@ -2,6 +2,8 @@ const Router = require('koa-router');
 const koaBody = require('koa-body');
 
 const securityMiddlewares = require('../middlewares/security');
+const languageMiddlewares = require('../middlewares/language');
+
 const systemController = require('../controllers/systemController');
 const userController = require('../controllers/userController');
 const adminController = require('../controllers/adminController');
@@ -13,6 +15,7 @@ module.exports = {
     return new Router()
       .use(koaBody())
       .use(securityMiddlewares.ApiKeysValidator)
+      .use(languageMiddlewares.getDefaultLangCode)
 
       .get('/', systemController.about)
       .get('/ping', systemController.ping)
@@ -35,5 +38,10 @@ module.exports = {
       .get('/tg-bot/user/:chatId/primogems')
       .get('/tg-bot/user/:chatId/wish', wishController.getWish)
       .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10);
+  },
+
+  AdminRouter() {
+    return new Router()
+      .use(koaBody());
   },
 };

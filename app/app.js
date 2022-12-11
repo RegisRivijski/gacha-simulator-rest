@@ -6,10 +6,14 @@ const routes = require('./routes/index');
 const mongoose = require('./modules/mongoose');
 
 const app = new Koa();
-const Router = routes.Router();
 
+const Router = routes.Router();
 app.use(Router.routes());
 app.use(Router.allowedMethods());
+
+const AdminRouter = routes.AdminRouter();
+app.use(AdminRouter.routes());
+app.use(AdminRouter.allowedMethods());
 
 mongoose.connect();
 

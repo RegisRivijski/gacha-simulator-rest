@@ -9,4 +9,12 @@ module.exports = {
     })
       .replaceAll('<br>', '\n');
   },
+
+  minify(messageTemplate) {
+    return htmlMinify.minify(messageTemplate, {
+      collapseInlineTagWhitespace: true,
+      collapseWhitespace: true,
+      removeTagWhitespace: true,
+    });
+  },
 };

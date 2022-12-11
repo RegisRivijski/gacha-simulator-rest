@@ -5,6 +5,8 @@ module.exports = {
 
   BOT_LINK: 'https://t.me/milvachatbot',
 
+  AVAILABLE_DEFAULT_LANG_CODES: ['uk', 'ru', 'be', 'en'],
+
   PRIMOGEMS_REFERRAL_REWARD: 3200,
   PRIMOGEMS_GET_MAX: 1600,
   PRIMOGEMS_NAME: 'primogems',
@@ -28,6 +30,7 @@ module.exports = {
 
   BLOCKED_WEAPONS_OBJ_KEYS: [
     '"The Catch"',
+    'Prized Isshin Blade',
   ],
 
   STANDARD_BANNER_NAME: 'Wanderlust Invocation',
