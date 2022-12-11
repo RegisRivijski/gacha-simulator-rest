@@ -59,4 +59,13 @@ module.exports = {
     const object = keyValueArray.map((item) => this.makeObjectFromKeyValueArray(item));
     return this.assignNumbersInObjects(object);
   },
+
+  incrementNumberWithLimit(numberParam, limitParam) {
+    const number = Number(numberParam);
+    const limit = Number(limitParam);
+    if (number + 1 <= limit) {
+      return number + 1;
+    }
+    return 1;
+  },
 };

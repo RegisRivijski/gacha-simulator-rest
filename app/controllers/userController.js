@@ -73,6 +73,7 @@ module.exports = {
     ctx.assert(userData?.chatId, 404, 'User not found.');
 
     userData = documentsHelper.update(userData, fields);
+    userData.updated = Date.now();
 
     userData = await userData.save()
       .catch((e) => {
@@ -146,6 +147,7 @@ module.exports = {
 
     if (!currentBannerIsValid) {
       userData.currentBanner = currentBanner;
+      userData.updated = Date.now();
       userData.save()
         .catch((e) => {
           console.error('[ERROR] userController getProfile UserModel userData save:', e.message);

@@ -21,29 +21,27 @@ module.exports = {
     return itemsData.filter((itemData) => Number(itemData.rarity) === rarity);
   },
 
-  getCashBackForDuplicate(itemInDatabase) {
+  getCashBackForDuplicate({ rarity }) {
     let cashBackTemplate = '';
     let price = 0;
     let currency = '';
-    if (Number(itemInDatabase.count) > 1) {
-      switch (Number(itemInDatabase.rarity)) {
-        case 3:
-          cashBackTemplate = '15 ✨';
-          price = 15;
-          currency = STARDUST_NAME;
-          break;
-        case 4:
-          cashBackTemplate = '2 🌟';
-          price = 2;
-          currency = STARGLITTER_NAME;
-          break;
-        case 5:
-          cashBackTemplate = '10 🌟';
-          price = 10;
-          currency = STARGLITTER_NAME;
-          break;
-        default:
-      }
+    switch (Number(rarity)) {
+      case 3:
+        cashBackTemplate = '15 ✨';
+        price = 15;
+        currency = STARDUST_NAME;
+        break;
+      case 4:
+        cashBackTemplate = '2 🌟';
+        price = 2;
+        currency = STARGLITTER_NAME;
+        break;
+      case 5:
+        cashBackTemplate = '10 🌟';
+        price = 10;
+        currency = STARGLITTER_NAME;
+        break;
+      default:
     }
     return {
       cashBackTemplate,

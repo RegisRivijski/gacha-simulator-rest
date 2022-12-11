@@ -31,10 +31,7 @@ module.exports = {
       });
     ctx.assert(userData?.chatId, 404, 'User not found.');
 
-    const {
-      currentBannerIsValid,
-      currentBanner,
-    } = userHelper.validateCurrentBanner(userData);
+    const { currentBanner } = userHelper.validateCurrentBanner(userData);
 
     const currentBannerData = bannersHelper.getBannerData(currentBanner);
     const currentBannerType = _.result(currentBannerData, 'type');
@@ -52,18 +49,17 @@ module.exports = {
     if (canBuy) {
       const wishData = await wishHelper.makeWish({
         userData,
-        currentBanner,
+        currentBannerData,
         price,
       })
         .catch((e) => {
           console.error('[ERROR] wishController getWish wishHelper makeWish:', e.message);
           ctx.throw(500);
         });
+
       newItem = wishData.newItem;
       cashBackForDuplicate = wishData.cashBackForDuplicate;
-    }
 
-    if (!currentBannerIsValid || canBuy) {
       userData.currentBanner = currentBanner;
       userData[price.key] -= price.value;
 
@@ -71,6 +67,7 @@ module.exports = {
         userData[cashBackForDuplicate.currency] += cashBackForDuplicate.price;
       }
 
+      userData.updated = Date.now();
       userData.save()
         .catch((e) => {
           console.error('[ERROR] wishController getWish UserModel userData save:', e.message);
@@ -113,10 +110,7 @@ module.exports = {
       });
     ctx.assert(userData?.chatId, 404, 'User not found.');
 
-    const {
-      currentBannerIsValid,
-      currentBanner,
-    } = userHelper.validateCurrentBanner(userData);
+    const { currentBanner } = userHelper.validateCurrentBanner(userData);
 
     const wishesCount = 10;
     const currentBannerData = bannersHelper.getBannerData(currentBanner);
@@ -134,16 +128,14 @@ module.exports = {
     if (canBuy) {
       wishesData = await wishHelper.makeWishFewTimes({
         userData,
-        currentBanner,
+        currentBannerData,
         prices,
       })
         .catch((e) => {
           console.error('[ERROR] wishController getWishX10 wishHelper makeWishFewTimes:', e.message);
           ctx.throw(500);
         });
-    }
 
-    if (!currentBannerIsValid || canBuy) {
       userData.currentBanner = currentBanner;
       for (const wishData of wishesData) {
         const { price, cashBackForDuplicate } = wishData;
@@ -152,6 +144,7 @@ module.exports = {
           userData[cashBackForDuplicate.currency] += cashBackForDuplicate.price;
         }
       }
+      userData.updated = Date.now();
       userData.save()
         .catch((e) => {
           console.error('[ERROR] wishController getWishX10 UserModel userData save:', e.message);
