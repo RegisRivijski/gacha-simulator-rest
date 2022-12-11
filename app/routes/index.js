@@ -18,7 +18,7 @@ module.exports = {
       .get('/ping', systemController.ping)
       .get('/memory', systemController.memory)
 
-      .get('/getUsersAndGroupChats', analyticsController.getUsersAndGroupChats)
+      .get('/analytics/getUsersAndGroupChats', analyticsController.getUsersAndGroupChats)
 
       .get('/user/:chatId', userController.getUser)
       .put('/user/:chatId', userController.updateUser)
