@@ -10,22 +10,22 @@ module.exports = {
     currentBannerType,
     newItemRarity,
   }) {
-    const guaranteeLimits = staticDataHelper.getChancesBanner(currentBannerType);
+    const bannerChances = staticDataHelper.getChancesBanner(currentBannerType);
 
     let fourStar = _.result(userData, [currentBannerType, 'fourStar'], 1);
     let fiveStar = _.result(userData, [currentBannerType, 'fiveStar'], 1);
 
     switch (Number(newItemRarity)) {
       case 3:
-        fourStar = documentsHelper.incrementNumberWithLimit(fourStar, guaranteeLimits.fourStar);
-        fiveStar = documentsHelper.incrementNumberWithLimit(fiveStar, guaranteeLimits.fiveStar);
+        fourStar = documentsHelper.incrementNumberWithLimit(fourStar, bannerChances.fourStar.guarantee);
+        fiveStar = documentsHelper.incrementNumberWithLimit(fiveStar, bannerChances.fiveStar.guarantee);
         break;
       case 4:
         fourStar = 1;
-        fiveStar = documentsHelper.incrementNumberWithLimit(fiveStar, guaranteeLimits.fiveStar);
+        fiveStar = documentsHelper.incrementNumberWithLimit(fiveStar, bannerChances.fiveStar.guarantee);
         break;
       case 5:
-        fourStar = documentsHelper.incrementNumberWithLimit(fourStar, guaranteeLimits.fourStar);
+        fourStar = documentsHelper.incrementNumberWithLimit(fourStar, bannerChances.fourStar.guarantee);
         fiveStar = 1;
         break;
       default:
