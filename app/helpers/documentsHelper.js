@@ -18,12 +18,9 @@ module.exports = {
   },
 
   makeObjectFromKeyValueArray(keyValueArray, keyName = 'key', valueName = 'value') {
-    const object = {};
-    for (const item of keyValueArray) {
-      const key = _.result(item, keyName);
-      object[key] = _.result(item, valueName);
-    }
-    return object;
+    return keyValueArray.map((item) => ({
+      [_.result(item, keyName)]: _.result(item, valueName),
+    }));
   },
 
   orderArrayByValue(array, order = 'desc') {
@@ -53,11 +50,6 @@ module.exports = {
       }
     }
     return assignedObject;
-  },
-
-  assignNumbersInObjectFromKeyValueArray(keyValueArray) {
-    const object = keyValueArray.map((item) => this.makeObjectFromKeyValueArray(item));
-    return this.assignNumbersInObjects(object);
   },
 
   incrementNumberWithLimit(numberParam, limitParam) {

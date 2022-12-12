@@ -117,7 +117,8 @@ module.exports = {
     const currentBannerType = _.result(currentBannerData, 'type');
     const currentBannerPrices = bannersHelper.getBannerPrices(currentBannerType);
 
-    const prices = financialOperationsHelper.determinePriceFewTimes(userData, currentBannerPrices, wishesCount);
+    const wallet = _.result(userData, '_doc', {});
+    const prices = financialOperationsHelper.determinePriceFewTimes(wallet, currentBannerPrices, wishesCount);
     const canBuy = Boolean(prices.length >= wishesCount);
 
     const { languageCode } = userData;
@@ -151,12 +152,16 @@ module.exports = {
         });
     }
 
+    const templatePrices = documentsHelper.assignNumbersInObjects(
+      documentsHelper.makeObjectFromKeyValueArray(prices),
+    );
+
     let messageTemplate = ejs.render(templates.tgBot.wishX10, {
       $t,
       userData,
       canBuy,
       wishesData,
-      prices: documentsHelper.assignNumbersInObjectFromKeyValueArray(prices),
+      templatePrices,
     });
 
     messageTemplate = minify.minifyTgBot(messageTemplate);

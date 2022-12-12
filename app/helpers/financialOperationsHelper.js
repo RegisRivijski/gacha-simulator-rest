@@ -25,13 +25,15 @@ module.exports = {
    * @param count  10
    */
   determinePriceFewTimes(wallet, cost, count) {
-    const walletCloned = _.clone(wallet);
+    const walletCloned = { ...wallet };
     const prices = [];
     for (let i = 0; i < count; i += 1) {
       const price = this.determinePrice(walletCloned, cost);
       if (!_.isEmpty(price)) {
         walletCloned[price.key] -= price.value;
         prices.push(price);
+      } else {
+        break;
       }
     }
     return prices;
