@@ -328,9 +328,10 @@ module.exports = {
 
     if (primogemsAdded) {
       userData.primogems += primogemsAdded;
-      userData.save()
+      await userData.save()
         .catch((e) => {
           console.error('[ERROR] userController getTgBotPrimogems UserModel userData save:', e.message);
+          ctx.throw(500);
         });
     }
 
