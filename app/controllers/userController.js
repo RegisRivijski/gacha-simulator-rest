@@ -309,4 +309,10 @@ module.exports = {
     ctx.status = 200;
     await next();
   },
+
+  async getTgBotPrimogems(ctx, next) {
+    ctx.body = 'OK';
+    ctx.status = 200;
+    await next();
+  },
 };

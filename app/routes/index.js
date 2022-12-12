@@ -35,7 +35,7 @@ module.exports = {
       .get('/tg-bot/user/:chatId/history', userController.getTgBotHistory)
       .get('/tg-bot/user/:chatId/history/:page', userController.getTgBotHistory)
       .get('/tg-bot/user/:chatId/inventory', userController.getTgBotInventory)
-      .get('/tg-bot/user/:chatId/primogems')
+      .get('/tg-bot/user/:chatId/primogems', userController.getTgBotPrimogems)
       .get('/tg-bot/user/:chatId/wish', wishController.getWish)
       .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10);
   },

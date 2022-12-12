@@ -2,9 +2,11 @@ const _ = require('lodash');
 
 const {
   DEFAULT_BANNER_FOR_USERS,
+  PRIMOGEMS_GET_MAX,
 } = require('../constants/index');
 
 const bannersHelper = require('./bannersHelper');
+const timeHelper = require('./timeHelper');
 
 const bannersKeys = bannersHelper.getActiveBanners()
   .map(({ objKey }) => objKey);
@@ -32,5 +34,10 @@ module.exports = {
       default:
         return false;
     }
+  },
+
+  getPrimogems({ primogemsAdded }) {
+    const primogems = timeHelper.howManySecondsPast(primogemsAdded);
+    return primogems > PRIMOGEMS_GET_MAX ? PRIMOGEMS_GET_MAX : primogems;
   },
 };
