@@ -1,0 +1,36 @@
+<b>
+    <a href="tg://user?id=<%= userData.chatId; %>">
+        <%= userData.firstName; %>
+    </a>
+</b>
+
+, <%= $t('wish10.dropped'); %><br>
+
+<% for (const wishData of wishesData) { %>
+    <a href="<%= wishData.newItem.newItemData?.url?.fandom ?? ''; %>">
+        <%= '⭐️'.repeat(wishData.newItem.newItemData.rarity); %> <b><%= wishData.newItem.newItemData.name; %></b>
+    </a>
+
+    <% if (wishData.cashBackForDuplicate.cashBackTemplate) { %>
+        , +<%= wishData.cashBackForDuplicate.cashBackTemplate; %>
+    <% } %>
+    <br>
+<% } %>
+
+<br>
+
+🔸<i>${bannerName}</i>
+
+<br>
+
+<% if (templatePrices.primogems) { %>
+    -<%= templatePrices.primogems; %> ✦ <%= $t('currency.primogems'); %>
+    <br>
+<% } %>
+<% if (templatePrices.stardust) { %>
+    -<%= templatePrices.stardust; %> ✦ <%= $t('currency.stardust'); %>
+    <br>
+<% } %>
+<% if (templatePrices.starglitter) { %>
+    -<%= templatePrices.starglitter; %> ✦ <%= $t('currency.starglitter'); %>
+<% } %>
