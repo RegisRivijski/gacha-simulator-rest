@@ -41,6 +41,31 @@ module.exports = {
     return _.result(bannersPrices, type, {});
   },
 
+  getBannerName(userData) {
+    const { languageCode, currentBanner } = userData;
+    const currentBannerData = this.getBannerData(currentBanner);
+    const bannerNames = _.result(currentBannerData, 'translates', {});
+    switch (languageCode) {
+      case 'en':
+      case 'uk':
+        return _.result(bannerNames, 'en', '');
+      case 'id':
+        return _.result(bannerNames, 'id', '');
+      case 'ko':
+        return _.result(bannerNames, 'ko', '');
+      case 'be':
+      case 'ru':
+        return _.result(bannerNames, 'ru', '');
+      case 'zh-hans':
+        return _.result(bannerNames, 'zh-hans', '');
+      default:
+        if (Object.keys(bannerNames).includes(languageCode)) {
+          return _.result(bannerNames, languageCode, '');
+        }
+        return _.result(bannerNames, 'en', '');
+    }
+  },
+
   calculateDropChances({ type = '', fourStar = 0, fiveStar = 0 }) {
     const bannerChances = staticDataHelper.getChancesBanner(type);
 

@@ -81,6 +81,7 @@ module.exports = {
       price,
       newItemData: newItem.newItemData,
       cashBackTemplate: cashBackForDuplicate.cashBackTemplate,
+      bannerName: bannersHelper.getBannerName(userData),
     });
 
     messageTemplate = minify.minifyTgBot(messageTemplate);
@@ -162,6 +163,7 @@ module.exports = {
       canBuy,
       wishesData,
       templatePrices,
+      bannerName: bannersHelper.getBannerName(userData),
     });
 
     messageTemplate = minify.minifyTgBot(messageTemplate);
