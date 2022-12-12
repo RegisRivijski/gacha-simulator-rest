@@ -73,10 +73,4 @@ module.exports = {
         }).save();
       });
   },
-
-  addingManyNewItems({ chatId, newItems }) {
-    return Promise.all(
-      newItems.map((newItem) => this.addingNewItem({ chatId, ...newItem })),
-    );
-  },
 };

@@ -65,7 +65,7 @@ module.exports = {
     new HistoryModel({
       chatId,
       action: USERS_HISTORY_ACTION_WISH,
-      banner: currentBannerData.objKey,
+      banner: currentBannerData.type,
       type: newItem.newItemType,
       objKey: newItem.newItemObjKey,
       currency: price.key,
