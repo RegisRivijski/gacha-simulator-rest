@@ -339,7 +339,6 @@ module.exports = {
       messageTemplate,
     };
     ctx.status = 200;
-    ctx.status = 200;
     await next();
   },
 };
