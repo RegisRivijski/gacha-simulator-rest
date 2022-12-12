@@ -5,7 +5,6 @@ const {
   UNIVERSAL_BANNER_CATEGORY_NAME,
 } = require('../constants/index');
 
-const documentsHelper = require('./documentsHelper');
 const staticDataHelper = require('./staticDataHelper');
 
 const banners = staticDataHelper.getBanners();
@@ -40,11 +39,6 @@ module.exports = {
 
   getBannerPrices(type) {
     return _.result(bannersPrices, type, {});
-  },
-
-  getBannerPricesForFewItems(type, bannersCount) {
-    const bannerPrices = this.getBannerPrices(type);
-    return documentsHelper.multiplyAllNumbersInObject(bannerPrices, bannersCount);
   },
 
   calculateDropChances({ type = '', fourStar = 0, fiveStar = 0 }) {

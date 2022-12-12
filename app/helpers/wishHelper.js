@@ -47,7 +47,7 @@ module.exports = {
     const newItemInDatabase = await inventoryHelper.addingNewItem({ chatId, ...newItem });
 
     const cashBackForDuplicate = newItemInDatabase.count > 1 || currentBannerType === TYPE_WEAPONS_NAME
-      ? itemsHelper.getCashBackForDuplicate(newItemInDatabase)
+      ? itemsHelper.getCashBackForDuplicate(newItem.newItemData)
       : { cashBackTemplate: '', currency: '', price: 0 };
 
     const guaranteeStarChances = guaranteeSystemCounter.getNewValuesForGuaranteeSystem({

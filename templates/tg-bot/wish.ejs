@@ -6,10 +6,31 @@
 
 , <%= $t('wish.dropped'); %><br>
 
-<a href="<%= newItemData?.url?.fandom ?? ''; %>"><%= '⭐️'.repeat(newItemData.rarity); %> <b><%= newItemData.name; %></b></a>, +<%= cashBackTemplate; %>
+<a href="<%= newItemData?.url?.fandom ?? ''; %>">
+    <%= '⭐️'.repeat(newItemData.rarity); %> <b><%= newItemData.name; %></b>
+</a>
+
+<% if (cashBackTemplate) { %>
+    , +<%= cashBackTemplate; %>
+<% } %>
+
 <br>
 <br>
+
 <%= newItemData.description; %>
+
 <br>
 <br>
+
 🔸<i>${bannerName}</i>
+
+<br>
+<br>
+
+<% if (price.key === 'primogems') { %>
+    -<%= price.value; %> ✦ <%= $t('currency.primogems'); %>
+<% } else if (price.key === 'stardust') { %>
+    -<%= price.value; %> ✦ <%= $t('currency.stardust'); %>
+<% } else if (price.key === 'starglitter') { %>
+    -<%= price.value; %> ✦ <%= $t('currency.starglitter'); %>
+<% } %>
