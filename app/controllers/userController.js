@@ -311,7 +311,34 @@ module.exports = {
   },
 
   async getTgBotPrimogems(ctx, next) {
-    ctx.body = 'OK';
+    const { chatId } = ctx.request.params;
+    ctx.assert(chatId, 400, 'chatId is required');
+
+    const userData = await UsersModel.findOne({ chatId })
+      .catch((e) => {
+        console.error('[ERROR] userController getTgBotPrimogems UsersModel findOne:', e.message);
+        ctx.throw(500);
+      });
+    ctx.assert(userData?.chatId, 404, 'User not found.');
+
+    const { languageCode } = userData;
+    const $t = translatesHelper.getTranslate(languageCode);
+
+    const primogemsAdded = userHelper.getPrimogems(userData);
+
+    let messageTemplate = ejs.render(templates.tgBot.primogems, {
+      $t,
+      userData,
+      primogemsAdded,
+    });
+
+    messageTemplate = minify.minifyTgBot(messageTemplate);
+
+    ctx.body = {
+      userData,
+      messageTemplate,
+    };
+    ctx.status = 200;
     ctx.status = 200;
     await next();
   },
