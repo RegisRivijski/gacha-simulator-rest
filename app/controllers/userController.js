@@ -326,6 +326,14 @@ module.exports = {
 
     const primogemsAdded = userHelper.getPrimogems(userData);
 
+    if (primogemsAdded) {
+      userData.primogems += primogemsAdded;
+      userData.save()
+        .catch((e) => {
+          console.error('[ERROR] userController getTgBotPrimogems UserModel userData save:', e.message);
+        });
+    }
+
     let messageTemplate = ejs.render(templates.tgBot.primogems, {
       $t,
       userData,
