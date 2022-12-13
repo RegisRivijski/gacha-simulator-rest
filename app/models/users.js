@@ -5,7 +5,7 @@ import {
   START_PRIMOGEMS_COUNT,
 } from '../constants/index.js';
 
-export default mongoose.model('users', new mongoose.Schema({
+const usersSchema = new mongoose.Schema({
   chatId: {
     type: Number,
     default: 0,
@@ -112,4 +112,6 @@ export default mongoose.model('users', new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-}));
+});
+
+export default mongoose.model('users', usersSchema);
