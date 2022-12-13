@@ -1,13 +1,11 @@
-const config = require('config');
+import config from '../../config/default.js';
 
-module.exports = {
-  async ApiKeysValidator(ctx, next) {
-    const apiKey = ctx.request.query.apiKey || ctx.headers['x-secure-hash'];
-    const isValid = Boolean(apiKey === config.server.apiKey);
-    if (isValid) {
-      await next();
-    } else {
-      ctx.throw(403);
-    }
-  },
-};
+export async function ApiKeysValidator(ctx, next) {
+  const apiKey = ctx.request.query.apiKey || ctx.headers['x-secure-hash'];
+  const isValid = Boolean(apiKey === config.server.apiKey);
+  if (isValid) {
+    await next();
+  } else {
+    ctx.throw(403);
+  }
+}

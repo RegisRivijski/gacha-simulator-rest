@@ -1,102 +1,100 @@
-const _ = require('lodash');
+import _ from 'lodash';
 
-const {
+import {
   EVENT_BANNER_CATEGORY_NAME,
   UNIVERSAL_BANNER_CATEGORY_NAME,
-} = require('../constants/index');
+} from '../constants/index.js';
 
-const staticDataHelper = require('./staticDataHelper');
+import * as staticDataHelper from './staticDataHelper.js';
 
 const banners = staticDataHelper.getBanners();
 const bannersPrices = staticDataHelper.getFatesPrices();
 const bannersArray = Object.values(banners);
 
-module.exports = {
-  getActiveBanners() {
-    return bannersArray.filter((banner) => {
-      const { isActive } = banner;
-      return isActive;
-    });
-  },
+export function getActiveBanners() {
+  return bannersArray.filter((banner) => {
+    const { isActive } = banner;
+    return isActive;
+  });
+}
 
-  getActiveEventBanners() {
-    return bannersArray.filter((banner) => {
-      const { isActive, category } = banner;
-      return isActive && category === EVENT_BANNER_CATEGORY_NAME;
-    });
-  },
+export function getActiveEventBanners() {
+  return bannersArray.filter((banner) => {
+    const { isActive, category } = banner;
+    return isActive && category === EVENT_BANNER_CATEGORY_NAME;
+  });
+}
 
-  getActiveUniversalBanners() {
-    return bannersArray.filter((banner) => {
-      const { isActive, category } = banner;
-      return isActive && category === UNIVERSAL_BANNER_CATEGORY_NAME;
-    });
-  },
+export function getActiveUniversalBanners() {
+  return bannersArray.filter((banner) => {
+    const { isActive, category } = banner;
+    return isActive && category === UNIVERSAL_BANNER_CATEGORY_NAME;
+  });
+}
 
-  getBannerData(objKey) {
-    return _.result(banners, objKey, {});
-  },
+export function getBannerData(objKey) {
+  return _.result(banners, objKey, {});
+}
 
-  getBannerPrices(type) {
-    return _.result(bannersPrices, type, {});
-  },
+export function getBannerPrices(type) {
+  return _.result(bannersPrices, type, {});
+}
 
-  getBannerName(userData) {
-    const { languageCode, currentBanner } = userData;
-    const currentBannerData = this.getBannerData(currentBanner);
-    const bannerNames = _.result(currentBannerData, 'translates', {});
-    switch (languageCode) {
-      case 'en':
-      case 'uk':
-        return _.result(bannerNames, 'en', '');
-      case 'id':
-        return _.result(bannerNames, 'id', '');
-      case 'ko':
-        return _.result(bannerNames, 'ko', '');
-      case 'be':
-      case 'ru':
-        return _.result(bannerNames, 'ru', '');
-      case 'zh-hans':
-        return _.result(bannerNames, 'zh-hans', '');
-      default:
-        if (Object.keys(bannerNames).includes(languageCode)) {
-          return _.result(bannerNames, languageCode, '');
-        }
-        return _.result(bannerNames, 'en', '');
-    }
-  },
+export function getBannerName(userData) {
+  const { languageCode, currentBanner } = userData;
+  const currentBannerData = this.getBannerData(currentBanner);
+  const bannerNames = _.result(currentBannerData, 'translates', {});
+  switch (languageCode) {
+    case 'en':
+    case 'uk':
+      return _.result(bannerNames, 'en', '');
+    case 'id':
+      return _.result(bannerNames, 'id', '');
+    case 'ko':
+      return _.result(bannerNames, 'ko', '');
+    case 'be':
+    case 'ru':
+      return _.result(bannerNames, 'ru', '');
+    case 'zh-hans':
+      return _.result(bannerNames, 'zh-hans', '');
+    default:
+      if (Object.keys(bannerNames).includes(languageCode)) {
+        return _.result(bannerNames, languageCode, '');
+      }
+      return _.result(bannerNames, 'en', '');
+  }
+}
 
-  calculateDropChances({ type = '', fourStar = 0, fiveStar = 0 }) {
-    const bannerChances = staticDataHelper.getChancesBanner(type);
+export function calculateDropChances({ type = '', fourStar = 0, fiveStar = 0 }) {
+  const bannerChances = staticDataHelper.getChancesBanner(type);
 
-    const fiveStarIsDefault = fiveStar < Number(bannerChances.fiveStar.defaultTo);
-    const fourStarIsDefault = fourStar < Number(bannerChances.fourStar.defaultTo);
+  const fiveStarIsDefault = fiveStar < Number(bannerChances.fiveStar.defaultTo);
+  const fourStarIsDefault = fourStar < Number(bannerChances.fourStar.defaultTo);
 
-    const fiveStarChance = fiveStarIsDefault
-      ? bannerChances.fiveStar.default
-      : bannerChances.fiveStar[String(fiveStar)];
+  const fiveStarChance = fiveStarIsDefault
+    ? bannerChances.fiveStar.default
+    : bannerChances.fiveStar[String(fiveStar)];
 
-    const fourStarChance = fourStarIsDefault
-      ? bannerChances.fourStar.default
-      : bannerChances.fourStar[String(fourStar)];
+  const fourStarChance = fourStarIsDefault
+    ? bannerChances.fourStar.default
+    : bannerChances.fourStar[String(fourStar)];
 
-    return [
-      {
-        item: 5,
-        chance: (fourStarChance !== 1000) ? fiveStarChance : 0,
-        toGuarantee: bannerChances.fiveStar.guarantee - fiveStar,
-      },
-      {
-        item: 4,
-        chance: (fiveStarChance !== 1000) ? fourStarChance : 0,
-        toGuarantee: bannerChances.fourStar.guarantee - fourStar,
-      },
-      {
-        item: 3,
-        chance: (fiveStarChance !== 1000 && fourStarChance !== 1000)
-          ? 1000 - fourStarChance - fiveStarChance
-          : 0,
-      },
-    ];
-  },
-};
+  return [
+    {
+      item: 5,
+      chance: (fourStarChance !== 1000) ? fiveStarChance : 0,
+      toGuarantee: bannerChances.fiveStar.guarantee - fiveStar,
+    },
+    {
+      item: 4,
+      chance: (fiveStarChance !== 1000) ? fourStarChance : 0,
+      toGuarantee: bannerChances.fourStar.guarantee - fourStar,
+    },
+    {
+      item: 3,
+      chance: (fiveStarChance !== 1000 && fourStarChance !== 1000)
+        ? 1000 - fourStarChance - fiveStarChance
+        : 0,
+    },
+  ];
+}

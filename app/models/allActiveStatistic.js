@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const allActiveStatistic = new mongoose.Schema({
   created: {
@@ -74,4 +74,5 @@ const allActiveStatistic = new mongoose.Schema({
     default: {},
   },
 });
-module.exports = mongoose.model('allstatistic', allActiveStatistic);
+
+export default mongoose.model('allstatistic', allActiveStatistic);

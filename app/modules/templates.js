@@ -1,6 +1,6 @@
-const fs = require('fs');
+import fs from 'fs';
 
-module.exports = {
+export default {
   tgBot: {
     history: fs.readFileSync('./templates/tg-bot/history.ejs', 'utf-8'),
     inventory: fs.readFileSync('./templates/tg-bot/inventory.ejs', 'utf-8'),

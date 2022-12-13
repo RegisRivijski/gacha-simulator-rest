@@ -1,5 +1,7 @@
-const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
+import mongoose from 'mongoose';
+import mongooseSequence from 'mongoose-sequence';
+
+const AutoIncrement = mongooseSequence(mongoose);
 
 const historySchema = new mongoose.Schema({
   historyId: {
@@ -36,4 +38,4 @@ historySchema.plugin(AutoIncrement, {
   id: 'historyId_seq',
   inc_field: 'historyId',
 });
-module.exports = mongoose.model('histories', historySchema);
+export default mongoose.model('histories', historySchema);

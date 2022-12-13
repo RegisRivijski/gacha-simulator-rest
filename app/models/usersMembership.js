@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const usersMembershipSchema = new mongoose.Schema({
   chatId: {
@@ -16,4 +16,4 @@ const usersMembershipSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('usersmembership', usersMembershipSchema);
+export default mongoose.model('usersmembership', usersMembershipSchema);

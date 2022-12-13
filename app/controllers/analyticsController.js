@@ -1,28 +1,25 @@
-const _ = require('lodash');
+import _ from 'lodash';
 
-const GroupChats = require('../models/groupChats');
-const UsersModel = require('../models/users');
+import GroupChats from '../models/groupChats.js';
+import UsersModel from '../models/users.js';
 
-module.exports = {
+export async function getUsersAndGroupChats(ctx, next) {
+  const users = await UsersModel.find({})
+    .catch((e) => {
+      console.error('[ERROR] analyticsController getUsersAndGroupChats UsersModel find:', e.message);
+      ctx.throw(500);
+    });
 
-  async getUsersAndGroupChats(ctx, next) {
-    const users = await UsersModel.find({})
-      .catch((e) => {
-        console.error('[ERROR] analyticsController getUsersAndGroupChats UsersModel find:', e.message);
-        ctx.throw(500);
-      });
+  const groups = await GroupChats.find({})
+    .catch((e) => {
+      console.error('[ERROR] analyticsController getUsersAndGroupChats GroupChats find:', e.message);
+      ctx.throw(500);
+    });
 
-    const groups = await GroupChats.find({})
-      .catch((e) => {
-        console.error('[ERROR] analyticsController getUsersAndGroupChats GroupChats find:', e.message);
-        ctx.throw(500);
-      });
-
-    ctx.body = [
-      ..._.map(users, ({ chatId }) => chatId),
-      ..._.map(groups, ({ groupChatId }) => groupChatId),
-    ];
-    ctx.status = 200;
-    await next();
-  },
-};
+  ctx.body = [
+    ..._.map(users, ({ chatId }) => chatId),
+    ..._.map(groups, ({ groupChatId }) => groupChatId),
+  ];
+  ctx.status = 200;
+  await next();
+}

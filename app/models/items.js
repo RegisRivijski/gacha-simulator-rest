@@ -1,5 +1,7 @@
-const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
+import mongoose from 'mongoose';
+import mongooseSequence from 'mongoose-sequence';
+
+const AutoIncrement = mongooseSequence(mongoose);
 
 const itemsSchema = new mongoose.Schema({
   itemId: {
@@ -34,4 +36,4 @@ itemsSchema.plugin(AutoIncrement, {
   id: 'itemId_seq',
   inc_field: 'itemId',
 });
-module.exports = mongoose.model('items', itemsSchema);
+export default mongoose.model('items', itemsSchema);

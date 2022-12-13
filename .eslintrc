@@ -1,6 +1,5 @@
 {
   "env": {
-    "commonjs": true,
     "es6": true,
     "node": true,
     "jest": true
@@ -13,8 +12,16 @@
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "requireConfigFile": false,
-    "ecmaVersion": 12
+    "ecmaVersion": 12,
+    "babelOptions": {
+      "plugins": [
+        "@babel/plugin-syntax-import-assertions"
+      ]
+    }
   },
+  "plugins": [
+    "import"
+  ],
   "rules": {
     "max-len": [
       "error",
@@ -32,11 +39,13 @@
         ]
       }
     ],
-    "no-restricted-syntax": "off",
-    "no-case-declarations": "off",
+    "import/extensions": "off",
+    "import/no-unresolved": "off",
+    "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": "off",
     "linebreak-style": "off",
-    "import/no-unresolved": "off",
+    "no-restricted-syntax": "off",
+    "no-case-declarations": "off",
     "object-curly-newline": "off"
   }
 }

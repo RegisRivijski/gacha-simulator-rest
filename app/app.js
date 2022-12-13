@@ -1,28 +1,28 @@
-const Koa = require('koa');
-const http = require('http');
-const config = require('config');
-const routes = require('./routes/index');
+import Koa from 'koa';
+import http from 'http';
+import config from '../config/default.js';
 
-const mongoose = require('./modules/mongoose');
+import { router, adminRouter } from './routes/index.js';
+import mongooseConnector from './modules/mongoose.js';
 
-const app = new Koa();
+export default function main() {
+  const app = new Koa();
 
-const Router = routes.Router();
-app.use(Router.routes());
-app.use(Router.allowedMethods());
+  app.use(router.routes());
+  app.use(router.allowedMethods());
 
-const AdminRouter = routes.AdminRouter();
-app.use(AdminRouter.routes());
-app.use(AdminRouter.allowedMethods());
+  app.use(adminRouter.routes());
+  app.use(adminRouter.allowedMethods());
 
-mongoose.connect();
+  mongooseConnector();
 
-const server = http.createServer(app.callback());
+  const server = http.createServer(app.callback());
 
-server.listen(config.server.port, async () => {
-  console.table({
-    Application: config.application.name,
-    Version: config.application.version,
-    Port: config.server.port,
+  server.listen(config.server.port, async () => {
+    console.table({
+      Application: config.application.name,
+      Version: config.application.version,
+      Port: config.server.port,
+    });
   });
-});
+}

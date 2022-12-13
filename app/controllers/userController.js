@@ -1,22 +1,7 @@
-const _ = require('lodash');
-const ejs = require('ejs');
+import _ from 'lodash';
+import ejs from 'ejs';
 
-const UsersModel = require('../models/users');
-const HistoryModel = require('../models/histories');
-const ItemsModel = require('../models/items');
-
-const documentsHelper = require('../helpers/documentsHelper');
-const translatesHelper = require('../helpers/translatesHelper');
-const bannersHelper = require('../helpers/bannersHelper');
-const itemsHelper = require('../helpers/itemsHelper');
-const userHelper = require('../helpers/usersHelper');
-const historyHelper = require('../helpers/historyHelper');
-const inventoryHelper = require('../helpers/inventoryHelper');
-
-const templates = require('../modules/templates');
-const minify = require('../modules/minify');
-
-const {
+import {
   STANDARD_BANNER_TYPE_NAME,
   CHARACTERS_BANNER_TYPE_NAME,
   WEAPONS_BANNER_TYPE_NAME,
@@ -26,328 +11,310 @@ const {
   USERS_HISTORY_ACTION_WISH,
   USERS_HISTORY_ACTION_PRIMOGEMS,
   USERS_HISTORY_LOGS_PER_PAGE,
-} = require('../constants/index');
+} from '../constants/index.js';
 
-module.exports = {
+import UsersModel from '../models/users.js';
+import HistoryModel from '../models/histories.js';
+import ItemsModel from '../models/items.js';
 
-  /**
-   *
-   * @param ctx
-   * @param next
-   * @return {Promise<void>}
-   */
-  async getUser(ctx, next) {
-    const { chatId } = ctx.request.params;
-    ctx.assert(chatId, 400, 'chatId is required');
+import * as documentsHelper from '../helpers/documentsHelper.js';
+import * as translatesHelper from '../helpers/translatesHelper.js';
+import * as bannersHelper from '../helpers/bannersHelper.js';
+import * as itemsHelper from '../helpers/itemsHelper.js';
+import * as userHelper from '../helpers/usersHelper.js';
+import * as historyHelper from '../helpers/historyHelper.js';
+import * as inventoryHelper from '../helpers/inventoryHelper.js';
 
-    const userData = await UsersModel.findOne({ chatId })
-      .catch((e) => {
-        console.error('[ERROR] userController getUser UsersModel findOne:', e.message);
-        ctx.throw(500);
-      });
-    ctx.assert(userData?.chatId, 404, 'User not found.');
+import templates from '../modules/templates.js';
+import * as minify from '../modules/minify.js';
 
-    ctx.body = userData;
-    ctx.status = 200;
-    await next();
-  },
+export async function getUser(ctx, next) {
+  const { chatId } = ctx.request.params;
+  ctx.assert(chatId, 400, 'chatId is required');
 
-  /**
-   *
-   * @param ctx
-   * @param next
-   * @return {Promise<void>}
-   */
-  async updateUser(ctx, next) {
-    const { chatId } = ctx.request.params;
-    ctx.assert(chatId, 400, 'chatId is required');
+  const userData = await UsersModel.findOne({ chatId })
+    .catch((e) => {
+      console.error('[ERROR] userController getUser UsersModel findOne:', e.message);
+      ctx.throw(500);
+    });
+  ctx.assert(userData?.chatId, 404, 'User not found.');
 
-    const { fields } = ctx.body;
-    ctx.assert(fields, 400, 'fields are required');
+  ctx.body = userData;
+  ctx.status = 200;
+  await next();
+}
 
-    let userData = await UsersModel.findOne({ chatId })
-      .catch((e) => {
-        console.error('[ERROR] userController changeUser UsersModel findOne:', e.message);
-        ctx.throw(500);
-      });
-    ctx.assert(userData?.chatId, 404, 'User not found.');
+export async function updateUser(ctx, next) {
+  const { chatId } = ctx.request.params;
+  ctx.assert(chatId, 400, 'chatId is required');
 
-    userData = documentsHelper.update(userData, fields);
+  const { fields } = ctx.body;
+  ctx.assert(fields, 400, 'fields are required');
+
+  let userData = await UsersModel.findOne({ chatId })
+    .catch((e) => {
+      console.error('[ERROR] userController changeUser UsersModel findOne:', e.message);
+      ctx.throw(500);
+    });
+  ctx.assert(userData?.chatId, 404, 'User not found.');
+
+  userData = documentsHelper.update(userData, fields);
+  userData.updated = Date.now();
+
+  userData = await userData.save()
+    .catch((e) => {
+      console.error('[ERROR] userController changeUser UsersModel userData save:', e.message);
+      ctx.throw(500);
+    });
+
+  ctx.body = userData;
+  ctx.status = 200;
+  await next();
+}
+
+export async function addUser(ctx, next) {
+  const { chatId } = ctx.request.params;
+  ctx.assert(chatId, 400, 'chatId is required');
+
+  let userData = await UsersModel.findOne({ chatId })
+    .catch((e) => {
+      console.error('[ERROR] userController getUser UsersModel findOne:', e.message);
+      ctx.throw(500);
+    });
+  ctx.assert(!userData?.chatId, 400, 'User is already created.');
+
+  const {
+    firstName,
+    lastName,
+    username,
+    languageCode,
+  } = ctx.request.body;
+
+  userData = new UsersModel({
+    chatId,
+    firstName,
+    lastName: lastName || '',
+    username: username || '',
+    languageCode: languageCode || '',
+  });
+
+  userData = await userData.save()
+    .catch((e) => {
+      console.error('[ERROR] userController addUser UsersModel userData save:', e.message);
+      ctx.throw(500);
+    });
+
+  ctx.body = userData;
+  ctx.status = 200;
+  await next();
+}
+
+export async function getTgBotProfile(ctx, next) {
+  const { chatId } = ctx.request.params;
+  ctx.assert(chatId, 400, 'chatId is required');
+
+  const userData = await UsersModel.findOne({ chatId })
+    .catch((e) => {
+      console.error('[ERROR] userController getProfile UsersModel findOne:', e.message);
+      ctx.throw(500);
+    });
+  ctx.assert(userData?.chatId, 404, 'User not found.');
+
+  const {
+    currentBannerIsValid,
+    currentBanner,
+  } = userHelper.validateCurrentBanner(userData);
+
+  if (!currentBannerIsValid) {
+    userData.currentBanner = currentBanner;
     userData.updated = Date.now();
-
-    userData = await userData.save()
+    userData.save()
       .catch((e) => {
-        console.error('[ERROR] userController changeUser UsersModel userData save:', e.message);
-        ctx.throw(500);
+        console.error('[ERROR] userController getProfile UserModel userData save:', e.message);
       });
+  }
 
-    ctx.body = userData;
-    ctx.status = 200;
-    await next();
-  },
+  const { languageCode } = userData;
+  const $t = translatesHelper.getTranslate(languageCode);
 
-  async addUser(ctx, next) {
-    const { chatId } = ctx.request.params;
-    ctx.assert(chatId, 400, 'chatId is required');
+  const activeEventBanners = bannersHelper.getActiveEventBanners();
+  const activeUniversalBanners = bannersHelper.getActiveUniversalBanners();
 
-    let userData = await UsersModel.findOne({ chatId })
+  const currentBannerData = bannersHelper.getBannerData(currentBanner);
+  const currentBannerChances = bannersHelper.calculateDropChances({
+    type: currentBannerData.type,
+    fourStar: _.result(userData, [currentBannerData.type, 'fourStar'], 0),
+    fiveStar: _.result(userData, [currentBannerData.type, 'fiveStar'], 0),
+  });
+
+  let messageTemplate = ejs.render(templates.tgBot.profile, {
+    _,
+    $t,
+    itemsHelper,
+    userData,
+    activeEventBanners,
+    activeUniversalBanners,
+    currentBannerData,
+    currentBannerChances,
+    STANDARD_BANNER_TYPE_NAME,
+    CHARACTERS_BANNER_TYPE_NAME,
+    WEAPONS_BANNER_TYPE_NAME,
+    EVENT_BANNER_CATEGORY_NAME,
+    TYPE_CHARACTERS_NAME,
+    TYPE_WEAPONS_NAME,
+  });
+
+  messageTemplate = minify.minifyTgBot(messageTemplate);
+
+  ctx.body = {
+    userData,
+    messageTemplate,
+  };
+  ctx.status = 200;
+  await next();
+}
+
+export async function getTgBotHistory(ctx, next) {
+  const {
+    chatId,
+  } = ctx.request.params;
+  let {
+    page = 0,
+  } = ctx.request.params;
+  ctx.assert(chatId, 400, 'chatId is required');
+  page = Number(page);
+
+  const userData = await UsersModel.findOne({ chatId })
+    .catch((e) => {
+      console.error('[ERROR] userController getHistory UsersModel findOne:', e.message);
+      ctx.throw(500);
+    });
+  ctx.assert(userData?.chatId, 404, 'User not found.');
+
+  const { languageCode } = userData;
+  const $t = translatesHelper.getTranslate(languageCode);
+
+  const [
+    historyData,
+    historyLogsCount,
+  ] = await Promise.all([
+    // historyData
+    HistoryModel.find({ chatId }, null, {
+      skip: page * USERS_HISTORY_LOGS_PER_PAGE,
+      limit: USERS_HISTORY_LOGS_PER_PAGE,
+      sort: {
+        created: -1,
+      },
+    })
+      .then((data) => historyHelper.addingDataToLogsForTemplate(data, languageCode))
       .catch((e) => {
-        console.error('[ERROR] userController getUser UsersModel findOne:', e.message);
+        console.error('[ERROR] userController getHistory HistoryModel find:', e.message);
         ctx.throw(500);
-      });
-    ctx.assert(!userData?.chatId, 400, 'User is already created.');
+      }),
+    // historyLogsCount
+    HistoryModel.count({ chatId })
+      .catch((e) => {
+        console.error('[ERROR] userController getHistory HistoryModel count:', e.message);
+        return 0;
+      }),
+  ]);
 
-    const {
-      firstName,
-      lastName,
-      username,
-      languageCode,
-    } = ctx.request.body;
+  const pagesCount = Math.ceil(historyLogsCount / USERS_HISTORY_LOGS_PER_PAGE);
 
-    userData = new UsersModel({
-      chatId,
-      firstName,
-      lastName: lastName || '',
-      username: username || '',
-      languageCode: languageCode || '',
+  let messageTemplate = ejs.render(templates.tgBot.history, {
+    $t,
+    userData,
+    historyData,
+    page,
+    pagesCount,
+    USERS_HISTORY_ACTION_WISH,
+    USERS_HISTORY_ACTION_PRIMOGEMS,
+  });
+
+  messageTemplate = minify.minifyTgBot(messageTemplate);
+
+  ctx.body = {
+    userData,
+    messageTemplate,
+  };
+  ctx.status = 200;
+  await next();
+}
+
+export async function getTgBotInventory(ctx, next) {
+  const { chatId } = ctx.request.params;
+  ctx.assert(chatId, 400, 'chatId is required');
+
+  const userData = await UsersModel.findOne({ chatId })
+    .catch((e) => {
+      console.error('[ERROR] userController getInventory UsersModel findOne:', e.message);
+      ctx.throw(500);
+    });
+  ctx.assert(userData?.chatId, 404, 'User not found.');
+
+  const { languageCode } = userData;
+  const $t = translatesHelper.getTranslate(languageCode);
+
+  const inventoryData = await ItemsModel.find({ chatId })
+    .then((itemsData) => inventoryHelper.makingInventoryTree(itemsData, languageCode))
+    .catch((e) => {
+      console.error('[ERROR] userController getInventory ItemsModel find:', e.message);
+      ctx.throw(500);
     });
 
-    userData = await userData.save()
-      .catch((e) => {
-        console.error('[ERROR] userController addUser UsersModel userData save:', e.message);
-        ctx.throw(500);
-      });
+  let messageTemplate = ejs.render(templates.tgBot.inventory, {
+    $t,
+    userData,
+    inventoryData,
+  });
 
-    ctx.body = userData;
-    ctx.status = 200;
-    await next();
-  },
+  messageTemplate = minify.minifyTgBot(messageTemplate);
 
-  /**
-   *
-   * @param ctx
-   * @param next
-   * @return {Promise<void>}
-   */
-  async getTgBotProfile(ctx, next) {
-    const { chatId } = ctx.request.params;
-    ctx.assert(chatId, 400, 'chatId is required');
+  ctx.body = {
+    userData,
+    messageTemplate,
+  };
+  ctx.status = 200;
+  await next();
+}
 
-    const userData = await UsersModel.findOne({ chatId })
-      .catch((e) => {
-        console.error('[ERROR] userController getProfile UsersModel findOne:', e.message);
-        ctx.throw(500);
-      });
-    ctx.assert(userData?.chatId, 404, 'User not found.');
+export async function getTgBotPrimogems(ctx, next) {
+  const { chatId } = ctx.request.params;
+  ctx.assert(chatId, 400, 'chatId is required');
 
-    const {
-      currentBannerIsValid,
-      currentBanner,
-    } = userHelper.validateCurrentBanner(userData);
-
-    if (!currentBannerIsValid) {
-      userData.currentBanner = currentBanner;
-      userData.updated = Date.now();
-      userData.save()
-        .catch((e) => {
-          console.error('[ERROR] userController getProfile UserModel userData save:', e.message);
-        });
-    }
-
-    const { languageCode } = userData;
-    const $t = translatesHelper.getTranslate(languageCode);
-
-    const activeEventBanners = bannersHelper.getActiveEventBanners();
-    const activeUniversalBanners = bannersHelper.getActiveUniversalBanners();
-
-    const currentBannerData = bannersHelper.getBannerData(currentBanner);
-    const currentBannerChances = bannersHelper.calculateDropChances({
-      type: currentBannerData.type,
-      fourStar: _.result(userData, [currentBannerData.type, 'fourStar'], 0),
-      fiveStar: _.result(userData, [currentBannerData.type, 'fiveStar'], 0),
+  const userData = await UsersModel.findOne({ chatId })
+    .catch((e) => {
+      console.error('[ERROR] userController getTgBotPrimogems UsersModel findOne:', e.message);
+      ctx.throw(500);
     });
+  ctx.assert(userData?.chatId, 404, 'User not found.');
 
-    let messageTemplate = ejs.render(templates.tgBot.profile, {
-      _,
-      $t,
-      itemsHelper,
-      userData,
-      activeEventBanners,
-      activeUniversalBanners,
-      currentBannerData,
-      currentBannerChances,
-      STANDARD_BANNER_TYPE_NAME,
-      CHARACTERS_BANNER_TYPE_NAME,
-      WEAPONS_BANNER_TYPE_NAME,
-      EVENT_BANNER_CATEGORY_NAME,
-      TYPE_CHARACTERS_NAME,
-      TYPE_WEAPONS_NAME,
-    });
+  const { languageCode } = userData;
+  const $t = translatesHelper.getTranslate(languageCode);
 
-    messageTemplate = minify.minifyTgBot(messageTemplate);
+  const primogemsAdded = userHelper.getPrimogems(userData);
 
-    ctx.body = {
-      userData,
-      messageTemplate,
-    };
-    ctx.status = 200;
-    await next();
-  },
-
-  /**
-   *
-   * @param ctx
-   * @param next
-   * @return {Promise<void>}
-   */
-  async getTgBotHistory(ctx, next) {
-    const {
-      chatId,
-    } = ctx.request.params;
-    let {
-      page = 0,
-    } = ctx.request.params;
-    ctx.assert(chatId, 400, 'chatId is required');
-    page = Number(page);
-
-    const userData = await UsersModel.findOne({ chatId })
+  if (primogemsAdded) {
+    userData.primogems += primogemsAdded;
+    await userData.save()
       .catch((e) => {
-        console.error('[ERROR] userController getHistory UsersModel findOne:', e.message);
+        console.error('[ERROR] userController getTgBotPrimogems UserModel userData save:', e.message);
         ctx.throw(500);
       });
-    ctx.assert(userData?.chatId, 404, 'User not found.');
+  }
 
-    const { languageCode } = userData;
-    const $t = translatesHelper.getTranslate(languageCode);
+  let messageTemplate = ejs.render(templates.tgBot.primogems, {
+    $t,
+    userData,
+    primogemsAdded,
+  });
 
-    const [
-      historyData,
-      historyLogsCount,
-    ] = await Promise.all([
-      // historyData
-      HistoryModel.find({ chatId }, null, {
-        skip: page * USERS_HISTORY_LOGS_PER_PAGE,
-        limit: USERS_HISTORY_LOGS_PER_PAGE,
-        sort: {
-          created: -1,
-        },
-      })
-        .then((data) => historyHelper.addingDataToLogsForTemplate(data, languageCode))
-        .catch((e) => {
-          console.error('[ERROR] userController getHistory HistoryModel find:', e.message);
-          ctx.throw(500);
-        }),
-      // historyLogsCount
-      HistoryModel.count({ chatId })
-        .catch((e) => {
-          console.error('[ERROR] userController getHistory HistoryModel count:', e.message);
-          return 0;
-        }),
-    ]);
+  messageTemplate = minify.minifyTgBot(messageTemplate);
 
-    const pagesCount = Math.ceil(historyLogsCount / USERS_HISTORY_LOGS_PER_PAGE);
-
-    let messageTemplate = ejs.render(templates.tgBot.history, {
-      $t,
-      userData,
-      historyData,
-      page,
-      pagesCount,
-      USERS_HISTORY_ACTION_WISH,
-      USERS_HISTORY_ACTION_PRIMOGEMS,
-    });
-
-    messageTemplate = minify.minifyTgBot(messageTemplate);
-
-    ctx.body = {
-      userData,
-      messageTemplate,
-    };
-    ctx.status = 200;
-    await next();
-  },
-
-  /**
-   *
-   * @param ctx
-   * @param next
-   * @return {Promise<void>}
-   */
-  async getTgBotInventory(ctx, next) {
-    const { chatId } = ctx.request.params;
-    ctx.assert(chatId, 400, 'chatId is required');
-
-    const userData = await UsersModel.findOne({ chatId })
-      .catch((e) => {
-        console.error('[ERROR] userController getInventory UsersModel findOne:', e.message);
-        ctx.throw(500);
-      });
-    ctx.assert(userData?.chatId, 404, 'User not found.');
-
-    const { languageCode } = userData;
-    const $t = translatesHelper.getTranslate(languageCode);
-
-    const inventoryData = await ItemsModel.find({ chatId })
-      .then((itemsData) => inventoryHelper.makingInventoryTree(itemsData, languageCode))
-      .catch((e) => {
-        console.error('[ERROR] userController getInventory ItemsModel find:', e.message);
-        ctx.throw(500);
-      });
-
-    let messageTemplate = ejs.render(templates.tgBot.inventory, {
-      $t,
-      userData,
-      inventoryData,
-    });
-
-    messageTemplate = minify.minifyTgBot(messageTemplate);
-
-    ctx.body = {
-      userData,
-      messageTemplate,
-    };
-    ctx.status = 200;
-    await next();
-  },
-
-  async getTgBotPrimogems(ctx, next) {
-    const { chatId } = ctx.request.params;
-    ctx.assert(chatId, 400, 'chatId is required');
-
-    const userData = await UsersModel.findOne({ chatId })
-      .catch((e) => {
-        console.error('[ERROR] userController getTgBotPrimogems UsersModel findOne:', e.message);
-        ctx.throw(500);
-      });
-    ctx.assert(userData?.chatId, 404, 'User not found.');
-
-    const { languageCode } = userData;
-    const $t = translatesHelper.getTranslate(languageCode);
-
-    const primogemsAdded = userHelper.getPrimogems(userData);
-
-    if (primogemsAdded) {
-      userData.primogems += primogemsAdded;
-      await userData.save()
-        .catch((e) => {
-          console.error('[ERROR] userController getTgBotPrimogems UserModel userData save:', e.message);
-          ctx.throw(500);
-        });
-    }
-
-    let messageTemplate = ejs.render(templates.tgBot.primogems, {
-      $t,
-      userData,
-      primogemsAdded,
-    });
-
-    messageTemplate = minify.minifyTgBot(messageTemplate);
-
-    ctx.body = {
-      userData,
-      messageTemplate,
-    };
-    ctx.status = 200;
-    await next();
-  },
-};
+  ctx.body = {
+    userData,
+    messageTemplate,
+  };
+  ctx.status = 200;
+  await next();
+}

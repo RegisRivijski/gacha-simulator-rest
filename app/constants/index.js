@@ -1,43 +1,42 @@
-module.exports = {
-  OWNER_CHAT_ID: 755610236,
-  OWNER_GROUP_CHAT_ID: -1001706615785,
-  ANALYTICS_CHANNEL_ID: -1001653150520,
+export const OWNER_CHAT_ID = 755610236;
+export const OWNER_GROUP_CHAT_ID = -1001706615785;
+export const ANALYTICS_CHANNEL_ID = -1001653150520;
 
-  BOT_LINK: 'https://t.me/milvachatbot',
+export const BOT_LINK = 'https://t.me/milvachatbot';
 
-  AVAILABLE_DEFAULT_LANG_CODES: ['uk', 'ru', 'be', 'id', 'en'],
+export const AVAILABLE_DEFAULT_LANG_CODES = ['uk', 'ru', 'be', 'id', 'en'];
 
-  PRIMOGEMS_REFERRAL_REWARD: 3200,
-  PRIMOGEMS_GET_MAX: 1600,
-  PRIMOGEMS_NAME: 'primogems',
-  STARDUST_NAME: 'stardust',
-  STARGLITTER_NAME: 'starglitter',
+export const PRIMOGEMS_REFERRAL_REWARD = 3200;
+export const PRIMOGEMS_GET_MAX = 1600;
 
-  STANDARD_BANNER_TYPE_NAME: 'standard',
-  CHARACTERS_BANNER_TYPE_NAME: 'character',
-  WEAPONS_BANNER_TYPE_NAME: 'weapon',
+export const PRIMOGEMS_NAME = 'primogems';
+export const STARDUST_NAME = 'stardust';
+export const STARGLITTER_NAME = 'starglitter';
 
-  EVENT_BANNER_CATEGORY_NAME: 'event',
-  UNIVERSAL_BANNER_CATEGORY_NAME: 'universal',
+export const STANDARD_BANNER_TYPE_NAME = 'standard';
+export const CHARACTERS_BANNER_TYPE_NAME = 'character';
+export const WEAPONS_BANNER_TYPE_NAME = 'weapon';
 
-  TYPE_WEAPONS_NAME: 'weapons',
-  TYPE_CHARACTERS_NAME: 'characters',
+export const EVENT_BANNER_CATEGORY_NAME = 'event';
+export const UNIVERSAL_BANNER_CATEGORY_NAME = 'universal';
 
-  BLOCKED_CHARACTERS_OBJ_KEYS: [
-    'Aether',
-    'Lumine',
-  ],
+export const TYPE_WEAPONS_NAME = 'weapons';
+export const TYPE_CHARACTERS_NAME = 'characters';
 
-  BLOCKED_WEAPONS_OBJ_KEYS: [
-    '"The Catch"',
-    'Prized Isshin Blade',
-  ],
+export const BLOCKED_CHARACTERS_OBJ_KEYS = [
+  'Aether',
+  'Lumine',
+];
+export const BLOCKED_WEAPONS_OBJ_KEYS = [
+  '"The Catch"',
+  'Prized Isshin Blade',
+];
 
-  STANDARD_BANNER_NAME: 'Wanderlust Invocation',
-  DEFAULT_BANNER_FOR_USERS: 'Symphony of Friendliness',
-  START_PRIMOGEMS_COUNT: 9000,
+export const STANDARD_BANNER_NAME = 'Wanderlust Invocation';
+export const DEFAULT_BANNER_FOR_USERS = 'Symphony of Friendliness';
 
-  USERS_HISTORY_ACTION_WISH: 'wish',
-  USERS_HISTORY_ACTION_PRIMOGEMS: 'primogems',
-  USERS_HISTORY_LOGS_PER_PAGE: 8,
-};
+export const START_PRIMOGEMS_COUNT = 9000;
+
+export const USERS_HISTORY_ACTION_WISH = 'wish';
+export const USERS_HISTORY_ACTION_PRIMOGEMS = 'primogems';
+export const USERS_HISTORY_LOGS_PER_PAGE = 8;

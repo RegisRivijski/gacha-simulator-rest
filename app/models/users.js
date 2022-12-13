@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const {
+import {
   DEFAULT_BANNER_FOR_USERS,
   START_PRIMOGEMS_COUNT,
-} = require('../constants/index');
+} from '../constants/index.js';
 
-module.exports = mongoose.model('users', new mongoose.Schema({
+export default mongoose.model('users', new mongoose.Schema({
   chatId: {
     type: Number,
     default: 0,

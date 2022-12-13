@@ -1,47 +1,41 @@
-const Router = require('koa-router');
-const koaBody = require('koa-body');
+import Router from 'koa-router';
+import koaBody from 'koa-body';
 
-const securityMiddlewares = require('../middlewares/security');
-const languageMiddlewares = require('../middlewares/language');
+import * as securityMiddlewares from '../middlewares/security.js';
+import * as languageMiddlewares from '../middlewares/language.js';
 
-const systemController = require('../controllers/systemController');
-const userController = require('../controllers/userController');
-const adminController = require('../controllers/adminController');
-const wishController = require('../controllers/wishController');
-const analyticsController = require('../controllers/analyticsController');
+import * as systemController from '../controllers/systemController.js';
+import * as userController from '../controllers/userController.js';
+import * as adminController from '../controllers/adminController.js';
+import * as wishController from '../controllers/wishController.js';
+import * as analyticsController from '../controllers/analyticsController.js';
 
-module.exports = {
-  Router() {
-    return new Router()
-      .use(koaBody())
-      .use(securityMiddlewares.ApiKeysValidator)
-      .use(languageMiddlewares.getDefaultLangCode)
+export const router = new Router()
+  .use(koaBody())
+  .use(securityMiddlewares.ApiKeysValidator)
+  .use(languageMiddlewares.getDefaultLangCode)
 
-      .get('/', systemController.about)
-      .get('/ping', systemController.ping)
-      .get('/memory', systemController.memory)
+  .get('/', systemController.about)
+  .get('/ping', systemController.ping)
+  .get('/memory', systemController.memory)
 
-      .get('/analytics/getUsersAndGroupChats', analyticsController.getUsersAndGroupChats)
+  .get('/analytics/getUsersAndGroupChats', analyticsController.getUsersAndGroupChats)
 
-      .get('/user/:chatId', userController.getUser)
-      .put('/user/:chatId', userController.updateUser)
-      .post('/user/:chatId', userController.addUser)
+  .get('/user/:chatId', userController.getUser)
+  .put('/user/:chatId', userController.updateUser)
+  .post('/user/:chatId', userController.addUser)
 
-      .get('/admin/user/:chatId', adminController.getAdmin)
-      .put('/admin/user/:chatId', adminController.updateAdmin)
-      .post('/admin/user/:chatId', adminController.addAdmin)
+  .get('/admin/user/:chatId', adminController.getAdmin)
+  .put('/admin/user/:chatId', adminController.updateAdmin)
+  .post('/admin/user/:chatId', adminController.addAdmin)
 
-      .get('/tg-bot/user/:chatId/profile', userController.getTgBotProfile)
-      .get('/tg-bot/user/:chatId/history', userController.getTgBotHistory)
-      .get('/tg-bot/user/:chatId/history/:page', userController.getTgBotHistory)
-      .get('/tg-bot/user/:chatId/inventory', userController.getTgBotInventory)
-      .get('/tg-bot/user/:chatId/primogems', userController.getTgBotPrimogems)
-      .get('/tg-bot/user/:chatId/wish', wishController.getWish)
-      .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10);
-  },
+  .get('/tg-bot/user/:chatId/profile', userController.getTgBotProfile)
+  .get('/tg-bot/user/:chatId/history', userController.getTgBotHistory)
+  .get('/tg-bot/user/:chatId/history/:page', userController.getTgBotHistory)
+  .get('/tg-bot/user/:chatId/inventory', userController.getTgBotInventory)
+  .get('/tg-bot/user/:chatId/primogems', userController.getTgBotPrimogems)
+  .get('/tg-bot/user/:chatId/wish', wishController.getWish)
+  .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10);
 
-  AdminRouter() {
-    return new Router()
-      .use(koaBody());
-  },
-};
+export const adminRouter = new Router()
+  .use(koaBody());

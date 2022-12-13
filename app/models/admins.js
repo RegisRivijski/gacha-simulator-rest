@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-module.exports = mongoose.model('admins', new mongoose.Schema({
+export default mongoose.model('admins', new mongoose.Schema({
   chatId: {
     type: Number,
     default: 0,

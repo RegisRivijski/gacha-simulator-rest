@@ -1,29 +1,27 @@
-const _ = require('lodash');
+import _ from 'lodash';
 
-const {
+import {
   AVAILABLE_DEFAULT_LANG_CODES,
-} = require('../constants/index');
+} from '../constants/index.js';
 
-const en = require('../../staticData/translates/en.json');
-const uk = require('../../staticData/translates/uk.json');
-const ru = require('../../staticData/translates/ru.json');
+import en from '../../staticData/translates/en.json' assert { type: "json" };
+import uk from '../../staticData/translates/uk.json' assert { type: "json" };
+import ru from '../../staticData/translates/ru.json' assert { type: "json" };
 
-module.exports = {
-  getTranslate(langCode) {
-    switch (langCode) {
-      case 'uk':
-        return (key) => _.result(uk, key, '');
-      case 'ru':
-      case 'be':
-        return (key) => _.result(ru, key, '');
-      case 'id':
-      case 'en':
-        return (key) => _.result(en, key, '');
-      default:
-        if (AVAILABLE_DEFAULT_LANG_CODES.includes(global.defaultLangCode)) {
-          return this.getTranslate(global.defaultLangCode);
-        }
-        return this.getTranslate('en');
-    }
-  },
-};
+export function getTranslate(langCode) {
+  switch (langCode) {
+    case 'uk':
+      return (key) => _.result(uk, key, '');
+    case 'ru':
+    case 'be':
+      return (key) => _.result(ru, key, '');
+    case 'id':
+    case 'en':
+      return (key) => _.result(en, key, '');
+    default:
+      if (AVAILABLE_DEFAULT_LANG_CODES.includes(global.defaultLangCode)) {
+        return this.getTranslate(global.defaultLangCode);
+      }
+      return this.getTranslate('en');
+  }
+}

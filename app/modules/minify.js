@@ -1,20 +1,18 @@
-const htmlMinify = require('html-minifier');
+import htmlMinify from 'html-minifier';
 
-module.exports = {
-  minifyTgBot(messageTemplate) {
-    return htmlMinify.minify(messageTemplate, {
-      collapseInlineTagWhitespace: true,
-      collapseWhitespace: true,
-      removeTagWhitespace: true,
-    })
-      .replaceAll('<br>', '\n');
-  },
+export function minifyTgBot(messageTemplate) {
+  return htmlMinify.minify(messageTemplate, {
+    collapseInlineTagWhitespace: true,
+    collapseWhitespace: true,
+    removeTagWhitespace: true,
+  })
+    .replaceAll('<br>', '\n');
+}
 
-  minify(messageTemplate) {
-    return htmlMinify.minify(messageTemplate, {
-      collapseInlineTagWhitespace: true,
-      collapseWhitespace: true,
-      removeTagWhitespace: true,
-    });
-  },
-};
+export function minify(messageTemplate) {
+  return htmlMinify.minify(messageTemplate, {
+    collapseInlineTagWhitespace: true,
+    collapseWhitespace: true,
+    removeTagWhitespace: true,
+  });
+}

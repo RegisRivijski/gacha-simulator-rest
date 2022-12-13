@@ -1,6 +1,6 @@
-const _ = require('lodash');
+import _ from 'lodash';
 
-const {
+import {
   TYPE_CHARACTERS_NAME,
   TYPE_WEAPONS_NAME,
   STANDARD_BANNER_NAME,
@@ -9,216 +9,214 @@ const {
   CHARACTERS_BANNER_TYPE_NAME,
   WEAPONS_BANNER_TYPE_NAME,
   UNIVERSAL_BANNER_CATEGORY_NAME,
-} = require('../constants/index');
+} from '../constants/index.js';
 
-const bannersHelper = require('./bannersHelper');
-const itemsHelper = require('./itemsHelper');
-const randomizeHelper = require('./randomizeHelper');
-const usersHelper = require('./usersHelper');
-const staticDataHelper = require('./staticDataHelper');
+import * as bannersHelper from './bannersHelper.js';
+import * as itemsHelper from './itemsHelper.js';
+import * as randomizeHelper from './randomizeHelper.js';
+import * as usersHelper from './usersHelper.js';
+import * as staticDataHelper from './staticDataHelper.js';
 
 const standardBannerData = bannersHelper.getBannerData(STANDARD_BANNER_NAME);
 const chancesType = staticDataHelper.getChancesType();
 const chancesEventGuarantee = staticDataHelper.getChancesEventGuarantee();
 
-module.exports = {
-  getNewItems(userData) {
-    const currentBannerData = bannersHelper.getBannerData(userData.currentBanner);
-    const currentBannerType = _.result(currentBannerData, 'type', STANDARD_BANNER_TYPE_NAME);
-    const currentBannerCategory = _.result(currentBannerData, 'category', EVENT_BANNER_CATEGORY_NAME);
+export function eventStandardBanner({ newItemRarity, newItemType }) {
+  switch (newItemRarity) {
+    case 3:
+      return {
+        possibleNewItems: standardBannerData.weapons['3'],
+        newItemType: TYPE_WEAPONS_NAME,
+        newItemRarity,
+      };
+    case 4:
+      return {
+        possibleNewItems: standardBannerData[newItemType]['4'],
+        newItemType,
+        newItemRarity,
+      };
+    case 5:
+      return {
+        possibleNewItems: standardBannerData[newItemType]['5'],
+        newItemType,
+        newItemRarity,
+      };
+    default:
+      return {
+        possibleNewItems: [],
+        newItemType,
+        newItemRarity,
+      };
+  }
+}
 
-    const currentDropChances = bannersHelper.calculateDropChances({
-      type: currentBannerData.type,
-      fourStar: _.result(userData, [currentBannerData.type, 'fourStar'], 0),
-      fiveStar: _.result(userData, [currentBannerData.type, 'fiveStar'], 0),
-    });
+export function eventCharactersBanner({ currentBannerData, newItemRarity, newItemType, newItemIsEvent }) {
+  switch (newItemRarity) {
+    case 3:
+      return {
+        possibleNewItems: standardBannerData.weapons['3'],
+        newItemType: TYPE_WEAPONS_NAME,
+        newItemRarity,
+        newItemIsEvent,
+      };
+    case 4:
+      return {
+        possibleNewItems: newItemIsEvent ? currentBannerData.characters['4'] : standardBannerData[newItemType]['4'],
+        newItemType: newItemIsEvent ? newItemType : TYPE_CHARACTERS_NAME,
+        newItemRarity,
+        newItemIsEvent,
+      };
+    case 5:
+      return {
+        possibleNewItems: newItemIsEvent ? currentBannerData.characters['5'] : standardBannerData.characters['5'],
+        newItemType: TYPE_CHARACTERS_NAME,
+        newItemRarity,
+        newItemIsEvent,
+      };
+    default:
+      return {
+        possibleNewItems: [],
+        newItemType,
+        newItemRarity,
+        newItemIsEvent,
+      };
+  }
+}
 
-    const newItemRarity = randomizeHelper.getRandomItemByChances(currentDropChances);
-    const newItemType = randomizeHelper.getRandomItemByChances(chancesType);
-    const newItemIsEvent = usersHelper.getEventGuarantee(userData, currentBannerType, newItemRarity)
-      || randomizeHelper.getRandomItemByChances(chancesEventGuarantee);
+export function eventWeaponsBanner({ currentBannerData, newItemRarity, newItemType, newItemIsEvent }) {
+  switch (newItemRarity) {
+    case 3:
+      return {
+        possibleNewItems: standardBannerData.weapons['3'],
+        newItemType: TYPE_WEAPONS_NAME,
+        newItemRarity,
+        newItemIsEvent,
+      };
+    case 4:
+      return {
+        possibleNewItems: newItemIsEvent ? currentBannerData.weapons['4'] : standardBannerData[newItemType]['4'],
+        newItemType: newItemIsEvent ? TYPE_WEAPONS_NAME : newItemType,
+        newItemRarity,
+        newItemIsEvent,
+      };
+    case 5:
+      return {
+        possibleNewItems: newItemIsEvent ? currentBannerData.weapons['5'] : standardBannerData.weapons['5'],
+        newItemType: TYPE_WEAPONS_NAME,
+        newItemRarity,
+        newItemIsEvent,
+      };
+    default:
+      return {
+        possibleNewItems: [],
+        newItemType,
+        newItemRarity,
+        newItemIsEvent,
+      };
+  }
+}
 
-    switch (currentBannerCategory) {
-      case EVENT_BANNER_CATEGORY_NAME:
-        switch (currentBannerType) {
-          case STANDARD_BANNER_TYPE_NAME:
-            return this.eventStandardBanner({ newItemRarity, newItemType });
-          case CHARACTERS_BANNER_TYPE_NAME:
-            return this.eventCharactersBanner({ currentBannerData, newItemRarity, newItemType, newItemIsEvent });
-          case WEAPONS_BANNER_TYPE_NAME:
-            return this.eventWeaponsBanner({ currentBannerData, newItemRarity, newItemType, newItemIsEvent });
-          default:
-        }
-        break;
-      case UNIVERSAL_BANNER_CATEGORY_NAME:
-        switch (currentBannerType) {
-          case CHARACTERS_BANNER_TYPE_NAME:
-            return this.universalCharactersBanner({ newItemRarity, newItemType });
-          case WEAPONS_BANNER_TYPE_NAME:
-            return this.universalWeaponsBanner({ newItemRarity, newItemType });
-          default:
-        }
-        break;
-      default:
-    }
+export function universalCharactersBanner({ newItemRarity, newItemType }) {
+  switch (newItemRarity) {
+    case 3:
+      return {
+        possibleNewItems: itemsHelper.getItemsByTypeAndRarity({ type: TYPE_WEAPONS_NAME, rarity: newItemRarity })
+          .map(({ objKey }) => objKey),
+        newItemType: TYPE_WEAPONS_NAME,
+        newItemRarity,
+      };
+    case 4:
+      return {
+        possibleNewItems: itemsHelper.getItemsByTypeAndRarity({ type: newItemType, rarity: newItemRarity })
+          .map(({ objKey }) => objKey),
+        newItemType,
+        newItemRarity,
+      };
+    case 5:
+      return {
+        possibleNewItems: itemsHelper.getItemsByTypeAndRarity({ type: TYPE_CHARACTERS_NAME, rarity: newItemRarity })
+          .map(({ objKey }) => objKey),
+        newItemType: TYPE_CHARACTERS_NAME,
+        newItemRarity,
+      };
+    default:
+      return {
+        possibleNewItems: [],
+        newItemType,
+        newItemRarity,
+      };
+  }
+}
 
-    return {
-      possibleNewItems: [],
-      newItemType,
-      newItemRarity,
-    };
-  },
+export function universalWeaponsBanner({ newItemRarity, newItemType }) {
+  switch (newItemRarity) {
+    case 3:
+    case 5:
+      return {
+        possibleNewItems: itemsHelper.getItemsByTypeAndRarity({ type: TYPE_WEAPONS_NAME, rarity: newItemRarity })
+          .map(({ objKey }) => objKey),
+        newItemType: TYPE_WEAPONS_NAME,
+        newItemRarity,
+      };
+    case 4:
+      return {
+        possibleNewItems: itemsHelper.getItemsByTypeAndRarity({ type: newItemType, rarity: newItemRarity })
+          .map(({ objKey }) => objKey),
+        newItemType,
+        newItemRarity,
+      };
+    default:
+      return {
+        possibleNewItems: [],
+        newItemType,
+        newItemRarity,
+      };
+  }
+}
 
-  eventStandardBanner({ newItemRarity, newItemType }) {
-    switch (newItemRarity) {
-      case 3:
-        return {
-          possibleNewItems: standardBannerData.weapons['3'],
-          newItemType: TYPE_WEAPONS_NAME,
-          newItemRarity,
-        };
-      case 4:
-        return {
-          possibleNewItems: standardBannerData[newItemType]['4'],
-          newItemType,
-          newItemRarity,
-        };
-      case 5:
-        return {
-          possibleNewItems: standardBannerData[newItemType]['5'],
-          newItemType,
-          newItemRarity,
-        };
-      default:
-        return {
-          possibleNewItems: [],
-          newItemType,
-          newItemRarity,
-        };
-    }
-  },
+export function getNewItems(userData) {
+  const currentBannerData = bannersHelper.getBannerData(userData.currentBanner);
+  const currentBannerType = _.result(currentBannerData, 'type', STANDARD_BANNER_TYPE_NAME);
+  const currentBannerCategory = _.result(currentBannerData, 'category', EVENT_BANNER_CATEGORY_NAME);
 
-  eventCharactersBanner({ currentBannerData, newItemRarity, newItemType, newItemIsEvent }) {
-    switch (newItemRarity) {
-      case 3:
-        return {
-          possibleNewItems: standardBannerData.weapons['3'],
-          newItemType: TYPE_WEAPONS_NAME,
-          newItemRarity,
-          newItemIsEvent,
-        };
-      case 4:
-        return {
-          possibleNewItems: newItemIsEvent ? currentBannerData.characters['4'] : standardBannerData[newItemType]['4'],
-          newItemType: newItemIsEvent ? newItemType : TYPE_CHARACTERS_NAME,
-          newItemRarity,
-          newItemIsEvent,
-        };
-      case 5:
-        return {
-          possibleNewItems: newItemIsEvent ? currentBannerData.characters['5'] : standardBannerData.characters['5'],
-          newItemType: TYPE_CHARACTERS_NAME,
-          newItemRarity,
-          newItemIsEvent,
-        };
-      default:
-        return {
-          possibleNewItems: [],
-          newItemType,
-          newItemRarity,
-          newItemIsEvent,
-        };
-    }
-  },
+  const currentDropChances = bannersHelper.calculateDropChances({
+    type: currentBannerData.type,
+    fourStar: _.result(userData, [currentBannerData.type, 'fourStar'], 0),
+    fiveStar: _.result(userData, [currentBannerData.type, 'fiveStar'], 0),
+  });
 
-  eventWeaponsBanner({ currentBannerData, newItemRarity, newItemType, newItemIsEvent }) {
-    switch (newItemRarity) {
-      case 3:
-        return {
-          possibleNewItems: standardBannerData.weapons['3'],
-          newItemType: TYPE_WEAPONS_NAME,
-          newItemRarity,
-          newItemIsEvent,
-        };
-      case 4:
-        return {
-          possibleNewItems: newItemIsEvent ? currentBannerData.weapons['4'] : standardBannerData[newItemType]['4'],
-          newItemType: newItemIsEvent ? TYPE_WEAPONS_NAME : newItemType,
-          newItemRarity,
-          newItemIsEvent,
-        };
-      case 5:
-        return {
-          possibleNewItems: newItemIsEvent ? currentBannerData.weapons['5'] : standardBannerData.weapons['5'],
-          newItemType: TYPE_WEAPONS_NAME,
-          newItemRarity,
-          newItemIsEvent,
-        };
-      default:
-        return {
-          possibleNewItems: [],
-          newItemType,
-          newItemRarity,
-          newItemIsEvent,
-        };
-    }
-  },
+  const newItemRarity = randomizeHelper.getRandomItemByChances(currentDropChances);
+  const newItemType = randomizeHelper.getRandomItemByChances(chancesType);
+  const newItemIsEvent = usersHelper.getEventGuarantee(userData, currentBannerType, newItemRarity)
+    || randomizeHelper.getRandomItemByChances(chancesEventGuarantee);
 
-  universalCharactersBanner({ newItemRarity, newItemType }) {
-    switch (newItemRarity) {
-      case 3:
-        return {
-          possibleNewItems: itemsHelper.getItemsByTypeAndRarity({ type: TYPE_WEAPONS_NAME, rarity: newItemRarity })
-            .map(({ objKey }) => objKey),
-          newItemType: TYPE_WEAPONS_NAME,
-          newItemRarity,
-        };
-      case 4:
-        return {
-          possibleNewItems: itemsHelper.getItemsByTypeAndRarity({ type: newItemType, rarity: newItemRarity })
-            .map(({ objKey }) => objKey),
-          newItemType,
-          newItemRarity,
-        };
-      case 5:
-        return {
-          possibleNewItems: itemsHelper.getItemsByTypeAndRarity({ type: TYPE_CHARACTERS_NAME, rarity: newItemRarity })
-            .map(({ objKey }) => objKey),
-          newItemType: TYPE_CHARACTERS_NAME,
-          newItemRarity,
-        };
-      default:
-        return {
-          possibleNewItems: [],
-          newItemType,
-          newItemRarity,
-        };
-    }
-  },
+  switch (currentBannerCategory) {
+    case EVENT_BANNER_CATEGORY_NAME:
+      switch (currentBannerType) {
+        case STANDARD_BANNER_TYPE_NAME:
+          return eventStandardBanner({ newItemRarity, newItemType });
+        case CHARACTERS_BANNER_TYPE_NAME:
+          return eventCharactersBanner({ currentBannerData, newItemRarity, newItemType, newItemIsEvent });
+        case WEAPONS_BANNER_TYPE_NAME:
+          return eventWeaponsBanner({ currentBannerData, newItemRarity, newItemType, newItemIsEvent });
+        default:
+      }
+      break;
+    case UNIVERSAL_BANNER_CATEGORY_NAME:
+      switch (currentBannerType) {
+        case CHARACTERS_BANNER_TYPE_NAME:
+          return universalCharactersBanner({ newItemRarity, newItemType });
+        case WEAPONS_BANNER_TYPE_NAME:
+          return universalWeaponsBanner({ newItemRarity, newItemType });
+        default:
+      }
+      break;
+    default:
+  }
 
-  universalWeaponsBanner({ newItemRarity, newItemType }) {
-    switch (newItemRarity) {
-      case 3:
-      case 5:
-        return {
-          possibleNewItems: itemsHelper.getItemsByTypeAndRarity({ type: TYPE_WEAPONS_NAME, rarity: newItemRarity })
-            .map(({ objKey }) => objKey),
-          newItemType: TYPE_WEAPONS_NAME,
-          newItemRarity,
-        };
-      case 4:
-        return {
-          possibleNewItems: itemsHelper.getItemsByTypeAndRarity({ type: newItemType, rarity: newItemRarity })
-            .map(({ objKey }) => objKey),
-          newItemType,
-          newItemRarity,
-        };
-      default:
-        return {
-          possibleNewItems: [],
-          newItemType,
-          newItemRarity,
-        };
-    }
-  },
-};
+  return {
+    possibleNewItems: [],
+    newItemType,
+    newItemRarity,
+  };
+}
