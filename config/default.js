@@ -28,4 +28,10 @@ export default {
       },
     },
   },
+  rest: {
+    artur: {
+      host: process.env.ARTURPETROV_HOST,
+      protocol: process.env.ARTURPETROV_PROTOCOL,
+    },
+  },
 };

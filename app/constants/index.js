@@ -4,7 +4,9 @@ export const ANALYTICS_CHANNEL_ID = -1001653150520;
 
 export const BOT_LINK = 'https://t.me/milvachatbot';
 
-export const AVAILABLE_DEFAULT_LANG_CODES = ['uk', 'ru', 'be', 'id', 'en'];
+export const AVAILABLE_DEFAULT_LANG_CODES = ['uk', 'ru', 'en'];
+
+export const AVAILABLE_IMAGES_LANG_CODES = ['en', 'id', 'ko', 'ru', 'zh-hans'];
 
 export const PRIMOGEMS_REFERRAL_REWARD = 3200;
 export const PRIMOGEMS_GET_MAX = 1600;
