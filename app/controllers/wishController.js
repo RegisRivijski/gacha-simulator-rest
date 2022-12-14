@@ -9,6 +9,7 @@ import * as bannersHelper from '../helpers/bannersHelper.js';
 import * as translatesHelper from '../helpers/translatesHelper.js';
 import * as documentsHelper from '../helpers/documentsHelper.js';
 import * as financialOperationsHelper from '../helpers/financialOperationsHelper.js';
+import * as linksHelper from '../helpers/linksHelper.js';
 
 import templates from '../modules/templates.js';
 import * as minify from '../modules/minify.js';
@@ -36,6 +37,7 @@ export async function getWish(ctx, next) {
   const { languageCode } = userData;
   const $t = translatesHelper.getTranslate(languageCode);
 
+  let image;
   let newItem;
   let cashBackForDuplicate;
 
@@ -52,6 +54,12 @@ export async function getWish(ctx, next) {
 
     newItem = wishData.newItem;
     cashBackForDuplicate = wishData.cashBackForDuplicate;
+
+    image = linksHelper.getItemImage({
+      languageCode,
+      itemType: newItem.newItemType,
+      objKey: newItem.newItemObjKey,
+    });
 
     userData.currentBanner = currentBanner;
     userData[price.key] -= price.value;
@@ -82,6 +90,7 @@ export async function getWish(ctx, next) {
   ctx.body = {
     userData,
     messageTemplate,
+    image,
   };
   ctx.status = 200;
   await next();
