@@ -4,6 +4,7 @@ import ejs from 'ejs';
 import {
   MEDIA_TYPE_PHOTO,
   MEDIA_TYPE_STICKER,
+  WISH_GIF_TTL,
 } from '../constants/index.js';
 
 import UsersModel from '../models/users.js';
@@ -43,6 +44,7 @@ export async function getWish(ctx, next) {
   const $t = translatesHelper.getTranslate(languageCode);
 
   let media;
+  let mediaGif;
   let mediaType;
   let newItem;
   let cashBackForDuplicate;
@@ -104,6 +106,10 @@ export async function getWish(ctx, next) {
       media,
       mediaType,
     },
+    gifBeforeMessage: {
+      media: mediaGif,
+      ttl: WISH_GIF_TTL,
+    },
   };
   ctx.status = 200;
   await next();
@@ -135,6 +141,7 @@ export async function getWishX10(ctx, next) {
   const $t = translatesHelper.getTranslate(languageCode);
 
   let media;
+  let mediaGif;
   let mediaType;
   let wishesData;
 
@@ -200,6 +207,10 @@ export async function getWishX10(ctx, next) {
     media: {
       media,
       mediaType,
+    },
+    gifBeforeMessage: {
+      media: mediaGif,
+      ttl: WISH_GIF_TTL,
     },
   };
   ctx.status = 200;
