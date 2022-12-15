@@ -5,6 +5,9 @@ import {
   BLOCKED_WEAPONS_OBJ_KEYS,
   USERS_HISTORY_ACTION_WISH,
   TYPE_WEAPONS_NAME,
+  STANDARD_BANNER_TYPE_NAME,
+  CHARACTERS_BANNER_TYPE_NAME,
+  WEAPONS_BANNER_TYPE_NAME,
 } from '../constants/index.js';
 
 import HistoryModel from '../models/histories.js';
@@ -97,4 +100,26 @@ export async function makeWishFewTimes({
   }
 
   return wishesData;
+}
+
+export function orderWishes({
+  wishesData,
+  currentBannerType,
+}) {
+  switch (currentBannerType) {
+    case WEAPONS_BANNER_TYPE_NAME:
+      return _.orderBy(
+        wishesData,
+        ['newItem.newItemRarity', 'newItem.newItemType', 'newItem.newItemData.name'],
+        ['desc', 'asc', 'asc'],
+      );
+    case STANDARD_BANNER_TYPE_NAME:
+    case CHARACTERS_BANNER_TYPE_NAME:
+    default:
+      return _.orderBy(
+        wishesData,
+        ['newItem.newItemRarity', 'newItem.newItemType', 'newItem.newItemData.name'],
+        ['desc', 'desc', 'asc'],
+      );
+  }
 }

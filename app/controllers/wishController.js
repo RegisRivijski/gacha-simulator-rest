@@ -134,6 +134,8 @@ export async function getWishX10(ctx, next) {
   const { languageCode } = userData;
   const $t = translatesHelper.getTranslate(languageCode);
 
+  let media;
+  let mediaType;
   let wishesData;
 
   if (canBuy) {
@@ -146,6 +148,18 @@ export async function getWishX10(ctx, next) {
         console.error('[ERROR] wishController getWishX10 wishHelper makeWishFewTimes:', e.message);
         ctx.throw(500);
       });
+
+    wishesData = wishHelper.orderWishes({
+      wishesData,
+      currentBannerType,
+    });
+
+    mediaType = MEDIA_TYPE_PHOTO;
+    media = linksHelper.getItemImage({
+      languageCode,
+      itemType: _.result(_.first(wishesData), 'newItem.newItemType'),
+      objKey: _.result(_.first(wishesData), 'newItem.newItemObjKey'),
+    });
 
     userData.currentBanner = currentBanner;
     for (const wishData of wishesData) {
@@ -160,6 +174,9 @@ export async function getWishX10(ctx, next) {
       .catch((e) => {
         console.error('[ERROR] wishController getWishX10 UserModel userData save:', e.message);
       });
+  } else {
+    mediaType = MEDIA_TYPE_STICKER;
+    media = linksHelper.getLinkToFatesSticker(currentBannerType);
   }
 
   const templatePrices = documentsHelper.assignNumbersInObjects(
@@ -180,6 +197,10 @@ export async function getWishX10(ctx, next) {
   ctx.body = {
     userData,
     messageTemplate,
+    media: {
+      media,
+      mediaType,
+    },
   };
   ctx.status = 200;
   await next();
