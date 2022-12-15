@@ -64,6 +64,7 @@ export async function getWish(ctx, next) {
     cashBackForDuplicate = wishData.cashBackForDuplicate;
 
     mediaType = MEDIA_TYPE_PHOTO;
+    mediaGif = linksHelper.getLinkToWishGif(newItem.newItemRarity);
     media = linksHelper.getItemImage({
       languageCode,
       itemType: newItem.newItemType,
@@ -92,6 +93,7 @@ export async function getWish(ctx, next) {
     userData,
     canBuy,
     price,
+    currentBannerType,
     newItemData: newItem.newItemData,
     cashBackTemplate: cashBackForDuplicate.cashBackTemplate,
     bannerName: bannersHelper.getBannerName(userData),
@@ -162,6 +164,7 @@ export async function getWishX10(ctx, next) {
     });
 
     mediaType = MEDIA_TYPE_PHOTO;
+    mediaGif = linksHelper.getLinkToWishX10Gif(_.result(_.first(wishesData), 'newItem.newItemRarity'));
     media = linksHelper.getItemImage({
       languageCode,
       itemType: _.result(_.first(wishesData), 'newItem.newItemType'),
@@ -196,6 +199,7 @@ export async function getWishX10(ctx, next) {
     canBuy,
     wishesData,
     templatePrices,
+    currentBannerType,
     bannerName: bannersHelper.getBannerName(userData),
   });
 

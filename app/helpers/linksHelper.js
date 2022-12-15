@@ -34,3 +34,25 @@ export function getLinkToFatesSticker(currentBannerType) {
       return `${arturOrigin}/public/gacha-simulator-static-data/assets/img/fates/event.png`;
   }
 }
+
+export function getLinkToWishGif(newItemRarity) {
+  switch (Number(newItemRarity)) {
+    case 4:
+      return `${arturOrigin}/public/gacha-simulator-static-data/assets/animation/wish/4starwish.mp4`;
+    case 5:
+      return `${arturOrigin}/public/gacha-simulator-static-data/assets/animation/wish/5starwish.mp4`;
+    case 3:
+    default:
+      return `${arturOrigin}/public/gacha-simulator-static-data/assets/animation/wish/3starwish.mp4`;
+  }
+}
+
+export function getLinkToWishX10Gif(newItemRarity) {
+  switch (Number(newItemRarity)) {
+    case 5:
+      return `${arturOrigin}/public/gacha-simulator-static-data/assets/animation/wish/5starwish_10.mp4`;
+    case 4:
+    default:
+      return `${arturOrigin}/public/gacha-simulator-static-data/assets/animation/wish/4starwish_10.mp4`;
+  }
+}
