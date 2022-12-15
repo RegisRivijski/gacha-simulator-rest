@@ -1,3 +1,9 @@
+import {
+  STANDARD_BANNER_TYPE_NAME,
+  CHARACTERS_BANNER_TYPE_NAME,
+  WEAPONS_BANNER_TYPE_NAME,
+} from '../constants/index.js';
+
 import config from '../../config/default.js';
 
 import { validateLangCodeForImages } from './translatesHelper.js';
@@ -16,4 +22,15 @@ export function getItemImage({
     return `${arturOrigin}/public/gacha-simulator-static-data/assets/img/items/${imageLangCode}/${imageItemType}/${imageObjKey}.png`;
   }
   return `${arturOrigin}/public/gacha-simulator-static-data/assets/img/blankGachaSplash.jpg`;
+}
+
+export function getLinkToFatesSticker(currentBannerType) {
+  switch (currentBannerType) {
+    case STANDARD_BANNER_TYPE_NAME:
+      return `${arturOrigin}/public/gacha-simulator-static-data/assets/img/fates/default.png`;
+    case CHARACTERS_BANNER_TYPE_NAME:
+    case WEAPONS_BANNER_TYPE_NAME:
+    default:
+      return `${arturOrigin}/public/gacha-simulator-static-data/assets/img/fates/event.png`;
+  }
 }

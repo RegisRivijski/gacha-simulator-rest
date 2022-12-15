@@ -1,6 +1,11 @@
 import _ from 'lodash';
 import ejs from 'ejs';
 
+import {
+  MEDIA_TYPE_PHOTO,
+  MEDIA_TYPE_STICKER,
+} from '../constants/index.js';
+
 import UsersModel from '../models/users.js';
 
 import * as wishHelper from '../helpers/wishHelper.js';
@@ -37,7 +42,8 @@ export async function getWish(ctx, next) {
   const { languageCode } = userData;
   const $t = translatesHelper.getTranslate(languageCode);
 
-  let image;
+  let media;
+  let mediaType;
   let newItem;
   let cashBackForDuplicate;
 
@@ -55,7 +61,8 @@ export async function getWish(ctx, next) {
     newItem = wishData.newItem;
     cashBackForDuplicate = wishData.cashBackForDuplicate;
 
-    image = linksHelper.getItemImage({
+    mediaType = MEDIA_TYPE_PHOTO;
+    media = linksHelper.getItemImage({
       languageCode,
       itemType: newItem.newItemType,
       objKey: newItem.newItemObjKey,
@@ -73,6 +80,9 @@ export async function getWish(ctx, next) {
       .catch((e) => {
         console.error('[ERROR] wishController getWish UserModel userData save:', e.message);
       });
+  } else {
+    mediaType = MEDIA_TYPE_STICKER;
+    media = linksHelper.getLinkToFatesSticker(currentBannerType);
   }
 
   let messageTemplate = ejs.render(templates.tgBot.wish, {
@@ -90,7 +100,10 @@ export async function getWish(ctx, next) {
   ctx.body = {
     userData,
     messageTemplate,
-    image,
+    media: {
+      media,
+      mediaType,
+    },
   };
   ctx.status = 200;
   await next();

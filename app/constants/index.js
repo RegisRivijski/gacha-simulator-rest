@@ -42,3 +42,6 @@ export const START_PRIMOGEMS_COUNT = 9000;
 export const USERS_HISTORY_ACTION_WISH = 'wish';
 export const USERS_HISTORY_ACTION_PRIMOGEMS = 'primogems';
 export const USERS_HISTORY_LOGS_PER_PAGE = 8;
+
+export const MEDIA_TYPE_PHOTO = 'photo';
+export const MEDIA_TYPE_STICKER = 'sticker';
