@@ -45,6 +45,7 @@ export async function getWish(ctx, next) {
 
   let media;
   let mediaGif;
+  let mediaGifMessage;
   let mediaType;
   let newItem;
   let cashBackForDuplicate;
@@ -65,6 +66,7 @@ export async function getWish(ctx, next) {
 
     mediaType = MEDIA_TYPE_PHOTO;
     mediaGif = linksHelper.getLinkToWishGif(newItem.newItemRarity);
+    mediaGifMessage = '';
     media = linksHelper.getItemImage({
       languageCode,
       itemType: newItem.newItemType,
@@ -110,6 +112,7 @@ export async function getWish(ctx, next) {
     },
     gifBeforeMessage: {
       media: mediaGif,
+      mediaGifMessage,
       ttl: WISH_GIF_TTL,
     },
   };
@@ -144,6 +147,7 @@ export async function getWishX10(ctx, next) {
 
   let media;
   let mediaGif;
+  let mediaGifMessage;
   let mediaType;
   let wishesData;
 
@@ -165,6 +169,7 @@ export async function getWishX10(ctx, next) {
 
     mediaType = MEDIA_TYPE_PHOTO;
     mediaGif = linksHelper.getLinkToWishX10Gif(_.result(_.first(wishesData), 'newItem.newItemRarity'));
+    mediaGifMessage = '';
     media = linksHelper.getItemImage({
       languageCode,
       itemType: _.result(_.first(wishesData), 'newItem.newItemType'),
@@ -214,6 +219,7 @@ export async function getWishX10(ctx, next) {
     },
     gifBeforeMessage: {
       media: mediaGif,
+      mediaGifMessage,
       ttl: WISH_GIF_TTL,
     },
   };

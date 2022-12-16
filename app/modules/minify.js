@@ -2,7 +2,6 @@ import htmlMinify from 'html-minifier';
 
 export function minifyTgBot(messageTemplate) {
   return htmlMinify.minify(messageTemplate, {
-    collapseInlineTagWhitespace: true,
     collapseWhitespace: true,
     removeTagWhitespace: true,
   })
@@ -11,7 +10,6 @@ export function minifyTgBot(messageTemplate) {
 
 export function minify(messageTemplate) {
   return htmlMinify.minify(messageTemplate, {
-    collapseInlineTagWhitespace: true,
     collapseWhitespace: true,
     removeTagWhitespace: true,
   });
