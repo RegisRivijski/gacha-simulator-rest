@@ -5,11 +5,25 @@ import {
   PRIMOGEMS_GET_MAX,
 } from '../constants/index.js';
 
+import UsersModel from '../models/users.js';
+
 import * as bannersHelper from './bannersHelper.js';
 import * as timeHelper from './timeHelper.js';
 
 const bannersKeys = bannersHelper.getActiveBanners()
   .map(({ objKey }) => objKey);
+
+export function getUserData(chatId) {
+  return UsersModel.findOne({ chatId })
+    .then((userData) => {
+      if (userData) {
+        return userData;
+      }
+      return new UsersModel({
+        chatId,
+      });
+    });
+}
 
 export function validateCurrentBanner({ currentBanner }) {
   if (bannersKeys.includes(currentBanner)) {
@@ -36,6 +50,6 @@ export function getEventGuarantee(userData, bannerType, rarity) {
 }
 
 export function getPrimogems({ primogemsAdded }) {
-  const primogems = timeHelper.howManySecondsPast(primogemsAdded);
+  const primogems = timeHelper.howManyMinutesPast(primogemsAdded);
   return primogems > PRIMOGEMS_GET_MAX ? PRIMOGEMS_GET_MAX : primogems;
 }

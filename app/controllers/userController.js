@@ -32,7 +32,7 @@ export async function getUser(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
-  const userData = await UsersModel.findOne({ chatId })
+  const userData = await userHelper.getUserData(chatId)
     .catch((e) => {
       console.error('[ERROR] userController getUser UsersModel findOne:', e.message);
       ctx.throw(500);

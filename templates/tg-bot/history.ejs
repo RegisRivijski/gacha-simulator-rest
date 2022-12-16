@@ -1,6 +1,6 @@
 <b>
     <a href="tg://user?id=<%= userData.chatId; %>">
-        <%= userData.firstName; %>
+        <%= userData.firstName.replaceAll(/<|>/g, ''); %>
     </a>
 </b>
 
@@ -13,14 +13,14 @@
 %>
 <% historyData.forEach((log) => { %>
     <% if (tempDay !== log.day || tempMonth !== log.month || tempYear !== log.year) { %>
-        <code><%= log.day %>.<%= log.month %>.<%= log.year %></code><br>
+        <code>-----------  <%= log.day %>.<%= log.month %>.<%= log.year %>  -----------</code><br>
     <% } %>
 
     <% if (log.action === USERS_HISTORY_ACTION_PRIMOGEMS) { %>
         <code><%= log.hours %>:<%= log.minutes %></code> <%- $t('users.profile.primogemsEarned'); %><br>
         +<%= log.currencyCount %> ✦ <%- $t('currency.primogems'); %><br>
     <% } else if (log.action === USERS_HISTORY_ACTION_WISH) { %>
-        <code><%= log.hours %>:<%= log.minutes %></code> <%- $t('wish.wish'); %> - <i><b><%- $t(`banners.${log.banner}`); %></b></i>
+        <code><%= log.hours %>:<%= log.minutes %> - </code> <%- $t('wish.wish'); %> - <i><b><%- $t(`banners.${log.banner}`); %></b></i>
         <br>
         <a href="<%= log?.itemData?.url?.fandom.replaceAll('"', '') %>"><%= '⭐️'.repeat(Number(log?.itemData?.rarity)) %>, <b><%= log?.itemData?.name %></b></a>
         <br>

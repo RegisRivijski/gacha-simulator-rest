@@ -1,6 +1,6 @@
 <b>
     <a href="tg://user?id=<%= userData.chatId; %>">
-        <%= userData.firstName; %>
+        <%= userData.firstName.replaceAll(/<|>/g, ''); %>
     </a>
 </b>
 

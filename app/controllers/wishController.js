@@ -7,8 +7,6 @@ import {
   WISH_GIF_TTL,
 } from '../constants/index.js';
 
-import UsersModel from '../models/users.js';
-
 import * as wishHelper from '../helpers/wishHelper.js';
 import * as userHelper from '../helpers/usersHelper.js';
 import * as bannersHelper from '../helpers/bannersHelper.js';
@@ -25,7 +23,7 @@ export async function getWish(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
-  const userData = await UsersModel.findOne({ chatId })
+  const userData = await userHelper.getUserData(chatId)
     .catch((e) => {
       console.error('[ERROR] wishController getWish UsersModel findOne:', e.message);
       ctx.throw(500);
@@ -136,7 +134,7 @@ export async function getWishX10(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
-  const userData = await UsersModel.findOne({ chatId })
+  const userData = await userHelper.getUserData(chatId)
     .catch((e) => {
       console.error('[ERROR] wishController getWishX10 UsersModel findOne:', e.message);
       ctx.throw(500);
