@@ -5,7 +5,7 @@
 </b>
 
 <% if (canBuy) { %>
-    , <%= $t('wish10.dropped'); %><br>
+    , <%- $t('wish10.dropped'); %><br>
 
     <% for (const wishData of wishesData) { %>
         <a href="<%= wishData.newItem.newItemData?.url?.fandom ?? ''; %>">
@@ -25,16 +25,16 @@
     <br>
 
     <% if (templatePrices.primogems) { %>
-        -<%= templatePrices.primogems; %> ✦ <%= $t('currency.primogems'); %>
+        -<%= templatePrices.primogems; %> ✦ <%- $t('currency.primogems'); %>
         <br>
     <% } %>
     <% if (templatePrices.stardust) { %>
-        -<%= templatePrices.stardust; %> ✦ <%= $t('currency.stardust'); %>
+        -<%= templatePrices.stardust; %> ✦ <%- $t('currency.stardust'); %>
         <br>
     <% } %>
     <% if (templatePrices.starglitter) { %>
-        -<%= templatePrices.starglitter; %> ✦ <%= $t('currency.starglitter'); %>
+        -<%= templatePrices.starglitter; %> ✦ <%- $t('currency.starglitter'); %>
     <% } %>
 <% } else { %>
-    , <%= $t(`wish10.noPrimogems.${currentBannerType}`)%>
+    , <%- $t(`wish10.noPrimogems.${currentBannerType}`)%>
 <% } %>
