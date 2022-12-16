@@ -48,7 +48,7 @@ export async function updateUser(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
-  const { fields } = ctx.body;
+  const { fields } = ctx.request.body;
   ctx.assert(fields, 400, 'fields are required');
 
   let userData = await UsersModel.findOne({ chatId })
