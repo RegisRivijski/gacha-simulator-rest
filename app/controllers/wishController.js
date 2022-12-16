@@ -16,6 +16,7 @@ import * as translatesHelper from '../helpers/translatesHelper.js';
 import * as documentsHelper from '../helpers/documentsHelper.js';
 import * as financialOperationsHelper from '../helpers/financialOperationsHelper.js';
 import * as linksHelper from '../helpers/linksHelper.js';
+import * as telegramButtons from '../helpers/telegramButtons.js';
 
 import templates from '../modules/templates.js';
 import * as minify from '../modules/minify.js';
@@ -47,6 +48,7 @@ export async function getWish(ctx, next) {
   let mediaGif;
   let mediaGifMessage;
   let mediaType;
+  let mediaMarkupButtons;
   let newItem;
   let cashBackForDuplicate;
 
@@ -80,6 +82,15 @@ export async function getWish(ctx, next) {
       userData[cashBackForDuplicate.currency] += cashBackForDuplicate.price;
     }
 
+    const nextPrice = financialOperationsHelper.determinePrice(userData, currentBannerPrices);
+    const canBuyOneMoreTime = Boolean(nextPrice.key);
+
+    mediaMarkupButtons = telegramButtons.getForWish({
+      $t,
+      canBuyOneMoreTime,
+      chatId,
+    });
+
     userData.updated = Date.now();
     userData.save()
       .catch((e) => {
@@ -109,6 +120,7 @@ export async function getWish(ctx, next) {
     media: {
       media,
       mediaType,
+      mediaMarkupButtons,
     },
     gifBeforeMessage: {
       media: mediaGif,
@@ -148,6 +160,7 @@ export async function getWishX10(ctx, next) {
   let media;
   let mediaGif;
   let mediaGifMessage;
+  let mediaMarkupButtons;
   let mediaType;
   let wishesData;
 
@@ -184,6 +197,16 @@ export async function getWishX10(ctx, next) {
         userData[cashBackForDuplicate.currency] += cashBackForDuplicate.price;
       }
     }
+
+    const nextPrices = financialOperationsHelper.determinePriceFewTimes(wallet, currentBannerPrices, wishesCount);
+    const canBuyOneMoreTime = Boolean(nextPrices.length >= wishesCount);
+
+    mediaMarkupButtons = telegramButtons.getForWishX10({
+      $t,
+      canBuyOneMoreTime,
+      chatId,
+    });
+
     userData.updated = Date.now();
     userData.save()
       .catch((e) => {
@@ -216,6 +239,7 @@ export async function getWishX10(ctx, next) {
     media: {
       media,
       mediaType,
+      mediaMarkupButtons,
     },
     gifBeforeMessage: {
       media: mediaGif,
