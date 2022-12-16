@@ -46,4 +46,4 @@ export const USERS_HISTORY_LOGS_PER_PAGE = 8;
 export const MEDIA_TYPE_PHOTO = 'photo';
 export const MEDIA_TYPE_STICKER = 'sticker';
 
-export const WISH_GIF_TTL = 6100;
+export const WISH_GIF_TTL = 6300;
