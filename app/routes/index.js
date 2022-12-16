@@ -15,12 +15,6 @@ export const router = new Router()
   .use(securityMiddlewares.ApiKeysValidator)
   .use(languageMiddlewares.getDefaultLangCode)
 
-  .get('/', systemController.about)
-  .get('/ping', systemController.ping)
-  .get('/memory', systemController.memory)
-
-  .get('/analytics/getUsersAndGroupChats', analyticsController.getUsersAndGroupChats)
-
   .get('/user/:chatId', userController.getUser)
   .put('/user/:chatId', userController.updateUser)
   .post('/user/:chatId', userController.addUser)
@@ -37,5 +31,10 @@ export const router = new Router()
   .get('/tg-bot/user/:chatId/wish', wishController.getWish)
   .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10);
 
-export const adminRouter = new Router()
-  .use(koaBody());
+export const publicRouter = new Router()
+  .use(koaBody())
+  .get('/', systemController.about)
+  .get('/ping', systemController.ping)
+  .get('/memory', systemController.memory)
+
+  .get('/analytics/getUsersAndGroupChats', analyticsController.getUsersAndGroupChats);

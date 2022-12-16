@@ -2,7 +2,7 @@ import Koa from 'koa';
 import http from 'http';
 import config from '../config/default.js';
 
-import { router, adminRouter } from './routes/index.js';
+import { router, publicRouter } from './routes/index.js';
 import mongooseConnector from './modules/mongoose.js';
 
 export default function main() {
@@ -11,8 +11,8 @@ export default function main() {
   app.use(router.routes());
   app.use(router.allowedMethods());
 
-  app.use(adminRouter.routes());
-  app.use(adminRouter.allowedMethods());
+  app.use(publicRouter.routes());
+  app.use(publicRouter.allowedMethods());
 
   mongooseConnector();
 
