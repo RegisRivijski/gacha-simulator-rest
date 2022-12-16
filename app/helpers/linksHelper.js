@@ -27,11 +27,11 @@ export function getItemImage({
 export function getLinkToFatesSticker(currentBannerType) {
   switch (currentBannerType) {
     case STANDARD_BANNER_TYPE_NAME:
-      return `${arturOrigin}/public/gacha-simulator-static-data/assets/img/fates/default.png`;
+      return `${arturOrigin}/public/gacha-simulator-static-data/assets/img/fates/default.webp`;
     case CHARACTERS_BANNER_TYPE_NAME:
     case WEAPONS_BANNER_TYPE_NAME:
     default:
-      return `${arturOrigin}/public/gacha-simulator-static-data/assets/img/fates/event.png`;
+      return `${arturOrigin}/public/gacha-simulator-static-data/assets/img/fates/event.webp`;
   }
 }
 
