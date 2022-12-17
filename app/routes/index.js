@@ -8,6 +8,7 @@ import * as adminController from '../controllers/adminController.js';
 import * as analyticsController from '../controllers/analyticsController.js';
 import * as groupChatController from '../controllers/groupChatController.js';
 import * as systemController from '../controllers/systemController.js';
+import * as templatesController from '../controllers/templatesController.js';
 import * as userController from '../controllers/userController.js';
 import * as wishController from '../controllers/wishController.js';
 
@@ -19,8 +20,6 @@ export const router = new Router()
   .get('/user/:chatId', userController.getUser)
   .put('/user/:chatId', userController.updateUser)
   .post('/user/:chatId', userController.addUser)
-
-  .get('/user/all-active-with-primogems-limit', userController.getAllActiveUsersWithPrimogemsLimit)
 
   .get('/group-chat/:groupChatId', groupChatController.getGroupChat)
   .put('/group-chat/:groupChatId', groupChatController.updateGroupChat)
@@ -36,7 +35,9 @@ export const router = new Router()
   .get('/tg-bot/user/:chatId/inventory', userController.getTgBotInventory)
   .get('/tg-bot/user/:chatId/primogems', userController.getTgBotPrimogems)
   .get('/tg-bot/user/:chatId/wish', wishController.getWish)
-  .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10);
+  .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10)
+
+  .get('/:languageCode/translate', templatesController.getTranslate);
 
 export const publicRouter = new Router()
   .use(koaBody())
@@ -44,4 +45,7 @@ export const publicRouter = new Router()
   .get('/ping', systemController.ping)
   .get('/memory', systemController.memory)
 
-  .get('/analytics/getUsersAndGroupChats', analyticsController.getUsersAndGroupChats);
+  .get('/analytics/users-and-group-chats', analyticsController.getUsersAndGroupChats)
+
+  .get('/analytics/all-active-users', analyticsController.getAllActiveUsers)
+  .get('/analytics/all-active-users-with-primogems-limit', analyticsController.getAllActiveUsersWithPrimogemsLimit);

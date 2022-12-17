@@ -19,6 +19,12 @@ import * as telegramButtons from '../helpers/telegramButtons.js';
 import templates from '../modules/templates.js';
 import * as minify from '../modules/minify.js';
 
+/**
+ * Getting templates for telegram bot wish command
+ * @param ctx
+ * @param next
+ * @return {Promise<void>}
+ */
 export async function getWish(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
@@ -133,6 +139,12 @@ export async function getWish(ctx, next) {
   await next();
 }
 
+/**
+ * Getting templates for telegram bot wish10 command
+ * @param ctx
+ * @param next
+ * @return {Promise<void>}
+ */
 export async function getWishX10(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');

@@ -11,7 +11,6 @@ import {
   USERS_HISTORY_ACTION_WISH,
   USERS_HISTORY_ACTION_PRIMOGEMS,
   USERS_HISTORY_LOGS_PER_PAGE,
-  PRIMOGEMS_GET_MAX,
 } from '../constants/index.js';
 
 import UsersModel from '../models/users.js';
@@ -29,6 +28,12 @@ import * as inventoryHelper from '../helpers/inventoryHelper.js';
 import templates from '../modules/templates.js';
 import * as minify from '../modules/minify.js';
 
+/**
+ * Get userData by chatId with additional data for crons or analytics
+ * @param ctx
+ * @param next
+ * @return {Promise<void>}
+ */
 export async function getUser(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
@@ -40,28 +45,21 @@ export async function getUser(ctx, next) {
     });
   ctx.assert(userData?.chatId, 404, 'User not found.');
 
-  ctx.body = userData;
+  ctx.body = {
+    ...userData,
+    additionalData: userHelper.getAdditionalData(userData),
+  };
   ctx.status = 200;
   await next();
 }
 
-export async function getAllActiveUsersWithPrimogemsLimit(ctx, next) {
-  const allUsersData = await UsersModel.find({
-    isBlocked: false,
-  })
-    .catch((e) => {
-      console.error('[ERROR] userController getAllActiveUsers UsersModel find:', e.message);
-      ctx.throw(500);
-    });
-
-  ctx.body = allUsersData.filter((userData) => {
-    const primogems = userHelper.getPrimogems(userData);
-    return primogems === PRIMOGEMS_GET_MAX;
-  });
-  ctx.status = 200;
-  await next();
-}
-
+/**
+ * Update userData controller.
+ * Fileds must be in format like that: [ { key: 'isBlocked' value: false } ]
+ * @param ctx
+ * @param next
+ * @return {Promise<void>}
+ */
 export async function updateUser(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
@@ -77,7 +75,6 @@ export async function updateUser(ctx, next) {
   ctx.assert(userData?.chatId, 404, 'User not found.');
 
   userData = documentsHelper.update(userData, fields);
-  userData.updated = Date.now();
 
   userData = await userData.save()
     .catch((e) => {
@@ -90,6 +87,12 @@ export async function updateUser(ctx, next) {
   await next();
 }
 
+/**
+ * Adding user controller
+ * @param ctx
+ * @param next
+ * @return {Promise<void>}
+ */
 export async function addUser(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
@@ -127,6 +130,12 @@ export async function addUser(ctx, next) {
   await next();
 }
 
+/**
+ * Getting templates for telegram bot profile command
+ * @param ctx
+ * @param next
+ * @return {Promise<void>}
+ */
 export async function getTgBotProfile(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
@@ -144,7 +153,6 @@ export async function getTgBotProfile(ctx, next) {
 
   if (!currentBannerIsValid) {
     userData.currentBanner = currentBanner;
-    userData.updated = Date.now();
     userData.save()
       .catch((e) => {
         console.error('[ERROR] userController getProfile UserModel userData save:', e.message);
@@ -191,6 +199,12 @@ export async function getTgBotProfile(ctx, next) {
   await next();
 }
 
+/**
+ * Getting templates for telegram bot history command
+ * @param ctx
+ * @param next
+ * @return {Promise<void>}
+ */
 export async function getTgBotHistory(ctx, next) {
   const {
     chatId,
@@ -257,6 +271,12 @@ export async function getTgBotHistory(ctx, next) {
   await next();
 }
 
+/**
+ * Getting templates for telegram bot inventory command
+ * @param ctx
+ * @param next
+ * @return {Promise<void>}
+ */
 export async function getTgBotInventory(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
@@ -293,6 +313,12 @@ export async function getTgBotInventory(ctx, next) {
   await next();
 }
 
+/**
+ * Getting templates for telegram bot get primogems command
+ * @param ctx
+ * @param next
+ * @return {Promise<void>}
+ */
 export async function getTgBotPrimogems(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');

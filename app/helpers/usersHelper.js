@@ -9,6 +9,7 @@ import UsersModel from '../models/users.js';
 
 import * as bannersHelper from './bannersHelper.js';
 import * as timeHelper from './timeHelper.js';
+import * as financialOperationsHelper from './financialOperationsHelper.js';
 
 const bannersKeys = bannersHelper.getActiveBanners()
   .map(({ objKey }) => objKey);
@@ -52,4 +53,25 @@ export function getEventGuarantee(userData, bannerType, rarity) {
 export function getPrimogems({ primogemsAdded }) {
   const primogems = timeHelper.howManyMinutesPast(primogemsAdded);
   return primogems > PRIMOGEMS_GET_MAX ? PRIMOGEMS_GET_MAX : primogems;
+}
+
+export function getAdditionalData(userData) {
+  const { currentBanner } = validateCurrentBanner(userData);
+
+  const currentBannerData = bannersHelper.getBannerData(currentBanner);
+  const currentBannerType = _.result(currentBannerData, 'type');
+  const currentBannerPrices = bannersHelper.getBannerPrices(currentBannerType);
+  const wallet = _.result(userData, '_doc', {});
+
+  const primogemsGet = getPrimogems(userData);
+  const primogemsGetMaxLimit = primogemsGet === PRIMOGEMS_GET_MAX;
+  const prices = financialOperationsHelper.determinePriceFewTimes(wallet, currentBannerPrices, 9999);
+  const hoursFromLastWish = timeHelper.howManyHoursPast(userData.updated);
+
+  return {
+    primogemsGet,
+    primogemsGetMaxLimit,
+    canBuyWishes: prices.length,
+    hoursFromLastWish,
+  };
 }
