@@ -50,7 +50,7 @@
         🔹 <i><%= bannersName %></i><br>
     <% } %>
 <% }); %>
-
+<br>
 ♾️<b><%- $t('banners.universalProfile'); %></b><br>
 <% activeUniversalBanners.forEach((banner) => { %>
     <%
@@ -74,11 +74,11 @@
     <% if (chance.toGuarantee) { %>
         <%= chance.toGuarantee %> <%- $t('users.profile.toGuarantor'); %>!<br>
     <% } %>
-    <% if (currentBannerData.type !== STANDARD_BANNER_TYPE_NAME && currentBannerData.category !== EVENT_BANNER_CATEGORY_NAME) { %>
+    <% if (currentBannerData.type !== STANDARD_BANNER_TYPE_NAME && currentBannerData.category === EVENT_BANNER_CATEGORY_NAME) { %>
         <% if (chance.item === 4) { %>
-            <%- $t('banners.guarantee'); %>: <%= userData[currentBannerData.type].fourStarEventGuaranteed ? '100%' : '50/50'; %>
+            <%- $t('banners.guarantee'); %>: <%= userData[currentBannerData.type].fourStarEventGuaranteed ? '100%' : '50/50'; %><br>
         <% } else if (chance.item === 5) { %>
-            <%- $t('banners.guarantee'); %>: <%= userData[currentBannerData.type].fiveStarEventGuaranteed ? '100%' : '50/50'; %>
+            <%- $t('banners.guarantee'); %>: <%= userData[currentBannerData.type].fiveStarEventGuaranteed ? '100%' : '50/50'; %><br>
         <% } %>
     <% } %>
 <% }); %>

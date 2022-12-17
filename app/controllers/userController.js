@@ -29,6 +29,7 @@ import * as inventoryHelper from '../helpers/inventoryHelper.js';
 import templates from '../modules/templates.js';
 import * as minify from '../modules/minify.js';
 import * as linksHelper from '../helpers/linksHelper.js';
+import * as telegramButtons from '../helpers/telegramButtons.js';
 
 /**
  * Get userData by chatId with additional data for crons or analytics
@@ -140,7 +141,7 @@ export async function addUser(ctx, next) {
  */
 export async function getTgBotProfile(ctx, next) {
   const { chatId } = ctx.request.params;
-  const { getPrimogems } = ctx.request.query;
+  const { getPrimogems, changeBanner } = ctx.request.query;
   ctx.assert(chatId, 400, 'chatId is required');
 
   const userData = await userHelper.getUserData(chatId)
@@ -154,10 +155,9 @@ export async function getTgBotProfile(ctx, next) {
     currentBanner,
   } = userHelper.validateCurrentBanner(userData);
 
-  let primogemsAdded;
+  const primogemsAdded = userHelper.getPrimogems(userData);
 
   if (getPrimogems) {
-    primogemsAdded = userHelper.getPrimogems(userData);
     userData.primogems += primogemsAdded;
     userData.primogemsAdded = Date.now();
   }
@@ -205,6 +205,14 @@ export async function getTgBotProfile(ctx, next) {
   ctx.body = {
     userData,
     messageTemplate,
+    media: {
+      mediaMarkupButtons: telegramButtons.getProfileButtons({
+        $t,
+        chatId,
+        primogemsAdded,
+        getPrimogems,
+      }),
+    },
   };
   ctx.status = 200;
   await next();
@@ -277,6 +285,12 @@ export async function getTgBotHistory(ctx, next) {
   ctx.body = {
     userData,
     messageTemplate,
+    media: {
+      mediaMarkupButtons: telegramButtons.getHistoryButtons({
+        $t,
+        chatId,
+      }),
+    },
   };
   ctx.status = 200;
   await next();
@@ -319,6 +333,12 @@ export async function getTgBotInventory(ctx, next) {
   ctx.body = {
     userData,
     messageTemplate,
+    media: {
+      mediaMarkupButtons: telegramButtons.getInventoryButtons({
+        $t,
+        chatId,
+      }),
+    },
   };
   ctx.status = 200;
   await next();
