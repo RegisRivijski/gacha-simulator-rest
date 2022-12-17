@@ -32,6 +32,11 @@ export function getActiveUniversalBanners() {
   });
 }
 
+export const allActiveBanners = [
+  ...getActiveEventBanners(),
+  ...getActiveUniversalBanners(),
+];
+
 export function getBannerData(objKey) {
   return _.result(banners, objKey, {});
 }
@@ -97,4 +102,13 @@ export function calculateDropChances({ type = '', fourStar = 0, fiveStar = 0 }) 
         : 0,
     },
   ];
+}
+
+export function getNextBanner(currentBanner) {
+  const currentActiveIndex = allActiveBanners
+    .findIndex((el) => el.objKey === currentBanner);
+  if (currentActiveIndex >= allActiveBanners.length - 1) {
+    return allActiveBanners[0].objKey;
+  }
+  return allActiveBanners[currentActiveIndex + 1].objKey;
 }

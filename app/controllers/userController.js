@@ -162,8 +162,15 @@ export async function getTgBotProfile(ctx, next) {
     userData.primogemsAdded = Date.now();
   }
 
-  if (!currentBannerIsValid || (getPrimogems && primogemsAdded)) {
+  if (!currentBannerIsValid) {
     userData.currentBanner = currentBanner;
+  }
+
+  if (changeBanner) {
+    userData.currentBanner = bannersHelper.getNextBanner(currentBanner);
+  }
+
+  if (!currentBannerIsValid || (getPrimogems && primogemsAdded) || changeBanner) {
     userData.save()
       .catch((e) => {
         console.error('[ERROR] userController getProfile UserModel userData save:', e.message);
