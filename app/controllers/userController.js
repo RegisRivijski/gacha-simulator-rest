@@ -11,6 +11,7 @@ import {
   USERS_HISTORY_ACTION_WISH,
   USERS_HISTORY_ACTION_PRIMOGEMS,
   USERS_HISTORY_LOGS_PER_PAGE,
+  PRIMOGEMS_GET_MAX,
 } from '../constants/index.js';
 
 import UsersModel from '../models/users.js';
@@ -40,6 +41,23 @@ export async function getUser(ctx, next) {
   ctx.assert(userData?.chatId, 404, 'User not found.');
 
   ctx.body = userData;
+  ctx.status = 200;
+  await next();
+}
+
+export async function getAllActiveUsersWithPrimogemsLimit(ctx, next) {
+  const allUsersData = await UsersModel.find({
+    isBlocked: false,
+  })
+    .catch((e) => {
+      console.error('[ERROR] userController getAllActiveUsers UsersModel find:', e.message);
+      ctx.throw(500);
+    });
+
+  ctx.body = allUsersData.filter((userData) => {
+    const primogems = userHelper.getPrimogems(userData);
+    return primogems === PRIMOGEMS_GET_MAX;
+  });
   ctx.status = 200;
   await next();
 }

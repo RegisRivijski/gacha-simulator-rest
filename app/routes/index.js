@@ -20,6 +20,8 @@ export const router = new Router()
   .put('/user/:chatId', userController.updateUser)
   .post('/user/:chatId', userController.addUser)
 
+  .get('/user/all-active-with-primogems-limit', userController.getAllActiveUsersWithPrimogemsLimit)
+
   .get('/group-chat/:groupChatId', groupChatController.getGroupChat)
   .put('/group-chat/:groupChatId', groupChatController.updateGroupChat)
   .post('/group-chat/:groupChatId', groupChatController.addGroupChat)
