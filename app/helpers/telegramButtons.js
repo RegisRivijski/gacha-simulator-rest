@@ -39,3 +39,28 @@ export function getForWishX10({
     },
   ];
 }
+
+export function getProfileButtons({
+  $t,
+  chatId,
+  primogemsAdded,
+}) {
+  return [
+    [
+      {
+        message: `${$t('users.profile.primogemsEarned')} +${primogemsAdded} ✦`,
+        data: `pr_get u${chatId}u`,
+      },
+    ],
+    [
+      {
+        message: $t('users.inventory.name'),
+        data: `in u${chatId}u`,
+      },
+      {
+        message: $t('users.history.name'),
+        data: `hi u${chatId}u`,
+      },
+    ],
+  ];
+}

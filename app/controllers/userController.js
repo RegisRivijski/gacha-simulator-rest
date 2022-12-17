@@ -140,6 +140,7 @@ export async function addUser(ctx, next) {
  */
 export async function getTgBotProfile(ctx, next) {
   const { chatId } = ctx.request.params;
+  const { getPrimogems } = ctx.request.query;
   ctx.assert(chatId, 400, 'chatId is required');
 
   const userData = await userHelper.getUserData(chatId)
@@ -153,7 +154,15 @@ export async function getTgBotProfile(ctx, next) {
     currentBanner,
   } = userHelper.validateCurrentBanner(userData);
 
-  if (!currentBannerIsValid) {
+  let primogemsAdded;
+
+  if (getPrimogems) {
+    primogemsAdded = userHelper.getPrimogems(userData);
+    userData.primogems += primogemsAdded;
+    userData.primogemsAdded = Date.now();
+  }
+
+  if (!currentBannerIsValid || (getPrimogems && primogemsAdded)) {
     userData.currentBanner = currentBanner;
     userData.save()
       .catch((e) => {
