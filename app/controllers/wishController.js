@@ -65,7 +65,11 @@ export async function getWish(ctx, next) {
 
     mediaType = MEDIA_TYPE_PHOTO;
     mediaGif = linksHelper.getLinkToWishGif(newItem.newItemRarity);
-    mediaGifMessage = '';
+    mediaGifMessage = ejs.render(templates.tgBot.wishBeforeMessage, {
+      $t,
+      userData,
+      bannerName: bannersHelper.getBannerName(userData),
+    });
     media = linksHelper.getItemImage({
       languageCode,
       itemType: newItem.newItemType,
@@ -178,7 +182,11 @@ export async function getWishX10(ctx, next) {
 
     mediaType = MEDIA_TYPE_PHOTO;
     mediaGif = linksHelper.getLinkToWishX10Gif(_.result(_.first(wishesData), 'newItem.newItemRarity'));
-    mediaGifMessage = '';
+    mediaGifMessage = ejs.render(templates.tgBot.wishX10BeforeMessage, {
+      $t,
+      userData,
+      bannerName: bannersHelper.getBannerName(userData),
+    });
     media = linksHelper.getItemImage({
       languageCode,
       itemType: _.result(_.first(wishesData), 'newItem.newItemType'),
