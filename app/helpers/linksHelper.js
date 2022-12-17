@@ -56,3 +56,10 @@ export function getLinkToWishX10Gif(newItemRarity) {
       return `${arturOrigin}/public/gacha-simulator-static-data/assets/animation/wish/4starwish_10.mp4`;
   }
 }
+
+export function getLinkForGetPrimogems(primogemsAdded) {
+  if (primogemsAdded) {
+    return `${arturOrigin}/public/gacha-simulator-static-data/assets/img/currencies/primogems.webp`;
+  }
+  return `${arturOrigin}/public/img/gacha-simulator/stickers/sadPaimon.webp`;
+}

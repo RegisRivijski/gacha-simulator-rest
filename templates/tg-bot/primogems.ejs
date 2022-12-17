@@ -1,0 +1,12 @@
+<b>
+    <a href="tg://user?id=<%= userData.chatId; %>">
+        <%= userData.firstName.replaceAll(/<|>/g, ''); %>
+    </a>
+</b>
+
+, <%- $t('shop.primogemsAdded'); %> +<%= primogemsAdded; %> ✦ <%- $t('currency.primogems'); %>!
+
+<% if (additionalData.canBuyWishes) { %>
+    <br>
+    <%- $t('shop.howManyFatesCanBuy').replace('{count}', String(additionalData.canBuyWishes)); %>
+<% } %>

@@ -11,6 +11,7 @@ import {
   USERS_HISTORY_ACTION_WISH,
   USERS_HISTORY_ACTION_PRIMOGEMS,
   USERS_HISTORY_LOGS_PER_PAGE,
+  MEDIA_TYPE_STICKER,
 } from '../constants/index.js';
 
 import UsersModel from '../models/users.js';
@@ -27,6 +28,7 @@ import * as inventoryHelper from '../helpers/inventoryHelper.js';
 
 import templates from '../modules/templates.js';
 import * as minify from '../modules/minify.js';
+import * as linksHelper from '../helpers/linksHelper.js';
 
 /**
  * Get userData by chatId with additional data for crons or analytics
@@ -337,6 +339,7 @@ export async function getTgBotPrimogems(ctx, next) {
 
   if (primogemsAdded) {
     userData.primogems += primogemsAdded;
+    userData.primogemsAdded = Date.now();
     await userData.save()
       .catch((e) => {
         console.error('[ERROR] userController getTgBotPrimogems UserModel userData save:', e.message);
@@ -348,13 +351,21 @@ export async function getTgBotPrimogems(ctx, next) {
     $t,
     userData,
     primogemsAdded,
+    additionalData: userHelper.getAdditionalData(userData),
   });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
 
+  const mediaType = MEDIA_TYPE_STICKER;
+  const media = linksHelper.getLinkForGetPrimogems(primogemsAdded);
+
   ctx.body = {
     userData,
     messageTemplate,
+    media: {
+      mediaType,
+      media,
+    },
   };
   ctx.status = 200;
   await next();
