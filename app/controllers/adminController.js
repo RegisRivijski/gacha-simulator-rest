@@ -4,7 +4,7 @@ import UsersModel from '../models/users.js';
 import AdminsModel from '../models/admins.js';
 
 export async function getAdmin(ctx, next) {
-  const { chatId } = ctx.params;
+  const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
   const adminData = await AdminsModel.findOne({ chatId })
@@ -20,7 +20,7 @@ export async function getAdmin(ctx, next) {
 }
 
 export async function updateAdmin(ctx, next) {
-  const { chatId } = ctx.params;
+  const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
   const { fields } = ctx.request.body;
@@ -47,7 +47,7 @@ export async function updateAdmin(ctx, next) {
 }
 
 export async function addAdmin(ctx, next) {
-  const { chatId } = ctx.params;
+  const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
   const { fields, adminType } = ctx.request.body;
