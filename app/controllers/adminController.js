@@ -15,7 +15,7 @@ export async function getAdmin(ctx, next) {
   ctx.assert(adminData.chatId, 404, 'Admin not found.');
 
   ctx.body = adminData;
-  ctx.statuc = 200;
+  ctx.status = 200;
   await next();
 }
 
