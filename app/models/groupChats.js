@@ -17,6 +17,10 @@ const groupChatsSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  updated: {
+    type: Date,
+    default: Date.now,
+  },
   created: {
     type: Date,
     default: Date.now,

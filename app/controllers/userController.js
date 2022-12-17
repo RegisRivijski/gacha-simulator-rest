@@ -32,7 +32,7 @@ export async function getUser(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
-  const userData = await userHelper.getUserData(chatId)
+  const userData = await UsersModel.findOne({ chatId })
     .catch((e) => {
       console.error('[ERROR] userController getUser UsersModel findOne:', e.message);
       ctx.throw(500);
@@ -51,7 +51,7 @@ export async function updateUser(ctx, next) {
   const { fields } = ctx.request.body;
   ctx.assert(fields, 400, 'fields are required');
 
-  let userData = await userHelper.getUserData(chatId)
+  let userData = await UsersModel.findOne({ chatId })
     .catch((e) => {
       console.error('[ERROR] userController changeUser UsersModel findOne:', e.message);
       ctx.throw(500);
@@ -118,7 +118,6 @@ export async function getTgBotProfile(ctx, next) {
       console.error('[ERROR] userController getProfile UsersModel findOne:', e.message);
       ctx.throw(500);
     });
-  ctx.assert(userData?.chatId, 404, 'User not found.');
 
   const {
     currentBannerIsValid,
@@ -189,7 +188,6 @@ export async function getTgBotHistory(ctx, next) {
       console.error('[ERROR] userController getHistory UsersModel findOne:', e.message);
       ctx.throw(500);
     });
-  ctx.assert(userData?.chatId, 404, 'User not found.');
 
   const { languageCode } = userData;
   const $t = translatesHelper.getTranslate(languageCode);
@@ -250,7 +248,6 @@ export async function getTgBotInventory(ctx, next) {
       console.error('[ERROR] userController getInventory UsersModel findOne:', e.message);
       ctx.throw(500);
     });
-  ctx.assert(userData?.chatId, 404, 'User not found.');
 
   const { languageCode } = userData;
   const $t = translatesHelper.getTranslate(languageCode);

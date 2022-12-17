@@ -4,11 +4,12 @@ import koaBody from 'koa-body';
 import * as securityMiddlewares from '../middlewares/security.js';
 import * as languageMiddlewares from '../middlewares/language.js';
 
+import * as adminController from '../controllers/adminController.js';
+import * as analyticsController from '../controllers/analyticsController.js';
+import * as groupChatController from '../controllers/groupChatController.js';
 import * as systemController from '../controllers/systemController.js';
 import * as userController from '../controllers/userController.js';
-import * as adminController from '../controllers/adminController.js';
 import * as wishController from '../controllers/wishController.js';
-import * as analyticsController from '../controllers/analyticsController.js';
 
 export const router = new Router()
   .use(koaBody())
@@ -18,6 +19,10 @@ export const router = new Router()
   .get('/user/:chatId', userController.getUser)
   .put('/user/:chatId', userController.updateUser)
   .post('/user/:chatId', userController.addUser)
+
+  .get('/group-chat/:groupChatId', groupChatController.getGroupChat)
+  .put('/group-chat/:groupChatId', groupChatController.updateGroupChat)
+  .post('/group-chat/:groupChatId', groupChatController.addGroupChat)
 
   .get('/admin/user/:chatId', adminController.getAdmin)
   .put('/admin/user/:chatId', adminController.updateAdmin)

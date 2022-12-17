@@ -28,7 +28,6 @@ export async function getWish(ctx, next) {
       console.error('[ERROR] wishController getWish UsersModel findOne:', e.message);
       ctx.throw(500);
     });
-  ctx.assert(userData?.chatId, 404, 'User not found.');
 
   const { currentBanner } = userHelper.validateCurrentBanner(userData);
 
@@ -139,7 +138,6 @@ export async function getWishX10(ctx, next) {
       console.error('[ERROR] wishController getWishX10 UsersModel findOne:', e.message);
       ctx.throw(500);
     });
-  ctx.assert(userData?.chatId, 404, 'User not found.');
 
   const { currentBanner } = userHelper.validateCurrentBanner(userData);
 
