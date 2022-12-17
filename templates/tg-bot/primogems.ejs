@@ -4,9 +4,13 @@
     </a>
 </b>
 
-, <%- $t('shop.primogemsAdded'); %> +<%= primogemsAdded; %> ✦ <%- $t('currency.primogems'); %>!
+<% if (primogemsAdded) { %>
+    , <%- $t('shop.primogemsAdded'); %> +<%= primogemsAdded; %> ✦ <%- $t('currency.primogems'); %>!
 
-<% if (additionalData.canBuyWishes) { %>
-    <br>
-    <%- $t('shop.howManyFatesCanBuy').replace('{count}', String(additionalData.canBuyWishes)); %>
+    <% if (additionalData.canBuyWishes) { %>
+        <br>
+        <%- $t('shop.howManyFatesCanBuy').replace('{count}', String(additionalData.canBuyWishes)); %>
+    <% } %>
+<% } else { %>
+    , <%- $t('shop.primogemsEmpty'); %>. <%- $t('phrases.commandLater'); %>.
 <% } %>
