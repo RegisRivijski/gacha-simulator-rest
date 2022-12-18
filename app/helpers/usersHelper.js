@@ -67,11 +67,13 @@ export function getAdditionalData(userData) {
   const primogemsGetMaxLimit = primogemsGet === PRIMOGEMS_GET_MAX;
   const prices = financialOperationsHelper.determinePriceFewTimes(wallet, currentBannerPrices, 9999);
   const hoursFromLastWish = timeHelper.howManyHoursPast(userData.updated);
+  const hoursFromLastPrimogemsAdded = timeHelper.howManyHoursPast(userData.primogemsAdded);
 
   return {
     primogemsGet,
     primogemsGetMaxLimit,
     canBuyWishes: prices.length,
     hoursFromLastWish,
+    hoursFromLastPrimogemsAdded,
   };
 }

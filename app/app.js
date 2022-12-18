@@ -2,14 +2,14 @@ import Koa from 'koa';
 import http from 'http';
 import config from '../config/default.js';
 
-import { router, publicRouter } from './routes/index.js';
+import { privateRouter, publicRouter } from './routes/index.js';
 import mongooseConnector from './modules/mongoose.js';
 
 export default function main() {
   const app = new Koa();
 
-  app.use(router.routes());
-  app.use(router.allowedMethods());
+  app.use(privateRouter.routes());
+  app.use(privateRouter.allowedMethods());
 
   app.use(publicRouter.routes());
   app.use(publicRouter.allowedMethods());

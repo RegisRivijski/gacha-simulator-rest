@@ -46,13 +46,8 @@ export function getProfileButtons({
   primogemsAdded,
   getPrimogems,
 }) {
-  const markupButtons = [[
-    {
-      message: `${$t('banners.change')} 💫`,
-      data: `pr_chng u${chatId}u`,
-    },
-  ]];
-  if (primogemsAdded && !getPrimogems) {
+  const markupButtons = [];
+  if (primogemsAdded > 60 && !getPrimogems) {
     markupButtons.push([
       {
         message: `${$t('users.profile.primogemsEarned')} +${primogemsAdded} ✦`,
@@ -60,16 +55,24 @@ export function getProfileButtons({
       },
     ]);
   }
-  markupButtons.push([
-    {
-      message: $t('users.inventory.name'),
-      data: `in u${chatId}u`,
-    },
-    {
-      message: $t('users.history.name'),
-      data: `hi u${chatId}u`,
-    },
-  ]);
+  markupButtons.push(
+    [
+      {
+        message: `${$t('banners.change')} 💫`,
+        data: `pr_chng u${chatId}u`,
+      },
+    ],
+    [
+      {
+        message: $t('users.inventory.name'),
+        data: `in u${chatId}u`,
+      },
+      {
+        message: $t('users.history.name'),
+        data: `hi u${chatId}u`,
+      },
+    ],
+  );
   return markupButtons;
 }
 

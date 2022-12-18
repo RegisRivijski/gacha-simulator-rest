@@ -12,7 +12,7 @@ import * as templatesController from '../controllers/templatesController.js';
 import * as userController from '../controllers/userController.js';
 import * as wishController from '../controllers/wishController.js';
 
-export const router = new Router()
+export const privateRouter = new Router()
   .use(koaBody())
   .use(securityMiddlewares.ApiKeysValidator)
   .use(languageMiddlewares.getDefaultLangCode)
