@@ -22,22 +22,13 @@ export function getNewValuesForGuaranteeSystem({
   let fourStarEventGuaranteed = _.result(userData, [currentBannerType, 'fourStarEventGuaranteed'], false);
   let fiveStarEventGuaranteed = _.result(userData, [currentBannerType, 'fiveStarEventGuaranteed'], false);
 
-  switch (Number(newItem.newItemRarity)) {
-    case 3:
-      fourStar = documentsHelper.incrementNumberWithLimit(fourStar, bannerChances.fourStar.guarantee);
-      fiveStar = documentsHelper.incrementNumberWithLimit(fiveStar, bannerChances.fiveStar.guarantee);
-      break;
-    case 4:
-      fourStar = 1;
-      fiveStar = documentsHelper.incrementNumberWithLimit(fiveStar, bannerChances.fiveStar.guarantee);
-      break;
-    case 5:
-      fourStar = documentsHelper.incrementNumberWithLimit(fourStar, bannerChances.fourStar.guarantee);
-      fiveStar = 1;
-      break;
-    default:
-      break;
-  }
+  fourStar = Number(newItem.newItemRarity) === 4
+    ? 1
+    : documentsHelper.incrementNumberWithLimit(fourStar, bannerChances.fourStar.guarantee);
+
+  fiveStar = Number(newItem.newItemRarity) === 5
+    ? 1
+    : documentsHelper.incrementNumberWithLimit(fiveStar, bannerChances.fiveStar.guarantee);
 
   if (currentBannerCategory === EVENT_BANNER_CATEGORY_NAME) {
     switch (Number(newItem.newItemRarity)) {
