@@ -31,14 +31,10 @@ export function getNewValuesForGuaranteeSystem({
     : documentsHelper.incrementNumberWithLimit(fiveStar, bannerChances.fiveStar.guarantee);
 
   if (currentBannerCategory === EVENT_BANNER_CATEGORY_NAME) {
-    switch (Number(newItem.newItemRarity)) {
-      case 4:
-        fourStarEventGuaranteed = !newItem.newItemIsEvent;
-        break;
-      case 5:
-        fiveStarEventGuaranteed = !newItem.newItemIsEvent;
-        break;
-      default:
+    if (Number(newItem.newItemRarity) === 4) {
+      fourStarEventGuaranteed = !newItem.newItemIsEvent;
+    } else if (Number(newItem.newItemRarity) === 5) {
+      fiveStarEventGuaranteed = !newItem.newItemIsEvent;
     }
   }
 
