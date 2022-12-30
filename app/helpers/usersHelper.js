@@ -27,15 +27,12 @@ export function getUserData(chatId) {
 }
 
 export function validateCurrentBanner({ currentBanner }) {
-  if (bannersKeys.includes(currentBanner)) {
-    return {
-      currentBannerIsValid: true,
-      currentBanner,
-    };
-  }
+  const isValid = bannersKeys.includes(currentBanner);
   return {
-    currentBannerIsValid: false,
-    currentBanner: DEFAULT_BANNER_FOR_USERS,
+    currentBannerIsValid: isValid,
+    currentBanner: isValid
+      ? currentBanner
+      : DEFAULT_BANNER_FOR_USERS,
   };
 }
 
