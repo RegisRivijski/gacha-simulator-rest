@@ -114,8 +114,8 @@ export async function getWish(ctx, next) {
     canBuy,
     price,
     currentBannerType,
-    newItemData: newItem.newItemData,
-    cashBackTemplate: cashBackForDuplicate.cashBackTemplate,
+    newItemData: newItem?.newItemData,
+    cashBackTemplate: cashBackForDuplicate?.cashBackTemplate,
     bannerName: bannersHelper.getBannerName(userData),
   });
 
