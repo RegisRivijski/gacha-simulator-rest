@@ -128,6 +128,7 @@ export async function getWish(ctx, next) {
       media,
       mediaType,
       mediaMarkupButtons,
+      mediaMarkupButtonsRemoveAfterClick: true,
     },
     gifBeforeMessage: {
       media: mediaGif,
@@ -256,6 +257,7 @@ export async function getWishX10(ctx, next) {
       media,
       mediaType,
       mediaMarkupButtons,
+      mediaMarkupButtonsRemoveAfterClick: true,
     },
     gifBeforeMessage: {
       media: mediaGif,
