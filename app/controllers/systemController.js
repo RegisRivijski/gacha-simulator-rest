@@ -1,5 +1,7 @@
+import config from '../../config/default.js';
+
 export async function about(ctx, next) {
-  ctx.body = global.CONFIG.application;
+  ctx.body = config.application;
   ctx.status = 200;
   await next();
 }

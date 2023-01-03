@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import config from '../../config/default.js';
 
 export default function connect() {
   mongoose.connection.on('open', () => {
@@ -9,5 +10,5 @@ export default function connect() {
     throw new Error('Could not connect to MongoDB.');
   });
 
-  return mongoose.connect(global.CONFIG.db.mongodb.url, global.CONFIG.db.mongodb.options);
+  return mongoose.connect(config.db.mongodb.url, config.db.mongodb.options);
 }

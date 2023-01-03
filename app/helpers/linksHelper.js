@@ -4,9 +4,11 @@ import {
   WEAPONS_BANNER_TYPE_NAME,
 } from '../constants/index.js';
 
+import config from '../../config/default.js';
+
 import { validateLangCodeForImages } from './translatesHelper.js';
 
-const arturOrigin = `${global.CONFIG.rest.artur.protocol}//${global.CONFIG.rest.artur.host}`;
+const arturOrigin = `${config.rest.artur.protocol}//${config.rest.artur.host}`;
 
 export function getItemImage({
   languageCode,
