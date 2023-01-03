@@ -1,6 +1,5 @@
 import Koa from 'koa';
 import http from 'http';
-import config from '../config/default.js';
 
 import { privateRouter, publicRouter } from './routes/index.js';
 import mongooseConnector from './modules/mongoose.js';
@@ -18,11 +17,11 @@ export default function main() {
 
   const server = http.createServer(app.callback());
 
-  server.listen(config.server.port, async () => {
+  server.listen(global.CONFIG.server.port, async () => {
     console.table({
-      Application: config.application.name,
-      Version: config.application.version,
-      Port: config.server.port,
+      Application: global.CONFIG.application.name,
+      Version: global.CONFIG.application.version,
+      Port: global.CONFIG.server.port,
     });
   });
 }

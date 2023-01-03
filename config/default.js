@@ -1,6 +1,6 @@
 import packageJson from '../package.json' assert { type: "json" };
 
-export default {
+export const config = {
   application: {
     name: packageJson.name,
     version: packageJson.version,
@@ -35,3 +35,7 @@ export default {
     },
   },
 };
+
+export function initGlobalConfig() {
+  global.CONFIG = config;
+}
