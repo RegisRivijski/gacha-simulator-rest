@@ -1,14 +1,24 @@
+import _ from 'lodash';
 import fs from 'fs';
+import path from 'node:path';
 
-export default {
-  tgBot: {
-    history: fs.readFileSync('./templates/tg-bot/history.ejs', 'utf-8'),
-    inventory: fs.readFileSync('./templates/tg-bot/inventory.ejs', 'utf-8'),
-    profile: fs.readFileSync('./templates/tg-bot/profile.ejs', 'utf-8'),
-    primogems: fs.readFileSync('./templates/tg-bot/primogems.ejs', 'utf-8'),
-    wishBeforeMessage: fs.readFileSync('./templates/tg-bot/wishBeforeMessage.ejs', 'utf-8'),
-    wish: fs.readFileSync('./templates/tg-bot/wish.ejs', 'utf-8'),
-    wishX10: fs.readFileSync('./templates/tg-bot/wishX10.ejs', 'utf-8'),
-    wishX10BeforeMessage: fs.readFileSync('./templates/tg-bot/wishX10BeforeMessage.ejs', 'utf-8'),
-  },
-};
+function getTemplates(dirPath, __templatesTree = {}, __setPath = '') {
+  const files = fs.readdirSync(dirPath);
+
+  for (const item of files) {
+    const fullPath = `${dirPath}/${item}`;
+    const baseName = path.basename(fullPath, '.ejs');
+    const setPath = __setPath
+      ? `${__setPath}.${baseName}`
+      : baseName;
+
+    if (fs.statSync(fullPath).isDirectory()) {
+      getTemplates(fullPath, __templatesTree, setPath);
+    } else {
+      _.set(__templatesTree, setPath, fs.readFileSync(fullPath, 'utf-8'));
+    }
+  }
+  return __templatesTree;
+}
+
+export default getTemplates('./templates');
