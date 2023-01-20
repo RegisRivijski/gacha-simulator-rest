@@ -28,7 +28,7 @@ import * as historyHelper from '../helpers/historyHelper.js';
 import * as inventoryHelper from '../helpers/inventoryHelper.js';
 
 import templates from '../modules/templates.js';
-import * as minify from '../modules/minify.js';
+import * as minify from '../helpers/minify.js';
 import * as linksHelper from '../helpers/linksHelper.js';
 import * as telegramButtons from '../helpers/telegramButtons.js';
 

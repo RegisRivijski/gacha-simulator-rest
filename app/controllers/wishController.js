@@ -18,7 +18,7 @@ import * as linksHelper from '../helpers/linksHelper.js';
 import * as telegramButtons from '../helpers/telegramButtons.js';
 
 import templates from '../modules/templates.js';
-import * as minify from '../modules/minify.js';
+import * as minify from '../helpers/minify.js';
 
 /**
  * Getting templates for telegram bot wish command
