@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import {
   PRIMOGEMS_GET_MAX,
-} from '../constants/index.js';
+} from '../constants/economy.js';
 
 import GroupChats from '../models/groupChats.js';
 import UsersModel from '../models/users.js';

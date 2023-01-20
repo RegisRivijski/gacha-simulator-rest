@@ -2,8 +2,10 @@ import _ from 'lodash';
 
 import {
   DEFAULT_BANNER_FOR_USERS,
-  PRIMOGEMS_GET_MAX,
 } from '../constants/index.js';
+import {
+  PRIMOGEMS_GET_MAX,
+} from '../constants/economy.js';
 
 import UsersModel from '../models/users.js';
 

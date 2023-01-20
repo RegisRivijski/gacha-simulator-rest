@@ -3,7 +3,7 @@ import _ from 'lodash';
 import {
   STARDUST_NAME,
   STARGLITTER_NAME,
-} from '../constants/index.js';
+} from '../constants/economy.js';
 
 import * as staticDataHelper from './staticDataHelper.js';
 

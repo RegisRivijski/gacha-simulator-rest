@@ -2,8 +2,10 @@ import mongoose from 'mongoose';
 
 import {
   DEFAULT_BANNER_FOR_USERS,
-  START_PRIMOGEMS_COUNT,
 } from '../constants/index.js';
+import {
+  START_PRIMOGEMS_COUNT,
+} from '../constants/economy.js';
 
 const usersSchema = new mongoose.Schema({
   chatId: {

@@ -10,13 +10,6 @@ export const AVAILABLE_DEFAULT_LANG_CODES = ['uk', 'ru', 'en'];
 
 export const AVAILABLE_IMAGES_LANG_CODES = ['en', 'id', 'ko', 'ru', 'zh-hans'];
 
-export const PRIMOGEMS_REFERRAL_REWARD = 3200;
-export const PRIMOGEMS_GET_MAX = 1600;
-
-export const PRIMOGEMS_NAME = 'primogems';
-export const STARDUST_NAME = 'stardust';
-export const STARGLITTER_NAME = 'starglitter';
-
 export const STANDARD_BANNER_TYPE_NAME = 'standard';
 export const CHARACTERS_BANNER_TYPE_NAME = 'character';
 export const WEAPONS_BANNER_TYPE_NAME = 'weapon';
@@ -38,8 +31,6 @@ export const BLOCKED_WEAPONS_OBJ_KEYS = [
 
 export const STANDARD_BANNER_NAME = 'Wanderlust Invocation';
 export const DEFAULT_BANNER_FOR_USERS = 'Symphony of Friendliness';
-
-export const START_PRIMOGEMS_COUNT = 9000;
 
 export const USERS_HISTORY_ACTION_WISH = 'wish';
 export const USERS_HISTORY_ACTION_PRIMOGEMS = 'primogems';
