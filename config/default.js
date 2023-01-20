@@ -7,7 +7,7 @@ export default {
     description: packageJson.description,
   },
   templates: {
-    path: './tenplates',
+    path: './templates',
     suffix: '.ejs',
     coding: 'utf-8',
   },
