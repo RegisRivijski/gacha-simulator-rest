@@ -6,16 +6,13 @@ import {
 
 import config from '../../config/default.js';
 
-import Translates from '../classes/Translates.js';
-
 const arturOrigin = `${config.rest.artur.protocol}//${config.rest.artur.host}`;
 
 export function getItemImage({
-  languageCode,
+  translates,
   itemType,
   objKey,
 }) {
-  const translates = new Translates(languageCode);
   const imageLangCode = translates.validateLangCodeForImages();
   const imageItemType = encodeURIComponent(itemType);
   const imageObjKey = encodeURIComponent(objKey);

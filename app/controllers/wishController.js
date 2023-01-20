@@ -79,7 +79,7 @@ export async function getWish(ctx, next) {
       bannerName: bannersHelper.getBannerName(userData),
     });
     media = linksHelper.getItemImage({
-      languageCode,
+      translates,
       itemType: newItem.newItemType,
       objKey: newItem.newItemObjKey,
     });
@@ -204,7 +204,7 @@ export async function getWishX10(ctx, next) {
       bannerName: bannersHelper.getBannerName(userData),
     });
     media = linksHelper.getItemImage({
-      languageCode,
+      translates,
       itemType: _.result(_.first(wishesData), 'newItem.newItemType'),
       objKey: _.result(_.first(wishesData), 'newItem.newItemObjKey'),
     });
