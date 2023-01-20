@@ -6,7 +6,7 @@ import {
 
 import config from '../../config/default.js';
 
-import { validateLangCodeForImages } from './translatesHelper.js';
+import Translates from '../classes/Translates.js';
 
 const arturOrigin = `${config.rest.artur.protocol}//${config.rest.artur.host}`;
 
@@ -15,7 +15,8 @@ export function getItemImage({
   itemType,
   objKey,
 }) {
-  const imageLangCode = validateLangCodeForImages(languageCode);
+  const translates = new Translates(languageCode);
+  const imageLangCode = translates.validateLangCodeForImages();
   const imageItemType = encodeURIComponent(itemType);
   const imageObjKey = encodeURIComponent(objKey);
   if (imageLangCode && itemType && objKey) {

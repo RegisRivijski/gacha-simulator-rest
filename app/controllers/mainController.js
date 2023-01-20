@@ -1,5 +1,6 @@
+import Translates from '../classes/Translates.js';
+
 import * as userHelper from '../helpers/usersHelper.js';
-import * as translatesHelper from '../helpers/translatesHelper.js';
 
 export async function start(ctx, next) {
   const { chatId } = ctx.request.params;
@@ -12,7 +13,8 @@ export async function start(ctx, next) {
     });
 
   const { languageCode } = userData;
-  const $t = translatesHelper.getTranslate(languageCode);
+  const translates = new Translates(languageCode, ctx.state.defaultLangCode);
+  const $t = translates.getTranslate();
 
   ctx.body = {
 
@@ -32,7 +34,8 @@ export async function help(ctx, next) {
     });
 
   const { languageCode } = userData;
-  const $t = translatesHelper.getTranslate(languageCode);
+  const translates = new Translates(languageCode, ctx.state.defaultLangCode);
+  const $t = translates.getTranslate();
 
   ctx.body = {
 
@@ -52,7 +55,8 @@ export async function settings(ctx, next) {
     });
 
   const { languageCode } = userData;
-  const $t = translatesHelper.getTranslate(languageCode);
+  const translates = new Translates(languageCode, ctx.state.defaultLangCode);
+  const $t = translates.getTranslate();
 
   ctx.body = {
 

@@ -7,10 +7,11 @@ import {
   WISH_GIF_TTL,
 } from '../constants/index.js';
 
+import Translates from '../classes/Translates.js';
+
 import * as wishHelper from '../helpers/wishHelper.js';
 import * as userHelper from '../helpers/usersHelper.js';
 import * as bannersHelper from '../helpers/bannersHelper.js';
-import * as translatesHelper from '../helpers/translatesHelper.js';
 import * as documentsHelper from '../helpers/documentsHelper.js';
 import * as financialOperationsHelper from '../helpers/financialOperationsHelper.js';
 import * as linksHelper from '../helpers/linksHelper.js';
@@ -45,7 +46,8 @@ export async function getWish(ctx, next) {
   const canBuy = Boolean(price.key);
 
   const { languageCode } = userData;
-  const $t = translatesHelper.getTranslate(languageCode);
+  const translates = new Translates(languageCode, ctx.state.defaultLangCode);
+  const $t = translates.getTranslate();
 
   let media;
   let mediaGif;
@@ -168,7 +170,8 @@ export async function getWishX10(ctx, next) {
   const canBuy = Boolean(prices.length >= wishesCount);
 
   const { languageCode } = userData;
-  const $t = translatesHelper.getTranslate(languageCode);
+  const translates = new Translates(languageCode, ctx.state.defaultLangCode);
+  const $t = translates.getTranslate();
 
   let media;
   let mediaGif;

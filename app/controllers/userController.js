@@ -18,8 +18,9 @@ import UsersModel from '../models/users.js';
 import HistoryModel from '../models/histories.js';
 import ItemsModel from '../models/items.js';
 
+import Translates from '../classes/Translates.js';
+
 import * as documentsHelper from '../helpers/documentsHelper.js';
-import * as translatesHelper from '../helpers/translatesHelper.js';
 import * as bannersHelper from '../helpers/bannersHelper.js';
 import * as itemsHelper from '../helpers/itemsHelper.js';
 import * as userHelper from '../helpers/usersHelper.js';
@@ -178,7 +179,8 @@ export async function getTgBotProfile(ctx, next) {
   }
 
   const { languageCode } = userData;
-  const $t = translatesHelper.getTranslate(languageCode);
+  const translates = new Translates(languageCode, ctx.state.defaultLangCode);
+  const $t = translates.getTranslate();
 
   const activeEventBanners = bannersHelper.getActiveEventBanners();
   const activeUniversalBanners = bannersHelper.getActiveUniversalBanners();
@@ -248,7 +250,8 @@ export async function getTgBotHistory(ctx, next) {
     });
 
   const { languageCode } = userData;
-  const $t = translatesHelper.getTranslate(languageCode);
+  const translates = new Translates(languageCode, ctx.state.defaultLangCode);
+  const $t = translates.getTranslate();
 
   const [
     historyData,
@@ -320,7 +323,8 @@ export async function getTgBotInventory(ctx, next) {
     });
 
   const { languageCode } = userData;
-  const $t = translatesHelper.getTranslate(languageCode);
+  const translates = new Translates(languageCode, ctx.state.defaultLangCode);
+  const $t = translates.getTranslate();
 
   const inventoryData = await ItemsModel.find({ chatId })
     .then((itemsData) => inventoryHelper.makingInventoryTree(itemsData, languageCode))
@@ -369,7 +373,8 @@ export async function getTgBotPrimogems(ctx, next) {
   ctx.assert(userData?.chatId, 404, 'User not found.');
 
   const { languageCode } = userData;
-  const $t = translatesHelper.getTranslate(languageCode);
+  const translates = new Translates(languageCode, ctx.state.defaultLangCode);
+  const $t = translates.getTranslate();
 
   const primogemsAdded = userHelper.getPrimogems(userData);
 

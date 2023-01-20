@@ -4,6 +4,8 @@ export const ANALYTICS_CHANNEL_ID = -1001653150520;
 
 export const BOT_LINK = 'https://t.me/milvachatbot';
 
+export const DEFAULT_LANG_CODE = 'en';
+
 export const AVAILABLE_DEFAULT_LANG_CODES = ['uk', 'ru', 'en'];
 
 export const AVAILABLE_IMAGES_LANG_CODES = ['en', 'id', 'ko', 'ru', 'zh-hans'];

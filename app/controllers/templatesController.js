@@ -1,11 +1,12 @@
-import * as translatesHelper from '../helpers/translatesHelper.js';
+import Translates from '../classes/Translates.js';
 
 export async function getTranslate(ctx, next) {
   const { languageCode } = ctx.request.params;
   const { t = 'replies.start' } = ctx.request.query;
 
   ctx.assert(languageCode, 400, 'languageCode is required');
-  const $t = translatesHelper.getTranslate(languageCode);
+  const translates = new Translates(languageCode, ctx.state.defaultLangCode);
+  const $t = translates.getTranslate();
 
   ctx.body = $t(t);
   ctx.status = 200;
