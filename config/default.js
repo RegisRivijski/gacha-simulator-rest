@@ -6,6 +6,11 @@ export default {
     version: packageJson.version,
     description: packageJson.description,
   },
+  templates: {
+    path: './tenplates',
+    suffix: '.ejs',
+    coding: 'utf-8',
+  },
   languages: {
     defaultLangCode: process.env.GACHA_SIMULATOR_REST_DEFAULT_LANGUAGE_CODE || 'en',
   },
