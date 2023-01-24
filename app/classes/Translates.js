@@ -22,8 +22,9 @@ export default class Translates {
       : DEFAULT_LANG_CODE;
   }
 
-  getTranslate() {
-    switch (this.#langCode) {
+  getTranslate(__langCode) {
+    const langCode = __langCode || this.#langCode;
+    switch (langCode) {
       case 'uk':
         return (key) => _.result(uk, key, '');
       case 'ru':
