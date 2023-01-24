@@ -5,6 +5,7 @@ import {
 } from '../constants/index.js';
 import {
   PRIMOGEMS_GET_MAX,
+  PRIMOGEMS_COEFFICIENT,
 } from '../constants/economy.js';
 
 import UsersModel from '../models/users.js';
@@ -50,7 +51,7 @@ export function getEventGuarantee(userData, bannerType, rarity) {
 }
 
 export function getPrimogems({ primogemsAdded }) {
-  const primogems = timeHelper.howManyMinutesPast(primogemsAdded);
+  const primogems = timeHelper.howManyMinutesPast(primogemsAdded) * PRIMOGEMS_COEFFICIENT;
   return primogems > PRIMOGEMS_GET_MAX ? PRIMOGEMS_GET_MAX : primogems;
 }
 
