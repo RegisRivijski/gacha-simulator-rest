@@ -51,7 +51,7 @@ export function getEventGuarantee(userData, bannerType, rarity) {
 }
 
 export function getPrimogems({ primogemsAdded }) {
-  const primogems = timeHelper.howManyMinutesPast(primogemsAdded) * PRIMOGEMS_COEFFICIENT;
+  const primogems = Math.floor(timeHelper.howManyMinutesPast(primogemsAdded) * PRIMOGEMS_COEFFICIENT);
   return primogems > PRIMOGEMS_GET_MAX ? PRIMOGEMS_GET_MAX : primogems;
 }
 
