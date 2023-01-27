@@ -389,7 +389,7 @@ export async function getTgBotPrimogems(ctx, next) {
       });
   }
 
-  let messageTemplate = ejs.renderFile('./templates/tgBot/profile.ejs', {
+  let messageTemplate = ejs.renderFile('./templates/tgBot/primogems.ejs', {
     $t,
     userData,
     primogemsAdded,
