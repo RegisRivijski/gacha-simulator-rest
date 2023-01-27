@@ -1,0 +1,9 @@
+<b>
+    <a href="tg://user?id=<%= userData.chatId; %>">
+        <% if (userData.firstName) { %>
+            <%= userData.firstName.replaceAll(/<|>/g, ''); %>
+        <% } else { %>
+            <%= $t('phrases.traveler'); %>
+        <% } %>
+    </a>
+</b>

@@ -27,7 +27,6 @@ import * as userHelper from '../helpers/usersHelper.js';
 import * as historyHelper from '../helpers/historyHelper.js';
 import * as inventoryHelper from '../helpers/inventoryHelper.js';
 
-import templates from '../modules/templates.js';
 import * as minify from '../helpers/minify.js';
 import * as linksHelper from '../helpers/linksHelper.js';
 import * as telegramButtons from '../helpers/telegramButtons.js';
@@ -144,6 +143,7 @@ export async function getTgBotProfile(ctx, next) {
   const { chatId } = ctx.request.params;
   const { getPrimogems, changeBanner } = ctx.request.query;
   ctx.assert(chatId, 400, 'chatId is required');
+  const { isAction } = ctx.state;
 
   const userData = await userHelper.getUserData(chatId)
     .catch((e) => {
@@ -192,7 +192,7 @@ export async function getTgBotProfile(ctx, next) {
     fiveStar: _.result(userData, [currentBannerData.type, 'fiveStar'], 0),
   });
 
-  let messageTemplate = ejs.render(templates.tgBot.profile, {
+  let messageTemplate = ejs.renderFile('./templates/tgBot/profile.ejs', {
     _,
     $t,
     itemsHelper,
@@ -219,9 +219,9 @@ export async function getTgBotProfile(ctx, next) {
         $t,
         chatId,
         primogemsAdded,
-        getPrimogems,
       }),
     },
+    updateMessage: isAction,
   };
   ctx.status = 200;
   await next();
@@ -234,14 +234,11 @@ export async function getTgBotProfile(ctx, next) {
  * @return {Promise<void>}
  */
 export async function getTgBotHistory(ctx, next) {
-  const {
-    chatId,
-  } = ctx.request.params;
-  let {
-    page = 0,
-  } = ctx.request.params;
+  const { isAction } = ctx.state;
+  const { chatId } = ctx.request.params;
+  const page = Number(ctx.request.params.page);
+
   ctx.assert(chatId, 400, 'chatId is required');
-  page = Number(page);
 
   const userData = await userHelper.getUserData(chatId)
     .catch((e) => {
@@ -280,7 +277,7 @@ export async function getTgBotHistory(ctx, next) {
 
   const pagesCount = Math.ceil(historyLogsCount / USERS_HISTORY_LOGS_PER_PAGE);
 
-  let messageTemplate = ejs.render(templates.tgBot.history, {
+  let messageTemplate = ejs.renderFile('../../templates/tgBot/history.ejs', {
     $t,
     userData,
     historyData,
@@ -301,6 +298,7 @@ export async function getTgBotHistory(ctx, next) {
         chatId,
       }),
     },
+    updateMessage: isAction,
   };
   ctx.status = 200;
   await next();
@@ -314,6 +312,8 @@ export async function getTgBotHistory(ctx, next) {
  */
 export async function getTgBotInventory(ctx, next) {
   const { chatId } = ctx.request.params;
+  const { isAction } = ctx.state;
+
   ctx.assert(chatId, 400, 'chatId is required');
 
   const userData = await userHelper.getUserData(chatId)
@@ -333,7 +333,7 @@ export async function getTgBotInventory(ctx, next) {
       ctx.throw(500);
     });
 
-  let messageTemplate = ejs.render(templates.tgBot.inventory, {
+  let messageTemplate = ejs.renderFile('./templates/tgBot/inventory.ejs', {
     $t,
     userData,
     inventoryData,
@@ -350,6 +350,7 @@ export async function getTgBotInventory(ctx, next) {
         chatId,
       }),
     },
+    updateMessage: isAction,
   };
   ctx.status = 200;
   await next();
@@ -388,7 +389,7 @@ export async function getTgBotPrimogems(ctx, next) {
       });
   }
 
-  let messageTemplate = ejs.render(templates.tgBot.primogems, {
+  let messageTemplate = ejs.renderFile('./templates/tgBot/profile.ejs', {
     $t,
     userData,
     primogemsAdded,

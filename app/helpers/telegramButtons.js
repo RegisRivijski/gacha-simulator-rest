@@ -6,6 +6,7 @@ import {
   PROFILE_CHANGE_BANNER_ACTION_KEY,
   INVENTORY_ACTION_KEY,
   HISTORY_ACTION_KEY,
+  SETTINGS_ACTION_KEY,
 } from '../constants/actions.js';
 
 export function getForWish({
@@ -17,14 +18,14 @@ export function getForWish({
     return [
       {
         message: $t('wish.makeWishAgain'),
-        data: `${WISH_ACTION_KEY} u${chatId}u`,
+        data: `${WISH_ACTION_KEY} ${chatId}`,
       },
     ];
   }
   return [
     {
       message: $t('users.profile.name'),
-      data: `${PROFILE_ACTION_KEY} u${chatId}u`,
+      data: `${PROFILE_ACTION_KEY} ${chatId}`,
     },
   ];
 }
@@ -38,14 +39,14 @@ export function getForWishX10({
     return [
       {
         message: $t('wish10.makeWishAgain'),
-        data: `${WISH_10_ACTION_KEY} u${chatId}u`,
+        data: `${WISH_10_ACTION_KEY} ${chatId}`,
       },
     ];
   }
   return [
     {
       message: $t('users.profile.name'),
-      data: `${PROFILE_ACTION_KEY} u${chatId}u`,
+      data: `${PROFILE_ACTION_KEY} ${chatId}`,
     },
   ];
 }
@@ -61,7 +62,7 @@ export function getProfileButtons({
     markupButtons.push([
       {
         message: `${$t('users.profile.primogemsEarned')} +${primogemsAdded} ✦`,
-        data: `${PROFILE_PRIMOGEMS_GET_ACTION_KEY} u${chatId}u`,
+        data: `${PROFILE_PRIMOGEMS_GET_ACTION_KEY} ${chatId}`,
       },
     ]);
   }
@@ -69,17 +70,17 @@ export function getProfileButtons({
     [
       {
         message: `${$t('banners.change')} 💫`,
-        data: `${PROFILE_CHANGE_BANNER_ACTION_KEY} u${chatId}u`,
+        data: `${PROFILE_CHANGE_BANNER_ACTION_KEY} ${chatId}`,
       },
     ],
     [
       {
         message: $t('users.inventory.name'),
-        data: `${INVENTORY_ACTION_KEY} u${chatId}u`,
+        data: `${INVENTORY_ACTION_KEY} ${chatId}`,
       },
       {
         message: $t('users.history.name'),
-        data: `${HISTORY_ACTION_KEY} u${chatId}u`,
+        data: `${HISTORY_ACTION_KEY} ${chatId}`,
       },
     ],
   );
@@ -93,11 +94,11 @@ export function getInventoryButtons({
   return [
     {
       message: $t('users.profile.name'),
-      data: `${PROFILE_ACTION_KEY} u${chatId}u`,
+      data: `${PROFILE_ACTION_KEY} ${chatId}`,
     },
     {
       message: $t('users.history.name'),
-      data: `${HISTORY_ACTION_KEY} u${chatId}u`,
+      data: `${HISTORY_ACTION_KEY} ${chatId}`,
     },
   ];
 }
@@ -109,11 +110,23 @@ export function getHistoryButtons({
   return [
     {
       message: $t('users.profile.name'),
-      data: `${PROFILE_ACTION_KEY} u${chatId}u`,
+      data: `${PROFILE_ACTION_KEY} ${chatId}`,
     },
     {
       message: $t('users.inventory.name'),
-      data: `${INVENTORY_ACTION_KEY} u${chatId}u`,
+      data: `${INVENTORY_ACTION_KEY} ${chatId}`,
     },
+  ];
+}
+
+export function getSettingsButtons({
+  chatId,
+  languages,
+}) {
+  return [
+    ...languages.map((data) => ({
+      message: data.name,
+      data: `${SETTINGS_ACTION_KEY} ${chatId} cd:${data.code}`,
+    })),
   ];
 }

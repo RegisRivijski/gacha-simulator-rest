@@ -1,1 +1,7 @@
-<b><a href="tg://user?id=<%= userData.chatId; %>"><%= userData.firstName.replaceAll(/<|>/g, ''); %></a></b> <i><b><%- $t('wish.spins') %>: <%= bannerName %></b></i>
+<%- include('./blocks/firstName', { $t, userData }); %>
+
+<i>
+    <b>
+        <%- $t('wish.spins') %>: <%= bannerName %>
+    </b>
+</i>

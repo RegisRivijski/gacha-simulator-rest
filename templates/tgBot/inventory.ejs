@@ -1,10 +1,4 @@
-<b>
-    <a href="tg://user?id=<%= userData.chatId; %>">
-        <%= userData.firstName.replaceAll(/<|>/g, ''); %>
-    </a>
-</b>
-
-, <%- $t('users.inventory.hereIs'); %>!
+<%- include('./blocks/firstName', { $t, userData }); %>, <%- $t('users.inventory.hereIs'); %>!
 <br>
 <br>
 

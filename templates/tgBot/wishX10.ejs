@@ -1,8 +1,4 @@
-<b>
-    <a href="tg://user?id=<%= userData.chatId; %>">
-        <%= userData.firstName.replaceAll(/<|>/g, ''); %>
-    </a>
-</b>
+<%- include('./blocks/firstName', { $t, userData }); %>
 
 <% if (canBuy) { %>
     , <%- $t('wish10.dropped'); %><br>

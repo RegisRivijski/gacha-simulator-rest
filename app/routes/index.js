@@ -2,7 +2,7 @@ import Router from 'koa-router';
 import koaBody from 'koa-body';
 
 import * as securityMiddlewares from '../middlewares/security.js';
-import * as languageMiddlewares from '../middlewares/language.js';
+import * as headers from '../middlewares/headers.js';
 
 import * as adminController from '../controllers/adminController.js';
 import * as analyticsController from '../controllers/analyticsController.js';
@@ -15,7 +15,8 @@ import * as wishController from '../controllers/wishController.js';
 export const privateRouter = new Router()
   .use(koaBody())
   .use(securityMiddlewares.ApiKeysValidator)
-  .use(languageMiddlewares.getDefaultLangCode)
+  .use(headers.getDefaultLangCode)
+  .use(headers.getIsAction)
 
   .get('/user/:chatId', userController.getUser)
   .put('/user/:chatId', userController.updateUser)
@@ -45,6 +46,7 @@ export const publicRouter = new Router()
   .get('/ping', systemController.ping)
   .get('/memory', systemController.memory)
 
+  .get('/analytics/users-and-group-chats-list', analyticsController.getUsersAndGroupChatsList)
   .get('/analytics/users-and-group-chats', analyticsController.getUsersAndGroupChats)
 
   .get('/analytics/all-active-users', analyticsController.getAllActiveUsers)
