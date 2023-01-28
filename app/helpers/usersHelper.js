@@ -68,6 +68,7 @@ export function getAdditionalData(userData) {
   const prices = financialOperationsHelper.determinePriceFewTimes(wallet, currentBannerPrices, 9999);
   const hoursFromLastWish = timeHelper.howManyHoursPast(userData.updated);
   const hoursFromLastPrimogemsAdded = timeHelper.howManyHoursPast(userData.primogemsAdded);
+  const howManyUserCanBuy = '';
 
   return {
     primogemsGet,
@@ -75,5 +76,6 @@ export function getAdditionalData(userData) {
     canBuyWishes: prices.length,
     hoursFromLastWish,
     hoursFromLastPrimogemsAdded,
+    howManyUserCanBuy,
   };
 }

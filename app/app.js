@@ -4,10 +4,12 @@ import config from '../config/default.js';
 
 import { privateRouter, publicRouter } from './routes/index.js';
 import mongooseConnector from './modules/mongoose.js';
+import errorsHandler from './middlewares/errorsHandler.js';
 
 export default function main() {
   const app = new Koa();
 
+  app.use(errorsHandler);
   app.use(privateRouter.routes());
   app.use(privateRouter.allowedMethods());
 

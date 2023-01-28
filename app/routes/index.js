@@ -6,6 +6,7 @@ import * as headers from '../middlewares/headers.js';
 
 import * as adminController from '../controllers/adminController.js';
 import * as analyticsController from '../controllers/analyticsController.js';
+import * as cronController from '../controllers/cronController.js';
 import * as groupChatController from '../controllers/groupChatController.js';
 import * as systemController from '../controllers/systemController.js';
 import * as templatesController from '../controllers/templatesController.js';
@@ -38,7 +39,12 @@ export const privateRouter = new Router()
   .get('/tg-bot/user/:chatId/wish', wishController.getWish)
   .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10)
 
-  .get('/:languageCode/translate', templatesController.getTranslate);
+  .get('/:languageCode/translate', templatesController.getTranslate)
+
+  .get('/cron/primogems-limit', cronController.getAllActiveUsersWithPrimogemsLimit)
+  .get('/cron/how-many-user-can-buy', cronController.getAllActiveUsersHowManyCanBuyWishes)
+
+  .get('/cron/configure-for-notifications/:type/:id/:isActive');
 
 export const publicRouter = new Router()
   .use(koaBody())
@@ -48,6 +54,3 @@ export const publicRouter = new Router()
 
   .get('/analytics/users-and-group-chats-list', analyticsController.getUsersAndGroupChatsList)
   .get('/analytics/users-and-group-chats', analyticsController.getUsersAndGroupChats)
-
-  .get('/analytics/all-active-users', analyticsController.getAllActiveUsers)
-  .get('/analytics/all-active-users-with-primogems-limit', analyticsController.getAllActiveUsersWithPrimogemsLimit);
