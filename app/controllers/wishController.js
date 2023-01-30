@@ -72,7 +72,7 @@ export async function getWish(ctx, next) {
 
     mediaType = MEDIA_TYPE_PHOTO;
     mediaGif = linksHelper.getLinkToWishGif(newItem.newItemRarity);
-    mediaGifMessage = ejs.renderFile('./templates/tgBot/wishBeforeMessage.ejs', {
+    mediaGifMessage = await ejs.renderFile('./templates/tgBot/wishBeforeMessage.ejs', {
       $t,
       userData,
       bannerName: bannersHelper.getBannerName(userData),
@@ -109,7 +109,7 @@ export async function getWish(ctx, next) {
     media = linksHelper.getLinkToFatesSticker(currentBannerType);
   }
 
-  let messageTemplate = ejs.renderFile('./templates/tgBot/wish.ejs', {
+  let messageTemplate = await ejs.renderFile('./templates/tgBot/wish.ejs', {
     $t,
     userData,
     canBuy,
@@ -197,7 +197,7 @@ export async function getWishX10(ctx, next) {
 
     mediaType = MEDIA_TYPE_PHOTO;
     mediaGif = linksHelper.getLinkToWishX10Gif(_.result(_.first(wishesData), 'newItem.newItemRarity'));
-    mediaGifMessage = ejs.renderFile('./templates/tgBot/wishX10BeforeMessage.ejs', {
+    mediaGifMessage = await ejs.renderFile('./templates/tgBot/wishX10BeforeMessage.ejs', {
       $t,
       userData,
       bannerName: bannersHelper.getBannerName(userData),
@@ -240,7 +240,7 @@ export async function getWishX10(ctx, next) {
     documentsHelper.makeObjectFromKeyValueArray(prices),
   );
 
-  let messageTemplate = ejs.renderFile('./templates/tgBot/wishX10.ejs', {
+  let messageTemplate = await ejs.renderFile('./templates/tgBot/wishX10.ejs', {
     $t,
     userData,
     canBuy,

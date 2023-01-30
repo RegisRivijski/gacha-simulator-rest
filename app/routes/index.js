@@ -44,7 +44,7 @@ export const privateRouter = new Router()
   .get('/cron/primogems-limit', cronController.getAllActiveUsersWithPrimogemsLimit)
   .get('/cron/how-many-user-can-buy', cronController.getAllActiveUsersHowManyCanBuyWishes)
 
-  .get('/cron/configure-for-notifications/:type/:id/:isActive');
+  .post('/analytics/active-telegram-bot', analyticsController.activeTelegramBot);
 
 export const publicRouter = new Router()
   .use(koaBody())
@@ -53,4 +53,4 @@ export const publicRouter = new Router()
   .get('/memory', systemController.memory)
 
   .get('/analytics/users-and-group-chats-list', analyticsController.getUsersAndGroupChatsList)
-  .get('/analytics/users-and-group-chats', analyticsController.getUsersAndGroupChats)
+  .get('/analytics/users-and-group-chats', analyticsController.getUsersAndGroupChats);

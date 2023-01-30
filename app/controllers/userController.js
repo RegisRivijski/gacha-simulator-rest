@@ -192,7 +192,7 @@ export async function getTgBotProfile(ctx, next) {
     fiveStar: _.result(userData, [currentBannerData.type, 'fiveStar'], 0),
   });
 
-  let messageTemplate = ejs.renderFile('./templates/tgBot/profile.ejs', {
+  let messageTemplate = await ejs.renderFile('./templates/tgBot/profile.ejs', {
     _,
     $t,
     itemsHelper,
@@ -277,7 +277,7 @@ export async function getTgBotHistory(ctx, next) {
 
   const pagesCount = Math.ceil(historyLogsCount / USERS_HISTORY_LOGS_PER_PAGE);
 
-  let messageTemplate = ejs.renderFile('../../templates/tgBot/history.ejs', {
+  let messageTemplate = await ejs.renderFile('../../templates/tgBot/history.ejs', {
     $t,
     userData,
     historyData,
@@ -333,7 +333,7 @@ export async function getTgBotInventory(ctx, next) {
       ctx.throw(500);
     });
 
-  let messageTemplate = ejs.renderFile('./templates/tgBot/inventory.ejs', {
+  let messageTemplate = await ejs.renderFile('./templates/tgBot/inventory.ejs', {
     $t,
     userData,
     inventoryData,
@@ -389,7 +389,7 @@ export async function getTgBotPrimogems(ctx, next) {
       });
   }
 
-  let messageTemplate = ejs.renderFile('./templates/tgBot/primogems.ejs', {
+  let messageTemplate = await ejs.renderFile('./templates/tgBot/primogems.ejs', {
     $t,
     userData,
     primogemsAdded,
