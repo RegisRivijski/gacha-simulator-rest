@@ -12,6 +12,7 @@ import * as systemController from '../controllers/systemController.js';
 import * as templatesController from '../controllers/templatesController.js';
 import * as userController from '../controllers/userController.js';
 import * as wishController from '../controllers/wishController.js';
+import * as mainController from '../controllers/mainController.js';
 
 export const privateRouter = new Router()
   .use(koaBody())
@@ -38,6 +39,10 @@ export const privateRouter = new Router()
   .get('/tg-bot/user/:chatId/primogems', userController.getTgBotPrimogems)
   .get('/tg-bot/user/:chatId/wish', wishController.getWish)
   .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10)
+
+  .get('/tg-bot/main/start', mainController.start)
+  .get('/tg-bot/main/help', mainController.help)
+  .get('/tg-bot/main/settings', mainController.settings)
 
   .get('/:languageCode/translate', templatesController.getTranslate)
 

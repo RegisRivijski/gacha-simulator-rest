@@ -124,9 +124,13 @@ export function getSettingsButtons({
   languages,
 }) {
   return [
-    ...languages.map((data) => ({
-      message: data.name,
-      data: `${SETTINGS_ACTION_KEY} ${chatId} cd:${data.code}`,
-    })),
+    ...languages.map((data) => (
+      [
+        {
+          message: data.name,
+          data: `${SETTINGS_ACTION_KEY} ${chatId} cd:${data.code}`,
+        },
+      ]
+    )),
   ];
 }
