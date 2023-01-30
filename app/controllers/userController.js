@@ -277,7 +277,7 @@ export async function getTgBotHistory(ctx, next) {
 
   const pagesCount = Math.ceil(historyLogsCount / USERS_HISTORY_LOGS_PER_PAGE);
 
-  let messageTemplate = await ejs.renderFile('../../templates/tgBot/history.ejs', {
+  let messageTemplate = await ejs.renderFile('./templates/tgBot/history.ejs', {
     $t,
     userData,
     historyData,
