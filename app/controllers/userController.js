@@ -219,6 +219,7 @@ export async function getTgBotProfile(ctx, next) {
         $t,
         chatId,
         primogemsAdded,
+        getPrimogems,
       }),
     },
     updateMessage: isAction,
