@@ -77,6 +77,7 @@ export async function getWish(ctx, next) {
       userData,
       bannerName: bannersHelper.getBannerName(userData),
     });
+    mediaGifMessage = minify.minifyTgBot(mediaGifMessage);
     media = linksHelper.getItemImage({
       translates,
       itemType: newItem.newItemType,
@@ -202,6 +203,7 @@ export async function getWishX10(ctx, next) {
       userData,
       bannerName: bannersHelper.getBannerName(userData),
     });
+    mediaGifMessage = minify.minifyTgBot(mediaGifMessage);
     media = linksHelper.getItemImage({
       translates,
       itemType: _.result(_.first(wishesData), 'newItem.newItemType'),
