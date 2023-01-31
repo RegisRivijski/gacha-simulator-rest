@@ -61,3 +61,7 @@ export function getLinkForGetPrimogems(primogemsAdded) {
   }
   return `${arturOrigin}/public/img/gacha-simulator/stickers/sadPaimon.webp`;
 }
+
+export function getLinkForStart() {
+  return `${arturOrigin}/public/img/gacha-simulator/main/start.jpg`;
+}

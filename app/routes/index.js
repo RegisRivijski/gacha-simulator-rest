@@ -40,9 +40,9 @@ export const privateRouter = new Router()
   .get('/tg-bot/user/:chatId/wish', wishController.getWish)
   .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10)
 
-  .get('/tg-bot/main/start', mainController.start)
-  .get('/tg-bot/main/help', mainController.help)
-  .get('/tg-bot/main/settings', mainController.settings)
+  .get('/tg-bot/user/:chatId/start', mainController.start)
+  .get('/tg-bot/user/:chatId/help', mainController.help)
+  .get('/tg-bot/user/:chatId/settings', mainController.settings)
 
   .get('/:languageCode/translate', templatesController.getTranslate)
 
