@@ -238,8 +238,7 @@ export async function getTgBotHistory(ctx, next) {
   const { isAction } = ctx.state;
   const { chatId } = ctx.request.params;
   const page = Number(ctx.request.params.page);
-
-  ctx.assert(chatId, 400, 'chatId is required');
+  ctx.assert(chatId, 400, 'chatId and page is required');
 
   const userData = await userHelper.getUserData(chatId)
     .catch((e) => {
@@ -297,6 +296,8 @@ export async function getTgBotHistory(ctx, next) {
       mediaMarkupButtons: telegramButtons.getHistoryButtons({
         $t,
         chatId,
+        page,
+        pagesCount,
       }),
     },
     updateMessage: isAction,

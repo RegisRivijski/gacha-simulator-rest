@@ -7,6 +7,7 @@ import {
   INVENTORY_ACTION_KEY,
   HISTORY_ACTION_KEY,
   SETTINGS_ACTION_KEY,
+  BLANK_ACTION_KEY,
 } from '../constants/actions.js';
 
 export function getForWish({
@@ -106,16 +107,43 @@ export function getInventoryButtons({
 export function getHistoryButtons({
   $t,
   chatId,
+  page,
+  pagesCount,
 }) {
+  const arrowForward = '▶️';
+  const arrowBack = '◀️';
+
+  const pagination = [];
+  if (page > 0) {
+    pagination.push({
+      message: arrowBack,
+      data: `${HISTORY_ACTION_KEY} ow:${chatId} pg:${page - 1}`,
+    });
+  }
+
+  pagination.push({
+    message: `${$t('users.history.page')} ${page + 1}`,
+    data: BLANK_ACTION_KEY,
+  });
+
+  if (pagesCount > 1) {
+    pagination.push({
+      message: arrowForward,
+      data: `${HISTORY_ACTION_KEY} ow:${chatId} pg:${page + 1}`,
+    });
+  }
   return [
-    {
-      message: $t('users.profile.name'),
-      data: `${PROFILE_ACTION_KEY} ow:${chatId}`,
-    },
-    {
-      message: $t('users.inventory.name'),
-      data: `${INVENTORY_ACTION_KEY} ow:${chatId}`,
-    },
+    pagination,
+    [
+      {
+        message: $t('users.profile.name'),
+        data: `${PROFILE_ACTION_KEY} ow:${chatId}`,
+      },
+      {
+        message: $t('users.inventory.name'),
+        data: `${INVENTORY_ACTION_KEY} ow:${chatId}`,
+      },
+    ],
   ];
 }
 

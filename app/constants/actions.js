@@ -6,3 +6,4 @@ export const PROFILE_CHANGE_BANNER_ACTION_KEY = 'chng_pr';
 export const INVENTORY_ACTION_KEY = 'in';
 export const HISTORY_ACTION_KEY = 'hi';
 export const SETTINGS_ACTION_KEY = 'sett';
+export const BLANK_ACTION_KEY = 'blank';

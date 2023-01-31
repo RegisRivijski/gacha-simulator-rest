@@ -3,6 +3,6 @@ export default async function errorsHandler(ctx, next) {
     await next();
   } catch (e) {
     console.error('[FATAL ERROR]', e);
-    ctx.throw(500);
+    ctx.throw(e);
   }
 }
