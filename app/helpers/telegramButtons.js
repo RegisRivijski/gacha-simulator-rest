@@ -7,7 +7,6 @@ import {
   INVENTORY_ACTION_KEY,
   HISTORY_ACTION_KEY,
   SETTINGS_ACTION_KEY,
-  BLANK_ACTION_KEY,
 } from '../constants/actions.js';
 
 export function getForWish({
@@ -123,10 +122,14 @@ export function getHistoryButtons({
 
   pagination.push({
     message: `${$t('users.history.page')} ${page + 1}`,
-    data: BLANK_ACTION_KEY,
+    data: `${HISTORY_ACTION_KEY} ow:${chatId} pg:${
+      page === 0
+        ? pagesCount - 1
+        : 0
+    }`,
   });
 
-  if (pagesCount > 1) {
+  if (page + 1 < pagesCount) {
     pagination.push({
       message: arrowForward,
       data: `${HISTORY_ACTION_KEY} ow:${chatId} pg:${page + 1}`,
