@@ -110,12 +110,17 @@ export async function getWish(ctx, next) {
     media = linksHelper.getLinkToFatesSticker(currentBannerType);
   }
 
+  const templatePrices = documentsHelper.assignNumbersInObjects(
+    documentsHelper.makeObjectFromKeyValueArray([price]),
+  );
+
   let messageTemplate = await ejs.renderFile('./templates/tgBot/wish.ejs', {
     $t,
     userData,
     canBuy,
     price,
     currentBannerType,
+    templatePrices,
     newItemData: newItem?.newItemData,
     cashBackTemplate: cashBackForDuplicate?.cashBackTemplate,
     bannerName: bannersHelper.getBannerName(userData),

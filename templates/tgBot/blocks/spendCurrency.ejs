@@ -1,0 +1,11 @@
+<% if (templatePrices?.primogems) { %>
+    -<%= templatePrices.primogems; %> ✦ <%- $t('currency.primogems'); %>
+    <br>
+<% } %>
+<% if (templatePrices?.stardust) { %>
+    -<%= templatePrices.stardust; %> ✨ <%- $t('currency.stardust'); %>
+    <br>
+<% } %>
+<% if (templatePrices?.starglitter) { %>
+    -<%= templatePrices.starglitter; %> 🌟 <%- $t('currency.starglitter'); %>
+<% } %>

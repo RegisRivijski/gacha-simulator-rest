@@ -24,13 +24,7 @@
     <br>
     <br>
 
-    <% if (price.key === 'primogems') { %>
-        -<%= price.value; %> ✦ <%- $t('currency.primogems'); %>
-    <% } else if (price.key === 'stardust') { %>
-        -<%= price.value; %> ✦ <%- $t('currency.stardust'); %>
-    <% } else if (price.key === 'starglitter') { %>
-        -<%= price.value; %> ✦ <%- $t('currency.starglitter'); %>
-    <% } %>
+    <%- include('./blocks/spendCurrency', { $t, templatePrices }); %>
 <% } else { %>
     , <%- $t(`wish.noPrimogems.${currentBannerType}`)%>
 <% } %>
