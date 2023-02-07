@@ -28,7 +28,6 @@ export default class Translates {
       case 'uk':
         return (key) => _.result(uk, key, '');
       case 'ru':
-      case 'be':
         return (key) => _.result(ru, key, '');
       case 'id':
       case 'ko':
