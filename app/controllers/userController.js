@@ -201,6 +201,7 @@ export async function getTgBotProfile(ctx, next) {
     activeUniversalBanners,
     currentBannerData,
     currentBannerChances,
+    additionalData: userHelper.getAdditionalData(userData),
     STANDARD_BANNER_TYPE_NAME,
     CHARACTERS_BANNER_TYPE_NAME,
     WEAPONS_BANNER_TYPE_NAME,
