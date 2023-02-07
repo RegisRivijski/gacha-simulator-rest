@@ -56,8 +56,9 @@ export function getCharactersItems({
         result = getCharactersItems({
           languageCode: defaultLangCode,
         });
+      } else {
+        result = charactersEn;
       }
-      result = charactersEn;
   }
   return result;
 }
@@ -86,8 +87,9 @@ export function getWeaponsItems({
         result = getWeaponsItems({
           languageCode: defaultLangCode,
         });
+      } else {
+        result = weaponsEn;
       }
-      result = weaponsEn;
   }
   return result;
 }
