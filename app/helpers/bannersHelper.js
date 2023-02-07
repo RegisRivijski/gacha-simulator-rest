@@ -1,11 +1,19 @@
 import _ from 'lodash';
 
 import {
+  CHARACTERS_BANNER_TYPE_NAME,
+  WEAPONS_BANNER_TYPE_NAME,
+  STANDARD_BANNER_TYPE_NAME,
+
   EVENT_BANNER_CATEGORY_NAME,
   UNIVERSAL_BANNER_CATEGORY_NAME,
+
+  TYPE_WEAPONS_NAME,
+  TYPE_CHARACTERS_NAME,
 } from '../constants/index.js';
 
 import * as staticDataHelper from './staticDataHelper.js';
+import * as itemsHelper from './itemsHelper.js';
 
 const banners = staticDataHelper.getBanners();
 const bannersPrices = staticDataHelper.getFatesPrices();
@@ -112,4 +120,52 @@ export function getNextBanner(currentBanner) {
     return allActiveBanners[0].objKey;
   }
   return allActiveBanners[currentActiveIndex + 1].objKey;
+}
+
+export function getAdditionalBannerData({
+  languageCode,
+  defaultLangCode,
+  banner,
+}) {
+  let bannerEmoji = '';
+  const bannersName = getBannerName({
+    currentBanner: banner.objKey,
+    languageCode,
+    defaultLangCode,
+  });
+  const charactersFive = [];
+  const weaponsFive = [];
+
+  if (banner.type === CHARACTERS_BANNER_TYPE_NAME) {
+    bannerEmoji = '🧝🏻‍♀️';
+  } else if (banner.type === WEAPONS_BANNER_TYPE_NAME) {
+    bannerEmoji = '⚔️';
+  } else if (banner.type === STANDARD_BANNER_TYPE_NAME) {
+    bannerEmoji = '🧝🏻‍♀️⚔️';
+  }
+
+  _.result(banner, 'characters.5', []).forEach((itemObjKey) => {
+    charactersFive.push(itemsHelper.getItemData({
+      languageCode,
+      defaultLangCode,
+      objKey: itemObjKey,
+      type: TYPE_CHARACTERS_NAME,
+    }));
+  });
+
+  _.result(banner, 'weapons.5', []).forEach((itemObjKey) => {
+    weaponsFive.push(itemsHelper.getItemData({
+      languageCode,
+      defaultLangCode,
+      objKey: itemObjKey,
+      type: TYPE_WEAPONS_NAME,
+    }));
+  });
+
+  return {
+    bannersName,
+    bannerEmoji,
+    charactersFive,
+    weaponsFive,
+  };
 }
