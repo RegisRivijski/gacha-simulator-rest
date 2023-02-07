@@ -54,13 +54,11 @@ export function getBannerName({
   const bannerNames = _.result(currentBannerData, 'translates', {});
   switch (languageCode) {
     case 'en':
-    case 'uk':
       return _.result(bannerNames, 'en', '');
     case 'id':
       return _.result(bannerNames, 'id', '');
     case 'ko':
       return _.result(bannerNames, 'ko', '');
-    case 'be':
     case 'ru':
       return _.result(bannerNames, 'ru', '');
     case 'zh-hans':
