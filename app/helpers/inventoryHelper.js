@@ -6,7 +6,7 @@ import {
 import * as itemsHelper from './itemsHelper.js';
 import ItemsModel from '../models/items.js';
 
-export function makingInventoryTree(items, langCode) {
+export function makingInventoryTree(items, languageCode, defaultLangCode) {
   const charactersInv = {
     five: [],
     four: [],
@@ -21,7 +21,8 @@ export function makingInventoryTree(items, langCode) {
     let rarity;
 
     const itemData = itemsHelper.getItemData({
-      langCode,
+      languageCode,
+      defaultLangCode,
       objKey: item.objKey,
       type: item.type,
     });

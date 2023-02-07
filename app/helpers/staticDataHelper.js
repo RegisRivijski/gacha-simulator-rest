@@ -4,6 +4,7 @@ import {
   STANDARD_BANNER_TYPE_NAME,
   CHARACTERS_BANNER_TYPE_NAME,
   WEAPONS_BANNER_TYPE_NAME,
+  AVAILABLE_ITEMS_LANG_CODES,
 } from '../constants/index.js';
 
 import banners from '../../staticData/data/banners/banners.json' assert { type: "json" };
@@ -31,46 +32,84 @@ export function getBanners() {
   return banners;
 }
 
-export function getItems({ langCode, type }) {
+export function getCharactersItems({
+  languageCode,
+  defaultLangCode,
+}) {
+  let result = {};
+  switch (languageCode) {
+    case 'ru':
+      result = charactersRu;
+      break;
+    case 'id':
+      result = charactersId;
+      break;
+    case 'ko':
+      result = charactersKo;
+      break;
+    case 'zh-hans':
+      result = charactersZhHans;
+      break;
+    case 'en':
+    default:
+      if (AVAILABLE_ITEMS_LANG_CODES.includes(defaultLangCode)) {
+        result = getCharactersItems({
+          languageCode: defaultLangCode,
+        });
+      }
+      result = charactersEn;
+  }
+  return result;
+}
+
+export function getWeaponsItems({
+  languageCode,
+  defaultLangCode,
+}) {
+  let result = {};
+  switch (languageCode) {
+    case 'ru':
+      result = weaponsRu;
+      break;
+    case 'id':
+      result = weaponsId;
+      break;
+    case 'ko':
+      result = weaponsKo;
+      break;
+    case 'zh-hans':
+      result = weaponsZhHans;
+      break;
+    case 'en':
+    default:
+      if (AVAILABLE_ITEMS_LANG_CODES.includes(defaultLangCode)) {
+        result = getWeaponsItems({
+          languageCode: defaultLangCode,
+        });
+      }
+      result = weaponsEn;
+  }
+  return result;
+}
+
+export function getItems({
+  languageCode,
+  defaultLangCode,
+  type,
+}) {
   let result = {};
   switch (type) {
     case TYPE_CHARACTERS_NAME:
-      switch (langCode) {
-        case 'ru':
-          result = charactersRu;
-          break;
-        case 'id':
-          result = charactersId;
-          break;
-        case 'ko':
-          result = charactersKo;
-          break;
-        case 'zh-hans':
-          result = charactersZhHans;
-          break;
-        case 'en':
-        default:
-          result = charactersEn;
-      }
+      result = getCharactersItems({
+        languageCode,
+        defaultLangCode,
+      });
       break;
     case TYPE_WEAPONS_NAME:
-      switch (langCode) {
-        case 'ru':
-          result = weaponsRu;
-          break;
-        case 'id':
-          result = weaponsId;
-          break;
-        case 'ko':
-          result = weaponsKo;
-          break;
-        case 'zh-hans':
-          result = weaponsZhHans;
-          break;
-        case 'en':
-        default:
-          result = weaponsEn;
-      }
+      result = getWeaponsItems({
+        languageCode,
+        defaultLangCode,
+      });
       break;
     default:
   }

@@ -20,6 +20,6 @@ export function getRandomItemByChances(chances) {
 }
 
 export function getRandomArrayElement(array) {
-  const index = this.randomInteger(0, array.length - 1);
+  const index = randomInteger(0, array.length - 1);
   return array.sort(() => Math.random() - 0.5)[index];
 }

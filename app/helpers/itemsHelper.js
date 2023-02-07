@@ -7,9 +7,15 @@ import {
 
 import * as staticDataHelper from './staticDataHelper.js';
 
-export function getItemData({ langCode, objKey, type }) {
+export function getItemData({
+  languageCode,
+  defaultLangCode,
+  objKey,
+  type,
+}) {
   const itemData = staticDataHelper.getItems({
-    langCode,
+    languageCode,
+    defaultLangCode,
     type,
   });
   return _.result(itemData, objKey, {});

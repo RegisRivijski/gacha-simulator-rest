@@ -27,7 +27,7 @@ export function determinePriceFewTimes(wallet, cost, count) {
   const walletCloned = { ...wallet };
   const prices = [];
   for (let i = 0; i < count; i += 1) {
-    const price = this.determinePrice(walletCloned, cost);
+    const price = determinePrice(walletCloned, cost);
     if (price.key && price.value) {
       walletCloned[price.key] -= price.value;
       prices.push(price);

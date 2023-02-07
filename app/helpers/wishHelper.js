@@ -18,7 +18,7 @@ import * as randomizeHelper from './randomizeHelper.js';
 import * as bannerRandomizer from './bannerRandomizer.js';
 import * as guaranteeSystemCounter from './guaranteeSystemCounter.js';
 
-export function generateNewWishItem(userData) {
+export function generateNewWishItem(userData, defaultLangCode) {
   const newItemsData = bannerRandomizer.getNewItems(userData);
   const newItemObjKey = randomizeHelper.getRandomArrayElement(
     newItemsData
@@ -26,7 +26,8 @@ export function generateNewWishItem(userData) {
       .filter((itemObjKey) => ![...BLOCKED_CHARACTERS_OBJ_KEYS, ...BLOCKED_WEAPONS_OBJ_KEYS].includes(itemObjKey)),
   );
   const newItemData = itemsHelper.getItemData({
-    langCode: userData.languageCode,
+    languageCode: userData.languageCode,
+    defaultLangCode,
     objKey: newItemObjKey,
     type: newItemsData.newItemType,
   });
@@ -41,11 +42,12 @@ export async function makeWish({
   userData,
   currentBannerData,
   price,
+  defaultLangCode,
 }) {
   const chatId = _.result(userData, 'chatId');
   const currentBannerType = _.result(currentBannerData, 'type');
 
-  const newItem = this.generateNewWishItem(userData);
+  const newItem = generateNewWishItem(userData, defaultLangCode);
   const newItemInDatabase = await inventoryHelper.addingNewItem({ chatId, ...newItem });
 
   const cashBackForDuplicate = newItemInDatabase.count > 1 || currentBannerType === TYPE_WEAPONS_NAME
@@ -87,14 +89,16 @@ export async function makeWishFewTimes({
   userData,
   currentBannerData,
   prices,
+  defaultLangCode,
 }) {
   const wishesData = [];
 
   for await (const price of prices) {
-    const wishData = await this.makeWish({
+    const wishData = await makeWish({
       userData,
       currentBannerData,
       price,
+      defaultLangCode,
     });
     wishesData.push(wishData);
   }

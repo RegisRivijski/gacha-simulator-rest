@@ -50,7 +50,7 @@ export function getBannerName({
   languageCode,
   defaultLangCode,
 }) {
-  const currentBannerData = this.getBannerData(currentBanner);
+  const currentBannerData = getBannerData(currentBanner);
   const bannerNames = _.result(currentBannerData, 'translates', {});
   switch (languageCode) {
     case 'en':

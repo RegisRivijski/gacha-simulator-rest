@@ -61,6 +61,7 @@ export async function getWish(ctx, next) {
       userData,
       currentBannerData,
       price,
+      defaultLangCode: ctx.state.defaultLangCode,
     })
       .catch((e) => {
         console.error('[ERROR] wishController getWish wishHelper makeWish:', e.message);
@@ -76,7 +77,8 @@ export async function getWish(ctx, next) {
       $t,
       userData,
       bannerName: bannersHelper.getBannerName({
-        ...userData,
+        currentBanner,
+        languageCode,
         defaultLangCode: ctx.state.defaultLangCode,
       }),
     });
@@ -127,7 +129,8 @@ export async function getWish(ctx, next) {
     newItemData: newItem?.newItemData,
     cashBackTemplate: cashBackForDuplicate?.cashBackTemplate,
     bannerName: bannersHelper.getBannerName({
-      ...userData,
+      currentBanner,
+      languageCode,
       defaultLangCode: ctx.state.defaultLangCode,
     }),
   });
@@ -196,6 +199,7 @@ export async function getWishX10(ctx, next) {
       userData,
       currentBannerData,
       prices,
+      defaultLangCode: ctx.state.defaultLangCode,
     })
       .catch((e) => {
         console.error('[ERROR] wishController getWishX10 wishHelper makeWishFewTimes:', e.message);
@@ -213,7 +217,8 @@ export async function getWishX10(ctx, next) {
       $t,
       userData,
       bannerName: bannersHelper.getBannerName({
-        ...userData,
+        currentBanner,
+        languageCode,
         defaultLangCode: ctx.state.defaultLangCode,
       }),
     });
@@ -264,7 +269,8 @@ export async function getWishX10(ctx, next) {
     templatePrices,
     currentBannerType,
     bannerName: bannersHelper.getBannerName({
-      ...userData,
+      currentBanner,
+      languageCode,
       defaultLangCode: ctx.state.defaultLangCode,
     }),
   });

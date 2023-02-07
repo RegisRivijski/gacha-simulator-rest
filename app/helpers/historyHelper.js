@@ -7,7 +7,7 @@ import {
 import * as itemsHelper from './itemsHelper.js';
 import * as timesHelper from './timeHelper.js';
 
-export function addingDataToLogsForTemplate(historyData, langCode) {
+export function addingDataToLogsForTemplate(historyData, languageCode, defaultLangCode) {
   return historyData.map(({ _doc }) => {
     const log = _.clone(_doc);
 
@@ -19,7 +19,8 @@ export function addingDataToLogsForTemplate(historyData, langCode) {
 
     if (log.action === USERS_HISTORY_ACTION_WISH) {
       log.itemData = itemsHelper.getItemData({
-        langCode,
+        languageCode,
+        defaultLangCode,
         objKey: _doc.objKey,
         type: _doc.type,
       });

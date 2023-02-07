@@ -265,7 +265,7 @@ export async function getTgBotHistory(ctx, next) {
         created: -1,
       },
     })
-      .then((data) => historyHelper.addingDataToLogsForTemplate(data, languageCode))
+      .then((data) => historyHelper.addingDataToLogsForTemplate(data, languageCode, ctx.state.defaultLangCode))
       .catch((e) => {
         console.error('[ERROR] userController getHistory HistoryModel find:', e.message);
         ctx.throw(500);
@@ -332,7 +332,7 @@ export async function getTgBotInventory(ctx, next) {
   const $t = translates.getTranslate();
 
   const inventoryData = await ItemsModel.find({ chatId })
-    .then((itemsData) => inventoryHelper.makingInventoryTree(itemsData, languageCode))
+    .then((itemsData) => inventoryHelper.makingInventoryTree(itemsData, languageCode, ctx.state.defaultLangCode))
     .catch((e) => {
       console.error('[ERROR] userController getInventory ItemsModel find:', e.message);
       ctx.throw(500);
