@@ -75,7 +75,10 @@ export async function getWish(ctx, next) {
     mediaGifMessage = await ejs.renderFile('./templates/tgBot/wishBeforeMessage.ejs', {
       $t,
       userData,
-      bannerName: bannersHelper.getBannerName(userData),
+      bannerName: bannersHelper.getBannerName({
+        ...userData,
+        defaultLangCode: ctx.state.defaultLangCode,
+      }),
     });
     mediaGifMessage = minify.minifyTgBot(mediaGifMessage);
     media = linksHelper.getItemImage({
@@ -123,7 +126,10 @@ export async function getWish(ctx, next) {
     templatePrices,
     newItemData: newItem?.newItemData,
     cashBackTemplate: cashBackForDuplicate?.cashBackTemplate,
-    bannerName: bannersHelper.getBannerName(userData),
+    bannerName: bannersHelper.getBannerName({
+      ...userData,
+      defaultLangCode: ctx.state.defaultLangCode,
+    }),
   });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
@@ -206,7 +212,10 @@ export async function getWishX10(ctx, next) {
     mediaGifMessage = await ejs.renderFile('./templates/tgBot/wishX10BeforeMessage.ejs', {
       $t,
       userData,
-      bannerName: bannersHelper.getBannerName(userData),
+      bannerName: bannersHelper.getBannerName({
+        ...userData,
+        defaultLangCode: ctx.state.defaultLangCode,
+      }),
     });
     mediaGifMessage = minify.minifyTgBot(mediaGifMessage);
     media = linksHelper.getItemImage({
@@ -254,7 +263,10 @@ export async function getWishX10(ctx, next) {
     wishesData,
     templatePrices,
     currentBannerType,
-    bannerName: bannersHelper.getBannerName(userData),
+    bannerName: bannersHelper.getBannerName({
+      ...userData,
+      defaultLangCode: ctx.state.defaultLangCode,
+    }),
   });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);

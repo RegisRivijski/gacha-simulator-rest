@@ -202,6 +202,8 @@ export async function getTgBotProfile(ctx, next) {
     currentBannerData,
     currentBannerChances,
     additionalData: userHelper.getAdditionalData(userData),
+    defaultLangCode: ctx.state.defaultLangCode,
+    bannersHelper,
     STANDARD_BANNER_TYPE_NAME,
     CHARACTERS_BANNER_TYPE_NAME,
     WEAPONS_BANNER_TYPE_NAME,

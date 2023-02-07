@@ -45,8 +45,11 @@ export function getBannerPrices(type) {
   return _.result(bannersPrices, type, {});
 }
 
-export function getBannerName(userData) {
-  const { languageCode, currentBanner } = userData;
+export function getBannerName({
+  currentBanner,
+  languageCode,
+  defaultLangCode,
+}) {
   const currentBannerData = this.getBannerData(currentBanner);
   const bannerNames = _.result(currentBannerData, 'translates', {});
   switch (languageCode) {
@@ -63,8 +66,8 @@ export function getBannerName(userData) {
     case 'zh-hans':
       return _.result(bannerNames, 'zh-hans', '');
     default:
-      if (Object.keys(bannerNames).includes(languageCode)) {
-        return _.result(bannerNames, languageCode, '');
+      if (Object.keys(bannerNames).includes(defaultLangCode)) {
+        return _.result(bannerNames, defaultLangCode, '');
       }
       return _.result(bannerNames, 'en', '');
   }

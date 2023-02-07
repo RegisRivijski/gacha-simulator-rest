@@ -14,7 +14,11 @@
 ⏳<b><%- $t('banners.eventProfile'); %></b><br>
 <% activeEventBanners.forEach((banner) => { %>
     <%
-        const bannersName = _.result(banner.translates, userData.languageCode, '')
+        const bannersName = bannersHelper.getBannerName({
+            currentBanner: banner.objKey,
+            languageCode: userData.languageCode,
+            defaultLangCode: defaultLangCode,
+        });
     %>
 
     <% if (banner.objKey === userData.currentBanner) { %>
@@ -54,7 +58,11 @@
 ♾️<b><%- $t('banners.universalProfile'); %></b><br>
 <% activeUniversalBanners.forEach((banner) => { %>
     <%
-        const bannersName = _.result(banner.translates, userData.languageCode, '')
+        const bannersName = bannersHelper.getBannerName({
+            currentBanner: banner.objKey,
+            languageCode: userData.languageCode,
+            defaultLangCode: defaultLangCode,
+        });
     %>
     <% if (banner.objKey === userData.currentBanner) { %>
         🔸 <i><b><%= bannersName %></b></i><br>
