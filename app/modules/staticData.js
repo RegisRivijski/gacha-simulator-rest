@@ -51,6 +51,8 @@ export function getCharactersItems({
       result = charactersZhHans;
       break;
     case 'en':
+      result = charactersEn;
+      break;
     default:
       if (AVAILABLE_ITEMS_LANG_CODES.includes(defaultLangCode)) {
         result = getCharactersItems({
@@ -82,6 +84,8 @@ export function getWeaponsItems({
       result = weaponsZhHans;
       break;
     case 'en':
+      result = weaponsEn;
+      break;
     default:
       if (AVAILABLE_ITEMS_LANG_CODES.includes(defaultLangCode)) {
         result = getWeaponsItems({
