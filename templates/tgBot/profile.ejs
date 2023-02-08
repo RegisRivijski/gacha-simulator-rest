@@ -22,7 +22,7 @@
                             type: TYPE_CHARACTERS_NAME
                         });
                     %>
-                    <%= rarity %>⭐️ <%= itemData.name %> ↑<br>
+                    · <%= rarity %>⭐️ <%= itemData.name %> ↑<br>
                 <% }); %>
             <% }); %>
         <% } else if (banner.type === WEAPONS_BANNER_TYPE_NAME) { %>
@@ -35,7 +35,7 @@
                             type: TYPE_WEAPONS_NAME
                         });
                     %>
-                    <%= rarity %>⭐️ <%= itemData.name %> ↑<br>
+                    · <%= rarity %>⭐️ <%= itemData.name %> ↑<br>
                 <% }); %>
             <% }); %>
         <% } %>
@@ -49,9 +49,9 @@
     <% if (banner.objKey === userData.currentBanner) { %>
         🔸 <i><b><%= banner.bannersName %></b></i><br>
         <% if (banner.type === CHARACTERS_BANNER_TYPE_NAME) { %>
-            5⭐️ <%- $t('banners.allCharacters'); %> ↑<br>
+            · 5⭐️ <%- $t('banners.allCharacters'); %> ↑<br>
         <% } else if (banner.type === WEAPONS_BANNER_TYPE_NAME) { %>
-            5⭐️ <%- $t('banners.allWeapons'); %> ↑<br>
+            · 5⭐️ <%- $t('banners.allWeapons'); %> ↑<br>
         <% } %>
     <% } else { %>
         🔹 <i><%= banner.bannersName %></i><br>
