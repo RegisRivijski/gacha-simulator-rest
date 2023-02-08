@@ -135,6 +135,8 @@ export function getAdditionalBannerData({
   });
   const charactersFive = [];
   const weaponsFive = [];
+  const charactersFour = [];
+  const weaponsFour = [];
 
   if (banner.type === CHARACTERS_BANNER_TYPE_NAME) {
     bannerEmoji = '🧝‍♂️';
@@ -162,10 +164,32 @@ export function getAdditionalBannerData({
     }));
   });
 
+  _.result(banner, 'characters.4', []).forEach((itemObjKey) => {
+    charactersFive.push(itemsHelper.getItemData({
+      languageCode,
+      defaultLangCode,
+      objKey: itemObjKey,
+      type: TYPE_CHARACTERS_NAME,
+    }));
+  });
+
+  _.result(banner, 'weapons.4', []).forEach((itemObjKey) => {
+    weaponsFive.push(itemsHelper.getItemData({
+      languageCode,
+      defaultLangCode,
+      objKey: itemObjKey,
+      type: TYPE_WEAPONS_NAME,
+    }));
+  });
+
   return {
     bannersName,
     bannerEmoji,
-    charactersFive,
-    weaponsFive,
+    items: [
+      ...charactersFive,
+      ...weaponsFive,
+      ...charactersFour,
+      ...weaponsFour,
+    ],
   };
 }
