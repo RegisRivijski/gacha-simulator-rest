@@ -1,20 +1,21 @@
 <%- include('./blocks/firstName', { $t, userData }); %>
 
-<i>
-    <b>
-        <%- $t('wish10.spins') %>: <%= currentBannerData.bannersName %> <%= currentBannerData.bannerEmoji %>
+<%- $t('wish10.spins') %>:
 
-        <% if (
-                currentBannerData?.items.length
-                && currentBannerData.category === EVENT_BANNER_CATEGORY_NAME
-                && currentBannerData.type !== STANDARD_BANNER_TYPE_NAME
-        ) { %>
-            (<%=
-                currentBannerData.items
-                        .filter((item) => Number(item.rarity) === 5)
-                        .map((item) => item.name)
-                        .join(', ');
-            %>)
+<br>
+<br>
+
+🔸 <i><%= currentBannerData.bannersName %></i> <%= currentBannerData.bannerEmoji %>
+
+<% if (
+        currentBannerData?.items.length
+        && currentBannerData.category === EVENT_BANNER_CATEGORY_NAME
+        && currentBannerData.type !== STANDARD_BANNER_TYPE_NAME
+) { %>
+    <% currentBannerData.items.forEach((itemData) => { %>
+        <% if (Number(itemData.rarity) === 5) { %>
+            <br>
+            · 5⭐️ <%= itemData.name %> ↑
         <% } %>
-    </b>
-</i>
+    <% }); %>
+<% } %>
