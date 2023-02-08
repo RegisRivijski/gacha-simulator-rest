@@ -10,16 +10,8 @@
 
 ⏳<b><%- $t('banners.eventProfile'); %></b><br>
 <% activeEventBanners.forEach((banner) => { %>
-    <%
-        const bannersName = bannersHelper.getBannerName({
-            currentBanner: banner.objKey,
-            languageCode: userData.languageCode,
-            defaultLangCode: defaultLangCode,
-        });
-    %>
-
     <% if (banner.objKey === userData.currentBanner) { %>
-        🔸 <i><b><%= bannersName %></b></i><br>
+        🔸 <i><b><%= banner.bannersName %></b></i><br>
         <% if (banner.type === CHARACTERS_BANNER_TYPE_NAME) { %>
             <% Object.keys(banner.characters).forEach((rarity) => { %>
                 <% banner.characters[rarity].forEach((item) => { %>
@@ -48,32 +40,25 @@
             <% }); %>
         <% } %>
     <% } else { %>
-        🔹 <i><%= bannersName %></i><br>
+        🔹 <i><%= banner.bannersName %></i><br>
     <% } %>
 <% }); %>
 <br>
 ♾️<b><%- $t('banners.universalProfile'); %></b><br>
 <% activeUniversalBanners.forEach((banner) => { %>
-    <%
-        const bannersName = bannersHelper.getBannerName({
-            currentBanner: banner.objKey,
-            languageCode: userData.languageCode,
-            defaultLangCode: defaultLangCode,
-        });
-    %>
     <% if (banner.objKey === userData.currentBanner) { %>
-        🔸 <i><b><%= bannersName %></b></i><br>
+        🔸 <i><b><%= banner.bannersName %></b></i><br>
         <% if (banner.type === CHARACTERS_BANNER_TYPE_NAME) { %>
             5⭐️ <%- $t('banners.allCharacters'); %> ↑<br>
         <% } else if (banner.type === WEAPONS_BANNER_TYPE_NAME) { %>
             5⭐️ <%- $t('banners.allWeapons'); %> ↑<br>
         <% } %>
     <% } else { %>
-        🔹 <i><%= bannersName %></i><br>
+        🔹 <i><%= banner.bannersName %></i><br>
     <% } %>
 <% }); %>
 
-<br><i><b><%- $t(`banners.${currentBannerData.type}`); %></b></i><br>
+<br><i><b><%- $t(`banners.${currentBannerData.type}`); %></b></i> <%= currentBannerData.bannerEmoji %><br>
 <% currentBannerChances.forEach((chance) => { %>
     <%= '⭐️'.repeat(chance.item) %><%= (Number(chance.chance) / 10).toFixed(1) %>%<br>
     <% if (chance.toGuarantee) { %>

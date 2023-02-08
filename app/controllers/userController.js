@@ -182,10 +182,34 @@ export async function getTgBotProfile(ctx, next) {
   const translates = new Translates(languageCode, ctx.state.defaultLangCode);
   const $t = translates.getTranslate();
 
-  const activeEventBanners = bannersHelper.getActiveEventBanners();
-  const activeUniversalBanners = bannersHelper.getActiveUniversalBanners();
+  const activeEventBanners = bannersHelper.getActiveEventBanners()
+    .map((banner) => ({
+      ...banner,
+      ...bannersHelper.getAdditionalBannerData({
+        banner,
+        languageCode,
+        defaultLangCode: ctx.state.defaultLangCode,
+      }),
+    }));
+  const activeUniversalBanners = bannersHelper.getActiveUniversalBanners()
+    .map((banner) => ({
+      ...banner,
+      ...bannersHelper.getAdditionalBannerData({
+        banner,
+        languageCode,
+        defaultLangCode: ctx.state.defaultLangCode,
+      }),
+    }));
 
-  const currentBannerData = bannersHelper.getBannerData(currentBanner);
+  let currentBannerData = bannersHelper.getBannerData(currentBanner);
+  currentBannerData = {
+    ...currentBannerData,
+    ...bannersHelper.getAdditionalBannerData({
+      banner: currentBannerData,
+      languageCode,
+      defaultLangCode: ctx.state.defaultLangCode,
+    }),
+  };
   const currentBannerChances = bannersHelper.calculateDropChances({
     type: currentBannerData.type,
     fourStar: _.result(userData, [currentBannerData.type, 'fourStar'], 0),

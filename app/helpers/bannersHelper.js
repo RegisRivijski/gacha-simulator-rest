@@ -137,11 +137,11 @@ export function getAdditionalBannerData({
   const weaponsFive = [];
 
   if (banner.type === CHARACTERS_BANNER_TYPE_NAME) {
-    bannerEmoji = '🧝🏻‍♀️';
+    bannerEmoji = '🧝‍♂️';
   } else if (banner.type === WEAPONS_BANNER_TYPE_NAME) {
-    bannerEmoji = '⚔️';
+    bannerEmoji = '🗡';
   } else if (banner.type === STANDARD_BANNER_TYPE_NAME) {
-    bannerEmoji = '🧝🏻‍♀️⚔️';
+    bannerEmoji = '🧝‍♂️🗡';
   }
 
   _.result(banner, 'characters.5', []).forEach((itemObjKey) => {
