@@ -62,7 +62,7 @@ export function eventCharactersBanner({ currentBannerData, newItemRarity, newIte
     case 4:
       return {
         possibleNewItems: newItemIsEvent ? currentBannerData.characters['4'] : standardBannerData[newItemType]['4'],
-        newItemType: newItemIsEvent ? newItemType : TYPE_CHARACTERS_NAME,
+        newItemType: newItemIsEvent ? TYPE_CHARACTERS_NAME : newItemType,
         newItemRarity,
         newItemIsEvent,
       };
