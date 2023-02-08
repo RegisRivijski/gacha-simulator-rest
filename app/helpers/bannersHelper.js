@@ -12,11 +12,11 @@ import {
   TYPE_CHARACTERS_NAME,
 } from '../constants/index.js';
 
-import * as staticDataHelper from './staticDataHelper.js';
+import * as staticData from '../modules/staticData.js';
 import * as itemsHelper from './itemsHelper.js';
 
-const banners = staticDataHelper.getBanners();
-const bannersPrices = staticDataHelper.getFatesPrices();
+const banners = staticData.getBanners();
+const bannersPrices = staticData.getFatesPrices();
 const bannersArray = Object.values(banners);
 
 export function getActiveBanners() {
@@ -80,7 +80,7 @@ export function getBannerName({
 }
 
 export function calculateDropChances({ type = '', fourStar = 0, fiveStar = 0 }) {
-  const bannerChances = staticDataHelper.getChancesBanner(type);
+  const bannerChances = staticData.getChancesBanner(type);
 
   const fiveStarIsDefault = fiveStar < Number(bannerChances.fiveStar.defaultTo);
   const fourStarIsDefault = fourStar < Number(bannerChances.fourStar.defaultTo);

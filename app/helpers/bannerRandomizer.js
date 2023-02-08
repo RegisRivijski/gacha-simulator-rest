@@ -15,11 +15,11 @@ import * as bannersHelper from './bannersHelper.js';
 import * as itemsHelper from './itemsHelper.js';
 import * as randomizeHelper from './randomizeHelper.js';
 import * as usersHelper from './usersHelper.js';
-import * as staticDataHelper from './staticDataHelper.js';
+import * as staticData from '../modules/staticData.js';
 
 const standardBannerData = bannersHelper.getBannerData(STANDARD_BANNER_NAME);
-const chancesType = staticDataHelper.getChancesType();
-const chancesEventGuarantee = staticDataHelper.getChancesEventGuarantee();
+const chancesType = staticData.getChancesType();
+const chancesEventGuarantee = staticData.getChancesEventGuarantee();
 
 export function eventStandardBanner({ newItemRarity, newItemType }) {
   switch (newItemRarity) {

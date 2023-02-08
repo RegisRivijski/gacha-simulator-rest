@@ -4,7 +4,7 @@ import {
   EVENT_BANNER_CATEGORY_NAME,
 } from '../constants/index.js';
 
-import * as staticDataHelper from './staticDataHelper.js';
+import * as staticData from '../modules/staticData.js';
 import * as documentsHelper from './documentsHelper.js';
 
 export function getNewValuesForGuaranteeSystem({
@@ -14,7 +14,7 @@ export function getNewValuesForGuaranteeSystem({
 }) {
   const currentBannerType = _.result(currentBannerData, 'type');
   const currentBannerCategory = _.result(currentBannerData, 'category');
-  const bannerChances = staticDataHelper.getChancesBanner(currentBannerType);
+  const bannerChances = staticData.getChancesBanner(currentBannerType);
 
   let fourStar = _.result(userData, [currentBannerType, 'fourStar'], 1);
   let fiveStar = _.result(userData, [currentBannerType, 'fiveStar'], 1);

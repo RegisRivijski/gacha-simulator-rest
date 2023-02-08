@@ -5,7 +5,7 @@ import {
   STARGLITTER_NAME,
 } from '../constants/economy.js';
 
-import * as staticDataHelper from './staticDataHelper.js';
+import * as staticData from '../modules/staticData.js';
 
 export function getItemData({
   languageCode,
@@ -13,7 +13,7 @@ export function getItemData({
   objKey,
   type,
 }) {
-  const itemData = staticDataHelper.getItems({
+  const itemData = staticData.getItems({
     languageCode,
     defaultLangCode,
     type,
@@ -22,7 +22,7 @@ export function getItemData({
 }
 
 export function getItemsByTypeAndRarity({ type, rarity }) {
-  const itemsData = Object.values(staticDataHelper.getItems({ type }));
+  const itemsData = Object.values(staticData.getItems({ type }));
   return itemsData.filter((itemData) => Number(itemData.rarity) === rarity);
 }
 
