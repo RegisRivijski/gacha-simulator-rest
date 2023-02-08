@@ -1,12 +1,22 @@
 <%- include('./blocks/firstName', { $t, userData }); %>
 
 <% if (canBuy) { %>
-    , <%- $t('wish10.dropped'); %><br>
+    , <%- $t('wish10.dropped'); %>:<br>
 
     <% for (const wishData of wishesData) { %>
-        <a href="<%= wishData.newItem.newItemData?.url?.fandom ?? ''; %>">
-            <%= '⭐️'.repeat(wishData.newItem.newItemData.rarity); %> <b><%= wishData.newItem.newItemData.name; %></b>
-        </a>
+        <% if (Number(wishData.newItem.newItemData.rarity) === 5) { %>
+            <b>
+                <i>
+                    <%- include('./blocks/newItemRow', { newItemData: wishData.newItem.newItemData }); %>
+                </i>
+            </b>
+        <% } else if (Number(wishData.newItem.newItemData.rarity) === 4) { %>
+            <b>
+                <%- include('./blocks/newItemRow', { newItemData: wishData.newItem.newItemData }); %>
+            </b>
+        <% } else { %>
+            <%- include('./blocks/newItemRow', { newItemData: wishData.newItem.newItemData }); %>
+        <% } %>
 
         <% if (wishData.cashBackForDuplicate.cashBackTemplate) { %>
             , +<%= wishData.cashBackForDuplicate.cashBackTemplate; %>
