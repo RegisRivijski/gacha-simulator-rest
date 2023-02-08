@@ -38,7 +38,7 @@ export function getForWishX10({
   if (canBuyOneMoreTime) {
     return [
       {
-        message: `${$t('wish10.makeWishAgain')} 💫`,
+        message: `${$t('wish.makeWishAgain')} 💫`,
         data: `${WISH_10_ACTION_KEY} ow:${chatId}`,
       },
     ];
