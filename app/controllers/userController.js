@@ -151,6 +151,10 @@ export async function getTgBotProfile(ctx, next) {
       ctx.throw(500);
     });
 
+  if (changeBanner) {
+    userData.currentBanner = bannersHelper.getNextBanner(userData.currentBanner);
+  }
+
   const {
     currentBannerIsValid,
     currentBanner,
@@ -165,10 +169,6 @@ export async function getTgBotProfile(ctx, next) {
 
   if (!currentBannerIsValid) {
     userData.currentBanner = currentBanner;
-  }
-
-  if (changeBanner) {
-    userData.currentBanner = bannersHelper.getNextBanner(currentBanner);
   }
 
   if (!currentBannerIsValid || (getPrimogems && primogemsAdded) || changeBanner) {
