@@ -19,6 +19,14 @@ const banners = staticData.getBanners();
 const bannersPrices = staticData.getFatesPrices();
 const bannersArray = Object.values(banners);
 
+export function orderBannersForProfile(bannersArrayData) {
+  return [
+    ...bannersArrayData.filter((banner) => banner.type === CHARACTERS_BANNER_TYPE_NAME),
+    ...bannersArrayData.filter((banner) => banner.type === WEAPONS_BANNER_TYPE_NAME),
+    ...bannersArrayData.filter((banner) => banner.type === STANDARD_BANNER_TYPE_NAME),
+  ];
+}
+
 export function getActiveBanners() {
   return bannersArray.filter((banner) => {
     const { isActive } = banner;
@@ -27,10 +35,10 @@ export function getActiveBanners() {
 }
 
 export function getActiveEventBanners() {
-  return bannersArray.filter((banner) => {
+  return orderBannersForProfile(bannersArray.filter((banner) => {
     const { isActive, category } = banner;
     return isActive && category === EVENT_BANNER_CATEGORY_NAME;
-  });
+  }));
 }
 
 export function getActiveUniversalBanners() {
