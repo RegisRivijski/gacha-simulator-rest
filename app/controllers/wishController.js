@@ -3,9 +3,15 @@ import ejs from 'ejs';
 
 import {
   EVENT_BANNER_CATEGORY_NAME,
+  UNIVERSAL_BANNER_CATEGORY_NAME,
+
+  STANDARD_BANNER_TYPE_NAME,
+  CHARACTERS_BANNER_TYPE_NAME,
+  WEAPONS_BANNER_TYPE_NAME,
+
   MEDIA_TYPE_PHOTO,
   MEDIA_TYPE_STICKER,
-  STANDARD_BANNER_TYPE_NAME,
+
   WISH_GIF_TTL,
 } from '../constants/index.js';
 
@@ -87,7 +93,10 @@ export async function getWish(ctx, next) {
       userData,
       currentBannerData,
       EVENT_BANNER_CATEGORY_NAME,
+      UNIVERSAL_BANNER_CATEGORY_NAME,
       STANDARD_BANNER_TYPE_NAME,
+      CHARACTERS_BANNER_TYPE_NAME,
+      WEAPONS_BANNER_TYPE_NAME,
     });
     mediaGifMessage = minify.minifyTgBot(mediaGifMessage);
     media = linksHelper.getItemImage({
@@ -232,7 +241,10 @@ export async function getWishX10(ctx, next) {
       userData,
       currentBannerData,
       EVENT_BANNER_CATEGORY_NAME,
+      UNIVERSAL_BANNER_CATEGORY_NAME,
       STANDARD_BANNER_TYPE_NAME,
+      CHARACTERS_BANNER_TYPE_NAME,
+      WEAPONS_BANNER_TYPE_NAME,
     });
     mediaGifMessage = minify.minifyTgBot(mediaGifMessage);
     media = linksHelper.getItemImage({

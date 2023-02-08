@@ -18,4 +18,12 @@
             · 5⭐️ <%= itemData.name %> ↑
         <% } %>
     <% }); %>
+<% } else if (currentBannerData.category === UNIVERSAL_BANNER_CATEGORY_NAME) { %>
+    <% if (currentBannerData.type === CHARACTERS_BANNER_TYPE_NAME) { %>
+        <br>
+        · 5⭐️ <%- $t('banners.allCharacters'); %> ↑<br>
+    <% } else if (currentBannerData.type === WEAPONS_BANNER_TYPE_NAME) { %>
+        <br>
+        · 5⭐️ <%- $t('banners.allWeapons'); %> ↑<br>
+    <% } %>
 <% } %>
