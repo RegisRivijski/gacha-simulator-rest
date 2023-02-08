@@ -2,6 +2,14 @@
 
 <i>
     <b>
-        <%- $t('wish10.spins') %>: <%= bannerName %>
+        <%- $t('wish10.spins') %>: <%= currentBannerData.bannersName %>
+
+        <% if (currentBannerData.category === EVENT_BANNER_CATEGORY_NAME && currentBannerData.type !== STANDARD_BANNER_TYPE_NAME) { %>
+            <% if (currentBannerData?.charactersFive.length) { %>
+                (<%= currentBannerData.charactersFive[0].name %>)
+            <% } else if (currentBannerData?.weaponsFive.length) { %>
+                (<%= currentBannerData.weaponsFive[0].name %>)
+            <% } %>
+        <% } %>
     </b>
 </i>

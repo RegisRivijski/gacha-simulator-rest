@@ -2,8 +2,10 @@ import _ from 'lodash';
 import ejs from 'ejs';
 
 import {
+  EVENT_BANNER_CATEGORY_NAME,
   MEDIA_TYPE_PHOTO,
   MEDIA_TYPE_STICKER,
+  STANDARD_BANNER_TYPE_NAME,
   WISH_GIF_TTL,
 } from '../constants/index.js';
 
@@ -37,7 +39,15 @@ export async function getWish(ctx, next) {
 
   const { currentBanner } = userHelper.validateCurrentBanner(userData);
 
-  const currentBannerData = bannersHelper.getBannerData(currentBanner);
+  let currentBannerData = bannersHelper.getBannerData(currentBanner);
+  currentBannerData = {
+    ...currentBannerData,
+    ...bannersHelper.getAdditionalBannerData({
+      banner: currentBannerData,
+      languageCode: userData.languageCode,
+      defaultLangCode: ctx.state.defaultLangCode,
+    }),
+  };
   const currentBannerType = _.result(currentBannerData, 'type');
   const currentBannerPrices = bannersHelper.getBannerPrices(currentBannerType);
 
@@ -76,11 +86,9 @@ export async function getWish(ctx, next) {
     mediaGifMessage = await ejs.renderFile('./templates/tgBot/wishBeforeMessage.ejs', {
       $t,
       userData,
-      bannerName: bannersHelper.getBannerName({
-        currentBanner,
-        languageCode,
-        defaultLangCode: ctx.state.defaultLangCode,
-      }),
+      currentBannerData,
+      EVENT_BANNER_CATEGORY_NAME,
+      STANDARD_BANNER_TYPE_NAME,
     });
     mediaGifMessage = minify.minifyTgBot(mediaGifMessage);
     media = linksHelper.getItemImage({
@@ -175,7 +183,15 @@ export async function getWishX10(ctx, next) {
   const { currentBanner } = userHelper.validateCurrentBanner(userData);
 
   const wishesCount = 10;
-  const currentBannerData = bannersHelper.getBannerData(currentBanner);
+  let currentBannerData = bannersHelper.getBannerData(currentBanner);
+  currentBannerData = {
+    ...currentBannerData,
+    ...bannersHelper.getAdditionalBannerData({
+      banner: currentBannerData,
+      languageCode: userData.languageCode,
+      defaultLangCode: ctx.state.defaultLangCode,
+    }),
+  };
   const currentBannerType = _.result(currentBannerData, 'type');
   const currentBannerPrices = bannersHelper.getBannerPrices(currentBannerType);
 
@@ -216,11 +232,9 @@ export async function getWishX10(ctx, next) {
     mediaGifMessage = await ejs.renderFile('./templates/tgBot/wishX10BeforeMessage.ejs', {
       $t,
       userData,
-      bannerName: bannersHelper.getBannerName({
-        currentBanner,
-        languageCode,
-        defaultLangCode: ctx.state.defaultLangCode,
-      }),
+      currentBannerData,
+      EVENT_BANNER_CATEGORY_NAME,
+      STANDARD_BANNER_TYPE_NAME,
     });
     mediaGifMessage = minify.minifyTgBot(mediaGifMessage);
     media = linksHelper.getItemImage({
