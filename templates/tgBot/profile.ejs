@@ -48,7 +48,7 @@
 <%= currentBannerData.bannerEmoji %> <i><b><%- $t(`banners.${currentBannerData.type}`); %></b></i><br>
 
 <% currentBannerChances.forEach((chance) => { %>
-    ♦️<i><%= (Number(chance.chance) / 10).toFixed(1); %> %</i> - <%= '⭐️'.repeat(chance.item) %>
+    ♦️ <i><%= (Number(chance.chance) / 10).toFixed(1); %> %</i> - <%= '⭐️'.repeat(chance.item) %>
 
     <br>
 
