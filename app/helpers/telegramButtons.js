@@ -17,14 +17,14 @@ export function getForWish({
   if (canBuyOneMoreTime) {
     return [
       {
-        message: $t('wish.makeWishAgain'),
+        message: `${$t('wish.makeWishAgain')} 💫`,
         data: `${WISH_ACTION_KEY} ow:${chatId}`,
       },
     ];
   }
   return [
     {
-      message: $t('users.profile.name'),
+      message: `${$t('users.profile.name')} ✨`,
       data: `${PROFILE_ACTION_KEY} ow:${chatId}`,
     },
   ];
@@ -38,14 +38,14 @@ export function getForWishX10({
   if (canBuyOneMoreTime) {
     return [
       {
-        message: $t('wish10.makeWishAgain'),
+        message: `${$t('wish10.makeWishAgain')} 💫`,
         data: `${WISH_10_ACTION_KEY} ow:${chatId}`,
       },
     ];
   }
   return [
     {
-      message: $t('users.profile.name'),
+      message: `${$t('users.profile.name')} ✨`,
       data: `${PROFILE_ACTION_KEY} ow:${chatId}`,
     },
   ];
@@ -75,11 +75,11 @@ export function getProfileButtons({
     ],
     [
       {
-        message: $t('users.inventory.name'),
+        message: `${$t('users.inventory.name')} 🎒`,
         data: `${INVENTORY_ACTION_KEY} ow:${chatId}`,
       },
       {
-        message: $t('users.history.name'),
+        message: `${$t('users.history.name')} 📖`,
         data: `${HISTORY_ACTION_KEY} ow:${chatId}`,
       },
     ],
@@ -93,11 +93,11 @@ export function getInventoryButtons({
 }) {
   return [
     {
-      message: $t('users.profile.name'),
+      message: `${$t('users.profile.name')} ✨`,
       data: `${PROFILE_ACTION_KEY} ow:${chatId}`,
     },
     {
-      message: $t('users.history.name'),
+      message: `${$t('users.history.name')} 📖`,
       data: `${HISTORY_ACTION_KEY} ow:${chatId}`,
     },
   ];
@@ -139,11 +139,11 @@ export function getHistoryButtons({
     pagination,
     [
       {
-        message: $t('users.profile.name'),
+        message: `${$t('users.profile.name')} ✨`,
         data: `${PROFILE_ACTION_KEY} ow:${chatId}`,
       },
       {
-        message: $t('users.inventory.name'),
+        message: `${$t('users.inventory.name')} 🎒`,
         data: `${INVENTORY_ACTION_KEY} ow:${chatId}`,
       },
     ],

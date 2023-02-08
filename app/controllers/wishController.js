@@ -62,7 +62,6 @@ export async function getWish(ctx, next) {
   let mediaGif;
   let mediaGifMessage;
   let mediaType;
-  let mediaMarkupButtons;
   let newItem;
   let cashBackForDuplicate;
 
@@ -104,15 +103,6 @@ export async function getWish(ctx, next) {
       userData[cashBackForDuplicate.currency] += cashBackForDuplicate.price;
     }
 
-    const nextPrice = financialOperationsHelper.determinePrice(userData, currentBannerPrices);
-    const canBuyOneMoreTime = Boolean(nextPrice.key);
-
-    mediaMarkupButtons = telegramButtons.getForWish({
-      $t,
-      canBuyOneMoreTime,
-      chatId,
-    });
-
     userData.updated = Date.now();
     userData.save()
       .catch((e) => {
@@ -126,6 +116,15 @@ export async function getWish(ctx, next) {
   const templatePrices = documentsHelper.assignNumbersInObjects(
     documentsHelper.makeObjectFromKeyValueArray([price]),
   );
+
+  const nextPrice = financialOperationsHelper.determinePrice(userData, currentBannerPrices);
+  const canBuyOneMoreTime = Boolean(nextPrice.key);
+
+  const mediaMarkupButtons = telegramButtons.getForWish({
+    $t,
+    canBuyOneMoreTime,
+    chatId,
+  });
 
   let messageTemplate = await ejs.renderFile('./templates/tgBot/wish.ejs', {
     $t,
@@ -206,7 +205,6 @@ export async function getWishX10(ctx, next) {
   let media;
   let mediaGif;
   let mediaGifMessage;
-  let mediaMarkupButtons;
   let mediaType;
   let wishesData;
 
@@ -252,15 +250,6 @@ export async function getWishX10(ctx, next) {
       }
     }
 
-    const nextPrices = financialOperationsHelper.determinePriceFewTimes(wallet, currentBannerPrices, wishesCount);
-    const canBuyOneMoreTime = Boolean(nextPrices.length >= wishesCount);
-
-    mediaMarkupButtons = telegramButtons.getForWishX10({
-      $t,
-      canBuyOneMoreTime,
-      chatId,
-    });
-
     userData.updated = Date.now();
     userData.save()
       .catch((e) => {
@@ -270,6 +259,15 @@ export async function getWishX10(ctx, next) {
     mediaType = MEDIA_TYPE_STICKER;
     media = linksHelper.getLinkToFatesSticker(currentBannerType);
   }
+
+  const nextPrices = financialOperationsHelper.determinePriceFewTimes(wallet, currentBannerPrices, wishesCount);
+  const canBuyOneMoreTime = Boolean(nextPrices.length >= wishesCount);
+
+  const mediaMarkupButtons = telegramButtons.getForWishX10({
+    $t,
+    canBuyOneMoreTime,
+    chatId,
+  });
 
   const templatePrices = documentsHelper.assignNumbersInObjects(
     documentsHelper.makeObjectFromKeyValueArray(prices),
