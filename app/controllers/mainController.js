@@ -14,6 +14,15 @@ export async function start(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
+  let { startData } = ctx.query;
+  if (startData) {
+    try {
+      startData = JSON.parse(startData);
+    } catch (e) {
+      console.warn('[WARN] mainController start JSON.parse(startData):', e.message);
+    }
+  }
+
   const userData = await userHelper.getUserData(chatId)
     .catch((e) => {
       console.error('[ERROR] mainController start UsersModel findOne:', e.message);
