@@ -48,17 +48,19 @@
 <%= currentBannerData.bannerEmoji %> <i><b><%- $t(`banners.${currentBannerData.type}`); %></b></i><br>
 
 <% currentBannerChances.forEach((chance) => { %>
-    <%= '⭐️'.repeat(chance.item) %> <i><%= (Number(chance.chance) / 10).toFixed(1) %>%</i><br>
+    ♦️<i><%= (Number(chance.chance) / 10).toFixed(1); %> %</i> - <%= '⭐️'.repeat(chance.item) %>
+
+    <br>
 
     <% if (chance.toGuarantee) { %>
-        <%- $t('users.profile.toGuarantor'); %>: <%= chance.toGuarantee %> <%= $t('phrases.pieces'); %><br>
+        · <%- $t('users.profile.toGuarantor'); %>: <%= chance.toGuarantee %> <%= $t('phrases.pieces'); %><br>
     <% } %>
 
     <% if (currentBannerData.type !== STANDARD_BANNER_TYPE_NAME && currentBannerData.category === EVENT_BANNER_CATEGORY_NAME) { %>
         <% if (chance.item === 4) { %>
-            <%- $t('banners.guaranteeFour'); %>: <%= userData[currentBannerData.type].fourStarEventGuaranteed ? '100%' : '50%'; %><br>
+            · <%- $t('banners.guaranteeFour'); %>: <%= userData[currentBannerData.type].fourStarEventGuaranteed ? '100%' : '50%'; %><br>
         <% } else if (chance.item === 5) { %>
-            <%- $t('banners.guaranteeEvent'); %>: <%= userData[currentBannerData.type].fiveStarEventGuaranteed ? '100%' : '50%'; %><br>
+            · <%- $t('banners.guaranteeEvent'); %>: <%= userData[currentBannerData.type].fiveStarEventGuaranteed ? '100%' : '50%'; %><br>
         <% } %>
     <% } %>
 <% }); %>
