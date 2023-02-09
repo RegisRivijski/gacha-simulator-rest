@@ -2,9 +2,7 @@ import _ from 'lodash';
 
 export function update(obj, fields) {
   for (const { key, value } of fields) {
-    if (_.has(obj, key)) {
-      _.set(obj, key, value);
-    }
+    _.set(obj, key, value);
   }
   return obj;
 }
