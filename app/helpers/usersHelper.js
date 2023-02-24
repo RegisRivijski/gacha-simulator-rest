@@ -21,11 +21,17 @@ export function getUserData(chatId) {
   return UsersModel.findOne({ chatId })
     .then((userData) => {
       if (userData) {
-        return userData;
+        return {
+          userData,
+          created: false,
+        };
       }
-      return new UsersModel({
-        chatId,
-      });
+      return {
+        userData: new UsersModel({
+          chatId,
+        }),
+        created: true,
+      };
     });
 }
 

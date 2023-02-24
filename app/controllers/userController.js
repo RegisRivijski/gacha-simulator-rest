@@ -145,7 +145,7 @@ export async function getTgBotProfile(ctx, next) {
   ctx.assert(chatId, 400, 'chatId is required');
   const { isAction } = ctx.state;
 
-  const userData = await userHelper.getUserData(chatId)
+  const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
       console.error('[ERROR] userController getProfile UsersModel findOne:', e.message);
       ctx.throw(500);
@@ -267,7 +267,7 @@ export async function getTgBotHistory(ctx, next) {
   const page = Number(ctx.request.params.page);
   ctx.assert(chatId, 400, 'chatId and page is required');
 
-  const userData = await userHelper.getUserData(chatId)
+  const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
       console.error('[ERROR] userController getHistory UsersModel findOne:', e.message);
       ctx.throw(500);
@@ -345,7 +345,7 @@ export async function getTgBotInventory(ctx, next) {
 
   ctx.assert(chatId, 400, 'chatId is required');
 
-  const userData = await userHelper.getUserData(chatId)
+  const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
       console.error('[ERROR] userController getInventory UsersModel findOne:', e.message);
       ctx.throw(500);
@@ -395,7 +395,7 @@ export async function getTgBotPrimogems(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
-  const userData = await userHelper.getUserData(chatId)
+  const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
       console.error('[ERROR] userController getTgBotPrimogems UsersModel findOne:', e.message);
       ctx.throw(500);
@@ -437,6 +437,38 @@ export async function getTgBotPrimogems(ctx, next) {
       mediaType,
       media,
     },
+  };
+  ctx.status = 200;
+  await next();
+}
+
+export async function getTgBotReferral(ctx, next) {
+  const { chatId } = ctx.request.params;
+  ctx.assert(chatId, 400, 'chatId is required');
+
+  const { userData } = await userHelper.getUserData(chatId)
+    .catch((e) => {
+      console.error('[ERROR] userController getTgBotReferral UsersModel findOne:', e.message);
+      ctx.throw(500);
+    });
+
+  const { languageCode } = userData;
+  const translates = new Translates(languageCode, ctx.state.defaultLangCode);
+  const $t = translates.getTranslate();
+
+  let messageTemplate = await ejs.renderFile('./templates/tgBot/referral.ejs', {
+    $t,
+    userData,
+    startData: {
+      referralInviteChatId: userData.chatId,
+    },
+  });
+
+  messageTemplate = minify.minifyTgBot(messageTemplate);
+
+  ctx.body = {
+    userData,
+    messageTemplate,
   };
   ctx.status = 200;
   await next();

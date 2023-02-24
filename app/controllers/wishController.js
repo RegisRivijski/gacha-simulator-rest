@@ -37,7 +37,7 @@ export async function getWish(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
-  const userData = await userHelper.getUserData(chatId)
+  const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
       console.error('[ERROR] wishController getWish UsersModel findOne:', e.message);
       ctx.throw(500);
@@ -182,7 +182,7 @@ export async function getWishX10(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
-  const userData = await userHelper.getUserData(chatId)
+  const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
       console.error('[ERROR] wishController getWishX10 UsersModel findOne:', e.message);
       ctx.throw(500);

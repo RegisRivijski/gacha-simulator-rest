@@ -2,6 +2,9 @@ import ejs from 'ejs';
 import {
   MEDIA_TYPE_PHOTO,
 } from '../constants/index.js';
+import {
+  PRIMOGEMS_REFERRAL_REWARD,
+} from '../constants/economy.js';
 
 import Translates from '../classes/Translates.js';
 
@@ -14,20 +17,28 @@ export async function start(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
-  let { startData } = ctx.query;
-  if (startData) {
-    try {
-      startData = JSON.parse(startData);
-    } catch (e) {
-      console.warn('[WARN] mainController start JSON.parse(startData):', e.message);
-    }
-  }
-
-  const userData = await userHelper.getUserData(chatId)
+  const { userData, created } = await userHelper.getUserData(chatId)
     .catch((e) => {
       console.error('[ERROR] mainController start UsersModel findOne:', e.message);
       ctx.throw(500);
     });
+
+  let { startData } = ctx.query;
+  if (startData) {
+    try {
+      startData = JSON.parse(startData);
+
+      if (created && startData.referralInviteChatId) {
+        userData.primogems += PRIMOGEMS_REFERRAL_REWARD;
+        userData.save()
+          .catch((e) => {
+            console.error('[ERROR] mainController start userData.save():', e.message);
+          });
+      }
+    } catch (e) {
+      console.warn('[WARN] mainController start JSON.parse(startData):', e.message);
+    }
+  }
 
   const { languageCode } = userData;
   const translates = new Translates(languageCode, ctx.state.defaultLangCode);
@@ -53,7 +64,7 @@ export async function help(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
-  const userData = await userHelper.getUserData(chatId)
+  const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
       console.error('[ERROR] mainController help UsersModel findOne:', e.message);
       ctx.throw(500);
@@ -78,7 +89,7 @@ export async function settings(ctx, next) {
 
   const { languageCodeSettings } = ctx.request.query;
 
-  const userData = await userHelper.getUserData(chatId)
+  const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
       console.error('[ERROR] mainController settings UsersModel findOne:', e.message);
       ctx.throw(500);
