@@ -62,7 +62,7 @@ export async function activeTelegramBot(ctx, next) {
       notificationData = await cronHelper.configureTelegramUsersForNotifications({
         chatId: id,
         isActive,
-        defaultLanguage: ctx.state.defaultLanguage,
+        botId: ctx.state.defaultLanguage,
       })
         .catch((e) => {
           console.error('[ERROR] analyticsController activeTelegramBot cronHelper configureTelegramUsersForNotifications:', e.message);
@@ -72,7 +72,7 @@ export async function activeTelegramBot(ctx, next) {
       notificationData = await cronHelper.configureTelegramGroupsForNotifications({
         groupChatId: id,
         isActive,
-        defaultLanguage: ctx.state.defaultLanguage,
+        botId: ctx.state.defaultLanguage,
       })
         .catch((e) => {
           console.error('[ERROR] analyticsController activeTelegramBot cronHelper configureTelegramGroupsForNotifications:', e.message);
