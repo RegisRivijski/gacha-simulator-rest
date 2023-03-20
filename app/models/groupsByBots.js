@@ -10,8 +10,8 @@ const itemsSchema = new mongoose.Schema({
     default: '',
   },
   isActive: {
-    type: String,
-    default: '',
+    type: Boolean,
+    default: false,
   },
 });
 export default mongoose.model('groupsByBots', itemsSchema);
