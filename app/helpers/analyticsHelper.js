@@ -1,10 +1,10 @@
 import UsersByBots from '../models/usersByBots.js';
 import GroupsByBots from '../models/groupsByBots.js';
 
-export function configureTelegramUsersForNotifications({ chatId, isActive, defaultLanguage }) {
+export function configureTelegramUsersForNotifications({ chatId, isActive, defaultLangCode }) {
   return UsersByBots.findOne({
     chatId,
-    defaultLanguage,
+    defaultLangCode,
   })
     .then((userConfig) => {
       if (userConfig) {
@@ -18,16 +18,16 @@ export function configureTelegramUsersForNotifications({ chatId, isActive, defau
       return new UsersByBots({
         chatId,
         isActive,
-        defaultLanguage,
+        defaultLangCode,
       })
         .save();
     });
 }
 
-export function configureTelegramGroupsForNotifications({ groupChatId, isActive, defaultLanguage }) {
+export function configureTelegramGroupsForNotifications({ groupChatId, isActive, defaultLangCode }) {
   return GroupsByBots.findOne({
     groupChatId,
-    defaultLanguage,
+    defaultLangCode,
   })
     .then((groupConfig) => {
       if (groupConfig) {
@@ -41,7 +41,7 @@ export function configureTelegramGroupsForNotifications({ groupChatId, isActive,
       return new GroupsByBots({
         groupChatId,
         isActive,
-        defaultLanguage,
+        defaultLangCode,
       })
         .save();
     });

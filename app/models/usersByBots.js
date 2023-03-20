@@ -5,7 +5,7 @@ const itemsSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  defaultLanguage: {
+  defaultLangCode: {
     type: String,
     default: '',
   },
