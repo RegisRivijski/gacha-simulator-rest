@@ -44,12 +44,11 @@ export async function getUser(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
-  const userData = await UsersModel.findOne({ chatId })
+  const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] userController getUser UsersModel findOne:', e.message);
+      console.error('[ERROR] userController getProfile UsersModel findOne:', e.message);
       ctx.throw(500);
     });
-  ctx.assert(userData?.chatId, 404, 'User not found.');
 
   ctx.body = {
     ...userData,
@@ -73,12 +72,11 @@ export async function updateUser(ctx, next) {
   const { fields } = ctx.request.body;
   ctx.assert(fields, 400, 'fields are required');
 
-  let userData = await UsersModel.findOne({ chatId })
+  let { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] userController changeUser UsersModel findOne:', e.message);
+      console.error('[ERROR] userController getProfile UsersModel findOne:', e.message);
       ctx.throw(500);
     });
-  console.log(userData);
   ctx.assert(userData?.chatId, 404, 'User not found.');
 
   userData = documentsHelper.update(userData, fields);
