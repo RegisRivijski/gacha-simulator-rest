@@ -78,6 +78,7 @@ export async function updateUser(ctx, next) {
       console.error('[ERROR] userController changeUser UsersModel findOne:', e.message);
       ctx.throw(500);
     });
+  console.log(userData);
   ctx.assert(userData?.chatId, 404, 'User not found.');
 
   userData = documentsHelper.update(userData, fields);
