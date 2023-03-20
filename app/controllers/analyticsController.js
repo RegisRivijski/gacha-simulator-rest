@@ -53,8 +53,8 @@ export async function getUsersAndGroupChats(ctx, next) {
 }
 
 export async function activeTelegramBot(ctx, next) {
-  const { type, id, isActive } = ctx.request.body;
-  ctx.assert(type && id && isActive, 400);
+  const { type, id, isActive = false } = ctx.request.body;
+  ctx.assert(type && id, 400);
 
   let notificationData = {};
   switch (type) {
