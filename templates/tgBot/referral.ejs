@@ -1,6 +1,13 @@
-<%- include('./blocks/firstName', { $t, userData }); %>
+<%- include('./blocks/firstName', { $t, userData }); %>!
 
 <%-
     $t('users.referral.description')
         .replace('{value}', PRIMOGEMS_REFERRAL_REWARD);
 %>
+
+<br>
+<br>
+
+<a href="<%- telegramBotLink %>?start=<%- btoa(JSON.stringify(startData)); %>">
+    <%- $t('users.referral.name') %>
+</a>

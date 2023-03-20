@@ -460,14 +460,16 @@ export async function getTgBotReferral(ctx, next) {
   const $t = translates.getTranslate();
 
   const telegramBotLink = linksHelper.getBotLinkByLangCode(ctx.state.defaultLangCode);
+  const startData = {
+    referralInviteChatId: userData.chatId,
+  };
 
   let messageTemplate = await ejs.renderFile('./templates/tgBot/referral.ejs', {
     $t,
     userData,
-    startData: {
-      referralInviteChatId: userData.chatId,
-    },
     PRIMOGEMS_REFERRAL_REWARD,
+    telegramBotLink,
+    startData,
   });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
