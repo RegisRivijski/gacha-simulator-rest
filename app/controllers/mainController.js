@@ -8,6 +8,8 @@ import {
 
 import Translates from '../classes/Translates.js';
 
+import UsersModel from '../models/users.js';
+
 import * as userHelper from '../helpers/usersHelper.js';
 import * as telegramButtons from '../helpers/telegramButtons.js';
 import * as minify from '../helpers/minify.js';
@@ -26,9 +28,22 @@ export async function start(ctx, next) {
   let { startData } = ctx.query;
   if (startData) {
     try {
-      startData = JSON.parse(startData);
+      startData = JSON.parse(atob(startData));
 
       if (created && startData.referralInviteChatId) {
+        const invitedUserData = await UsersModel.findOne({
+          chatId: startData.referralInviteChatId,
+        })
+          .catch((e) => {
+            console.error('[ERROR] mainController start UsersModel.findOne():', e.message);
+          });
+
+        invitedUserData.primogems += PRIMOGEMS_REFERRAL_REWARD;
+        userData.save()
+          .catch((e) => {
+            console.error('[ERROR] mainController start invitedUserData.save():', e.message);
+          });
+
         userData.primogems += PRIMOGEMS_REFERRAL_REWARD;
         userData.save()
           .catch((e) => {
