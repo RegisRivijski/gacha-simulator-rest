@@ -77,7 +77,6 @@ export async function updateUser(ctx, next) {
       console.error('[ERROR] userController getProfile UsersModel findOne:', e.message);
       ctx.throw(500);
     });
-  ctx.assert(userData?.chatId, 404, 'User not found.');
 
   userData = documentsHelper.update(userData, fields);
 
