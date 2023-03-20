@@ -5,9 +5,9 @@ const itemsSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  botId: {
-    type: Number,
-    default: 0,
+  defaultLanguage: {
+    type: String,
+    default: '',
   },
   isActive: {
     type: String,
