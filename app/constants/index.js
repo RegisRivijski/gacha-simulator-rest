@@ -2,8 +2,6 @@ export const OWNER_CHAT_ID = 755610236;
 export const OWNER_GROUP_CHAT_ID = -1001706615785;
 export const ANALYTICS_CHANNEL_ID = -1001653150520;
 
-export const BOT_LINK = 'https://t.me/milvachatbot';
-
 export const DEFAULT_LANG_CODE = 'en';
 
 export const AVAILABLE_DEFAULT_LANG_CODES = ['uk', 'ru', 'en'];

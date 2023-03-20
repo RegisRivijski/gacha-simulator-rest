@@ -3,6 +3,10 @@ import {
   CHARACTERS_BANNER_TYPE_NAME,
   WEAPONS_BANNER_TYPE_NAME,
 } from '../constants/index.js';
+import {
+  BOT_LINK_EN,
+  BOT_LINK_RU,
+} from '../constants/links.js';
 
 import config from '../../config/default.js';
 
@@ -64,4 +68,14 @@ export function getLinkForGetPrimogems(primogemsAdded) {
 
 export function getLinkForStart() {
   return `${arturOrigin}/public/img/gacha-simulator/main/start.jpg`;
+}
+
+export function getBotLinkByLangCode(langCode) {
+  switch (langCode) {
+    case 'ru':
+      return BOT_LINK_RU;
+    case 'en':
+    default:
+      return BOT_LINK_EN;
+  }
 }

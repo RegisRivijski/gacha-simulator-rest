@@ -1,1 +1,6 @@
-https://t.me/test_gacha_simulator_en_bot?start=<%- btoa(JSON.stringify(startData)); %>
+<%- include('./blocks/firstName', { $t, userData }); %>
+
+<%-
+    $t('users.referral.description')
+        .replace('{value}', PRIMOGEMS_REFERRAL_REWARD);
+%>

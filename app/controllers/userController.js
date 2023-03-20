@@ -13,6 +13,9 @@ import {
   USERS_HISTORY_LOGS_PER_PAGE,
   MEDIA_TYPE_STICKER,
 } from '../constants/index.js';
+import {
+  PRIMOGEMS_REFERRAL_REWARD,
+} from '../constants/economy.js';
 
 import UsersModel from '../models/users.js';
 import HistoryModel from '../models/histories.js';
@@ -456,12 +459,15 @@ export async function getTgBotReferral(ctx, next) {
   const translates = new Translates(languageCode, ctx.state.defaultLangCode);
   const $t = translates.getTranslate();
 
+  const telegramBotLink = linksHelper.getBotLinkByLangCode(ctx.state.defaultLangCode);
+
   let messageTemplate = await ejs.renderFile('./templates/tgBot/referral.ejs', {
     $t,
     userData,
     startData: {
       referralInviteChatId: userData.chatId,
     },
+    PRIMOGEMS_REFERRAL_REWARD,
   });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
