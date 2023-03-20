@@ -18,6 +18,9 @@ export default {
     port: process.env.GACHA_SIMULATOR_REST_PORT,
     apiKey: process.env.GACHA_SIMULATOR_REST_API_KEY,
   },
+  sentry: {
+    dsn: process.env.SENTRY_GENSHIN_GACHA_SIMULATOR_REST_API_DSN,
+  },
   db: {
     mongodb: {
       url: process.env.MONGODB_1_HOSTNAME,

@@ -1,7 +1,16 @@
+import Sentry from '@sentry/node';
+
+import config from '../../config/default.js';
+
+Sentry.init({
+  dsn: config.sentry.dsn,
+  tracesSampleRate: 1.0,
+});
+
 export default async function errorsHandler(ctx, next) {
   try {
     await next();
   } catch (e) {
-    ctx.throw(e);
+    Sentry.captureException(e);
   }
 }
