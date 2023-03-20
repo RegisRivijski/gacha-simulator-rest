@@ -19,7 +19,8 @@ export function configureTelegramUsersForNotifications({ chatId, isActive, defau
         chatId,
         isActive,
         defaultLanguage,
-      });
+      })
+        .save();
     });
 }
 
@@ -41,6 +42,7 @@ export function configureTelegramGroupsForNotifications({ groupChatId, isActive,
         groupChatId,
         isActive,
         defaultLanguage,
-      });
+      })
+        .save();
     });
 }
