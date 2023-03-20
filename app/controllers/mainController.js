@@ -38,6 +38,10 @@ export async function start(ctx, next) {
             console.error('[ERROR] mainController start UsersModel.findOne():', e.message);
           });
 
+        // DEBUG
+        console.log('startData', startData);
+        console.log(userData.chatId, invitedUserData.chatId);
+
         invitedUserData.primogems += PRIMOGEMS_REFERRAL_REWARD;
         userData.save()
           .catch((e) => {
