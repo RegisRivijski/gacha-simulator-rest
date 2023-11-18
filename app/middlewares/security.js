@@ -8,3 +8,11 @@ export async function ApiKeysValidator(ctx, next) {
     ctx.throw(403);
   }
 }
+
+export async function session(ctx, next) {
+  if (ctx.session.user) {
+    await next();
+  } else {
+    ctx.throw(403);
+  }
+}

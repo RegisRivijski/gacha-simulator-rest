@@ -28,6 +28,7 @@ export default {
   session: {
     key: 'gacha-simulator-rest',
     maxAge: 1000 * 60 * 60 * 24 * 31, // 1 month
+    signed: true,
   },
   db: {
     mongodb: {

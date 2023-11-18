@@ -42,8 +42,7 @@ export async function me(ctx, next) {
     ctx.body = ctx.session.user;
     ctx.status = 200;
   } else {
-    ctx.body = null;
-    ctx.status = 403;
+    ctx.throw(403);
   }
   await next();
 }

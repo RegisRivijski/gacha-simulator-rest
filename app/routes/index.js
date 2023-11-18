@@ -64,8 +64,12 @@ export const publicRouter = new Router()
   .post('/admin/exit', adminAuthController.exit)
   .get('/admin/me', adminAuthController.me)
 
-  .get('/banners/all', bannersController.getAllBanners)
-  .get('/banners')
+  .get('/banners/all', securityMiddlewares.session, bannersController.getAllBanners)
+
+  .get('/banners/:id', securityMiddlewares.session, bannersController.getBannersById)
+  .put('/banners/:id', securityMiddlewares.session, bannersController.changeBannersById)
+  .post('/banners', securityMiddlewares.session, bannersController.createBanners)
+  .delete('/banners', securityMiddlewares.session, bannersController.deleteBanners)
 
   .get('/analytics/users-and-group-chats-list', analyticsController.getUsersAndGroupChatsList)
   .get('/analytics/users-and-group-chats', analyticsController.getUsersAndGroupChats);

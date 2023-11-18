@@ -10,6 +10,8 @@ import errorsHandler from './middlewares/errorsHandler.js';
 export default function main() {
   const app = new Koa();
 
+  app.keys = ['Hello, my name is Homer Simpson!'];
+
   app.use(errorsHandler);
   app.use(session(config.session, app));
   app.use(privateRouter.routes());
