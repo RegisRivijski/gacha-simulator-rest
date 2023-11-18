@@ -1,43 +1,13 @@
-import * as documentsHelper from '../helpers/documentsHelper.js';
+import bcrypt from 'bcrypt';
 
-import UsersModel from '../models/users.js';
-import AdminsModel from '../models/admins.js';
+import config from '../../config/default.js';
+
+import AdminsModel from '../models/genshinImpactTgBot/admins.js';
 
 export async function getAdmin(ctx, next) {
-  const { chatId } = ctx.request.params;
-  ctx.assert(chatId, 400, 'chatId is required');
-
-  const adminData = await AdminsModel.findOne({ chatId })
+  const adminData = await AdminsModel.find()
     .catch((e) => {
       console.error('[ERROR] adminController getAdmin AdminsModel findOne:', e.message);
-      ctx.throw(500);
-    });
-  ctx.assert(adminData.chatId, 404, 'Admin not found.');
-
-  ctx.body = adminData;
-  ctx.status = 200;
-  await next();
-}
-
-export async function updateAdmin(ctx, next) {
-  const { chatId } = ctx.request.params;
-  ctx.assert(chatId, 400, 'chatId is required');
-
-  const { fields } = ctx.request.body;
-  ctx.assert(fields, 400, 'fields are required');
-
-  let adminData = await AdminsModel.findOne({ chatId })
-    .catch((e) => {
-      console.error('[ERROR] adminController updateAdmin AdminsModel findOne:', e.message);
-      ctx.throw(500);
-    });
-  ctx.assert(adminData.chatId, 404, 'Admin not found.');
-
-  adminData = documentsHelper.update(adminData, fields);
-
-  adminData = await adminData.save()
-    .catch((e) => {
-      console.error('[ERROR] adminController updateAdmin AdminsModel adminData save:', e.message);
       ctx.throw(500);
     });
 
@@ -47,22 +17,24 @@ export async function updateAdmin(ctx, next) {
 }
 
 export async function addAdmin(ctx, next) {
-  const { chatId } = ctx.request.params;
-  ctx.assert(chatId, 400, 'chatId is required');
+  const { fields, login, password } = ctx.request.body;
 
-  const { fields, adminType } = ctx.request.body;
   ctx.assert(fields, 400, 'fields are required');
+  ctx.assert(login && password, 'Login and password required');
 
-  let adminData = await AdminsModel.findOne({ chatId })
-    .catch((e) => {
-      console.error('[ERROR] adminController addAdmin AdminsModel findOne:', e.message);
-      ctx.throw(500);
-    });
-  ctx.assert(adminData.chatId, 404, 'Admin not found.');
+  let hash = '';
+  try {
+    const salt = bcrypt.genSaltSync(config.bcrypt.saltRounds);
+    hash = bcrypt.hashSync(password, salt);
+  } catch (e) {
+    console.error('[ERROR] app/controllers/adminController.js addAdmin genSaltSync hashSync:', e.message);
+    ctx.throw(500);
+  }
 
-  adminData = new UsersModel({
-    chatId,
-    adminType,
+  let adminData = new AdminsModel({
+    login,
+    hash,
+    ...fields,
   });
 
   adminData = await adminData.save()

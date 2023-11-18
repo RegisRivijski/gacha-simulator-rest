@@ -10,7 +10,7 @@ import {
   WEAPONS_BANNER_TYPE_NAME,
 } from '../constants/index.js';
 
-import HistoryModel from '../models/histories.js';
+import HistoryModel from '../models/genshinImpactTgBot/histories.js';
 
 import * as itemsHelper from './itemsHelper.js';
 import * as inventoryHelper from './inventoryHelper.js';

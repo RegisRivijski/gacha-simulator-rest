@@ -1,11 +1,12 @@
 import mongoose from 'mongoose';
+import { genshinImpactTgBot } from '../../modules/mongoose.js';
 
 import {
   DEFAULT_BANNER_FOR_USERS,
-} from '../constants/index.js';
+} from '../../constants/index.js';
 import {
   START_PRIMOGEMS_COUNT,
-} from '../constants/economy.js';
+} from '../../constants/economy.js';
 
 const usersSchema = new mongoose.Schema({
   chatId: {
@@ -116,4 +117,4 @@ const usersSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model('users', usersSchema);
+export default genshinImpactTgBot.model('users', usersSchema);

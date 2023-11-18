@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { genshinImpactTgBot } from '../../modules/mongoose.js';
 
 const itemsSchema = new mongoose.Schema({
   chatId: {
@@ -14,4 +15,4 @@ const itemsSchema = new mongoose.Schema({
     default: false,
   },
 });
-export default mongoose.model('usersByBots', itemsSchema);
+export default genshinImpactTgBot.model('usersByBots', itemsSchema);

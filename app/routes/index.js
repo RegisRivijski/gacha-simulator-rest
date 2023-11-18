@@ -4,8 +4,10 @@ import koaBody from 'koa-body';
 import * as securityMiddlewares from '../middlewares/security.js';
 import * as headers from '../middlewares/headers.js';
 
+import * as adminAuthController from '../controllers/adminAuthController.js';
 import * as adminController from '../controllers/adminController.js';
 import * as analyticsController from '../controllers/analyticsController.js';
+import * as bannersController from '../controllers/bannersController.js';
 import * as cronController from '../controllers/cronController.js';
 import * as groupChatController from '../controllers/groupChatController.js';
 import * as systemController from '../controllers/systemController.js';
@@ -27,10 +29,6 @@ export const privateRouter = new Router()
   .get('/group-chat/:groupChatId', groupChatController.getGroupChat)
   .put('/group-chat/:groupChatId', groupChatController.updateGroupChat)
   .post('/group-chat/:groupChatId', groupChatController.addGroupChat)
-
-  .get('/admin/user/:chatId', adminController.getAdmin)
-  .put('/admin/user/:chatId', adminController.updateAdmin)
-  .post('/admin/user/:chatId', adminController.addAdmin)
 
   .get('/tg-bot/user/:chatId/profile', userController.getTgBotProfile)
   .get('/tg-bot/user/:chatId/history/:page', userController.getTgBotHistory)
@@ -58,6 +56,16 @@ export const publicRouter = new Router()
   .get('/', systemController.about)
   .get('/ping', systemController.ping)
   .get('/memory', systemController.memory)
+
+  .get('/admin/all', adminController.getAdmin)
+  .post('/admin', adminController.addAdmin)
+
+  .post('/admin/login', adminAuthController.loginAction)
+  .post('/admin/exit', adminAuthController.exit)
+  .get('/admin/me', adminAuthController.me)
+
+  .get('/banners/all', bannersController.getAllBanners)
+  .get('/banners')
 
   .get('/analytics/users-and-group-chats-list', analyticsController.getUsersAndGroupChatsList)
   .get('/analytics/users-and-group-chats', analyticsController.getUsersAndGroupChats);

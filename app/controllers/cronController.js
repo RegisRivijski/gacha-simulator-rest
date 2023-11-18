@@ -1,5 +1,5 @@
-import UsersByBots from '../models/usersByBots.js';
-import UsersModel from '../models/users.js';
+import UsersByBots from '../models/genshinImpactTgBot/usersByBots.js';
+import UsersModel from '../models/genshinImpactTgBot/users.js';
 
 import * as userHelper from '../helpers/usersHelper.js';
 

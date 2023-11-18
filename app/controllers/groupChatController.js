@@ -1,4 +1,4 @@
-import GroupChats from '../models/groupChats.js';
+import GroupChats from '../models/genshinImpactTgBot/groupChats.js';
 import * as documentsHelper from '../helpers/documentsHelper.js';
 
 export async function getGroupChat(ctx, next) {

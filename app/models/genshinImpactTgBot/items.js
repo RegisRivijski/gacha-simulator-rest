@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import mongooseSequence from 'mongoose-sequence';
+import { genshinImpactTgBot } from '../../modules/mongoose.js';
 
-const AutoIncrement = mongooseSequence(mongoose);
+const AutoIncrement = mongooseSequence(genshinImpactTgBot);
 
 const itemsSchema = new mongoose.Schema({
   itemId: {
@@ -36,4 +37,4 @@ itemsSchema.plugin(AutoIncrement, {
   id: 'itemId_seq',
   inc_field: 'itemId',
 });
-export default mongoose.model('items', itemsSchema);
+export default genshinImpactTgBot.model('items', itemsSchema);

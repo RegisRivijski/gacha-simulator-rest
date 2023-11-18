@@ -47,6 +47,7 @@
     "linebreak-style": "off",
     "no-restricted-syntax": "off",
     "no-case-declarations": "off",
-    "object-curly-newline": "off"
+    "object-curly-newline": "off",
+    "no-underscore-dangle": "off"
   }
 }

@@ -17,9 +17,9 @@ import {
   PRIMOGEMS_REFERRAL_REWARD,
 } from '../constants/economy.js';
 
-import UsersModel from '../models/users.js';
-import HistoryModel from '../models/histories.js';
-import ItemsModel from '../models/items.js';
+import UsersModel from '../models/genshinImpactTgBot/users.js';
+import HistoryModel from '../models/genshinImpactTgBot/histories.js';
+import ItemsModel from '../models/genshinImpactTgBot/items.js';
 
 import Translates from '../classes/Translates.js';
 

@@ -8,7 +8,7 @@ import {
 
 import Translates from '../classes/Translates.js';
 
-import UsersModel from '../models/users.js';
+import UsersModel from '../models/genshinImpactTgBot/users.js';
 
 import * as userHelper from '../helpers/usersHelper.js';
 import * as telegramButtons from '../helpers/telegramButtons.js';

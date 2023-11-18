@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { genshinImpactTgBot } from '../../modules/mongoose.js';
 
 const allActiveStatistic = new mongoose.Schema({
   created: {
@@ -75,4 +76,4 @@ const allActiveStatistic = new mongoose.Schema({
   },
 });
 
-export default mongoose.model('allstatistic', allActiveStatistic);
+export default genshinImpactTgBot.model('allstatistic', allActiveStatistic);

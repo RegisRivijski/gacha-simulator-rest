@@ -4,7 +4,7 @@ import {
 } from '../constants/index.js';
 
 import * as itemsHelper from './itemsHelper.js';
-import ItemsModel from '../models/items.js';
+import ItemsModel from '../models/genshinImpactTgBot/items.js';
 
 export function makingInventoryTree(items, languageCode, defaultLangCode) {
   const charactersInv = {

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { genshinImpactTgBot } from '../../modules/mongoose.js';
 
 const groupChatsSchema = new mongoose.Schema({
   groupChatId: {
@@ -26,4 +27,4 @@ const groupChatsSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-export default mongoose.model('groups', groupChatsSchema);
+export default genshinImpactTgBot.model('groups', groupChatsSchema);

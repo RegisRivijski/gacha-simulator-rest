@@ -1,5 +1,5 @@
-import UsersByBots from '../models/usersByBots.js';
-import GroupsByBots from '../models/groupsByBots.js';
+import UsersByBots from '../models/genshinImpactTgBot/usersByBots.js';
+import GroupsByBots from '../models/genshinImpactTgBot/groupsByBots.js';
 
 export function configureTelegramUsersForNotifications({ chatId, isActive, defaultLangCode }) {
   return UsersByBots.findOne({

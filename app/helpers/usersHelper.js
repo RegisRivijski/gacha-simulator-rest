@@ -8,7 +8,7 @@ import {
   PRIMOGEMS_COEFFICIENT,
 } from '../constants/economy.js';
 
-import UsersModel from '../models/users.js';
+import UsersModel from '../models/genshinImpactTgBot/users.js';
 
 import * as bannersHelper from './bannersHelper.js';
 import * as timeHelper from './timeHelper.js';

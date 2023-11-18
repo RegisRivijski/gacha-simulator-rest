@@ -5,8 +5,8 @@ import {
   TELEGRAM_USER_TYPE,
 } from '../constants/index.js';
 
-import GroupChats from '../models/groupChats.js';
-import UsersModel from '../models/users.js';
+import GroupChats from '../models/genshinImpactTgBot/groupChats.js';
+import UsersModel from '../models/genshinImpactTgBot/users.js';
 
 import * as cronHelper from '../helpers/analyticsHelper.js';
 

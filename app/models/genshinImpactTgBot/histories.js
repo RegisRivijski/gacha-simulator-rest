@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import mongooseSequence from 'mongoose-sequence';
+import { genshinImpactTgBot } from '../../modules/mongoose.js';
 
-const AutoIncrement = mongooseSequence(mongoose);
+const AutoIncrement = mongooseSequence(genshinImpactTgBot);
 
 const historySchema = new mongoose.Schema({
   historyId: {
@@ -38,4 +39,4 @@ historySchema.plugin(AutoIncrement, {
   id: 'historyId_seq',
   inc_field: 'historyId',
 });
-export default mongoose.model('histories', historySchema);
+export default genshinImpactTgBot.model('histories', historySchema);
