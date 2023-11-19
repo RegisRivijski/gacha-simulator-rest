@@ -1,7 +1,5 @@
 import BannersModel from '../models/genshinImpactStaticData/banners.js';
 
-import * as documentsHelper from '../helpers/documentsHelper.js';
-
 export async function getAllBanners(ctx, next) {
   const allBannersData = await BannersModel.find({})
     .catch((e) => {
@@ -33,22 +31,15 @@ export async function getBannersById(ctx, next) {
 }
 
 export async function changeBannersById(ctx, next) {
-  const bannerId = ctx.request.params.id;
-  const fieldsToUpdate = ctx.request.body.fields;
+  let { bannerData } = ctx.request.body;
 
-  ctx.assert(bannerId, 400, 'id is required');
+  const bannerId = bannerData?._id;
 
-  let bannerData = await BannersModel.findOne({ _id: bannerId })
+  ctx.assert(bannerId, 400, 'bannerData._id is required');
+
+  bannerData = await BannersModel.findOneAndUpdate({ _id: bannerId }, bannerData, { new: true })
     .catch((e) => {
-      console.error('[ERROR] app/controllers/bannersController.js getBannersDataByObjKey findOne:', e.message);
-      ctx.throw(500);
-    });
-
-  bannerData = documentsHelper.update(bannerData, fieldsToUpdate);
-
-  await bannerData.save()
-    .catch((e) => {
-      console.error('[ERROR] app/controllers/bannersController changeBannersById save:', e.message);
+      console.error('[ERROR] app/controllers/bannersController.js changeBannersById findOne:', e.message);
       ctx.throw(500);
     });
 
@@ -58,7 +49,7 @@ export async function changeBannersById(ctx, next) {
 }
 
 export async function createBanners(ctx, next) {
-  let bannerData = ctx.request.body;
+  let { bannerData } = ctx.request.body;
 
   ctx.assert(bannerData.objKey, 400, 'objKey is required');
 

@@ -12,5 +12,12 @@ export default async function errorsHandler(ctx, next) {
     await next();
   } catch (e) {
     Sentry.captureException(e);
+    ctx.status = e.status || 500;
+    ctx.body = {
+      error: {
+        message: e.message,
+        status: ctx.status,
+      },
+    };
   }
 }
