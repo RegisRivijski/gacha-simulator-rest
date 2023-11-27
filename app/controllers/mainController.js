@@ -39,7 +39,7 @@ export async function start(ctx, next) {
           });
 
         invitedUserData.primogems += PRIMOGEMS_REFERRAL_REWARD;
-        userData.save()
+        invitedUserData.save()
           .catch((e) => {
             console.error('[ERROR] mainController start invitedUserData.save():', e.message);
           });
