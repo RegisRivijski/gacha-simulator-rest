@@ -7,26 +7,26 @@ import {
   AVAILABLE_ITEMS_LANG_CODES,
 } from '../constants/index.js';
 
-import banners from '../../staticData/data/banners/banners.json' assert { type: "json" };
+import banners from '../../staticData/data/banners/banners.json' assert { type: 'json' };
 
-import charactersEn from '../../staticData/data/items/en/characters.json' assert { type: "json" };
-import charactersRu from '../../staticData/data/items/ru/characters.json' assert { type: "json" };
-import charactersId from '../../staticData/data/items/id/characters.json' assert { type: "json" };
-import charactersKo from '../../staticData/data/items/ko/characters.json' assert { type: "json" };
-import charactersZhHans from '../../staticData/data/items/zh-hans/characters.json' assert { type: "json" };
+import charactersEn from '../../staticData/data/items/en/characters.json' assert { type: 'json' };
+import charactersRu from '../../staticData/data/items/ru/characters.json' assert { type: 'json' };
+import charactersId from '../../staticData/data/items/id/characters.json' assert { type: 'json' };
+import charactersKo from '../../staticData/data/items/ko/characters.json' assert { type: 'json' };
+import charactersZhHans from '../../staticData/data/items/zh-hans/characters.json' assert { type: 'json' };
 
-import weaponsEn from '../../staticData/data/items/en/weapons.json' assert { type: "json" };
-import weaponsRu from '../../staticData/data/items/ru/weapons.json' assert { type: "json" };
-import weaponsId from '../../staticData/data/items/id/weapons.json' assert { type: "json" };
-import weaponsKo from '../../staticData/data/items/ko/weapons.json' assert { type: "json" };
-import weaponsZhHans from '../../staticData/data/items/zh-hans/weapons.json' assert { type: "json" };
+import weaponsEn from '../../staticData/data/items/en/weapons.json' assert { type: 'json' };
+import weaponsRu from '../../staticData/data/items/ru/weapons.json' assert { type: 'json' };
+import weaponsId from '../../staticData/data/items/id/weapons.json' assert { type: 'json' };
+import weaponsKo from '../../staticData/data/items/ko/weapons.json' assert { type: 'json' };
+import weaponsZhHans from '../../staticData/data/items/zh-hans/weapons.json' assert { type: 'json' };
 
-import chancesEventGuarantee from '../../staticData/data/chances/eventGuarantee.json' assert { type: "json" };
-import chancesType from '../../staticData/data/chances/type.json' assert { type: "json" };
-import chancesCharactersBanner from '../../staticData/data/chances/standard.json' assert { type: "json" };
-import chancesWeaponsBanner from '../../staticData/data/chances/weapon.json' assert { type: "json" };
+import chancesEventGuarantee from '../../staticData/data/chances/eventGuarantee.json' assert { type: 'json' };
+import chancesType from '../../staticData/data/chances/type.json' assert { type: 'json' };
+import chancesCharactersBanner from '../../staticData/data/chances/standard.json' assert { type: 'json' };
+import chancesWeaponsBanner from '../../staticData/data/chances/weapon.json' assert { type: 'json' };
 
-import fatesPrices from '../../staticData/data/prices/fates.json' assert { type: "json" };
+import fatesPrices from '../../staticData/data/prices/fates.json' assert { type: 'json' };
 
 export function getBanners() {
   return banners;
