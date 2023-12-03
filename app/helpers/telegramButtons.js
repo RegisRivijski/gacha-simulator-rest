@@ -4,6 +4,7 @@ import {
   PROFILE_ACTION_KEY,
   PROFILE_PRIMOGEMS_GET_ACTION_KEY,
   PROFILE_CHANGE_BANNER_ACTION_KEY,
+  PROFILE_WITHOUT_UPDATE_ACTION_KEY,
   INVENTORY_ACTION_KEY,
   HISTORY_ACTION_KEY,
   LEADERBOARD_ACTION_KEY,
@@ -26,7 +27,7 @@ export function getForWish({
   return [
     {
       message: `${$t('users.profile.name')} ✨`,
-      data: `${PROFILE_ACTION_KEY} ow:${chatId}`,
+      data: `${PROFILE_WITHOUT_UPDATE_ACTION_KEY} ow:${chatId}`,
     },
   ];
 }
@@ -47,7 +48,7 @@ export function getForWishX10({
   return [
     {
       message: `${$t('users.profile.name')} ✨`,
-      data: `${PROFILE_ACTION_KEY} ow:${chatId}`,
+      data: `${PROFILE_WITHOUT_UPDATE_ACTION_KEY} ow:${chatId}`,
     },
   ];
 }

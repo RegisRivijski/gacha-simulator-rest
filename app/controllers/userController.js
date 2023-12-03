@@ -146,7 +146,7 @@ export async function addUser(ctx, next) {
  */
 export async function getTgBotProfile(ctx, next) {
   const { chatId } = ctx.request.params;
-  const { getPrimogems, changeBanner } = ctx.request.query;
+  const { getPrimogems, changeBanner, withoutUpdateMessage } = ctx.request.query;
   ctx.assert(chatId, 400, 'chatId is required');
   const { isAction } = ctx.state;
 
@@ -253,8 +253,9 @@ export async function getTgBotProfile(ctx, next) {
         primogemsAdded,
         getPrimogems,
       }),
+      mediaMarkupButtonsRemoveAfterClick: Boolean(withoutUpdateMessage),
     },
-    updateMessage: isAction,
+    updateMessage: withoutUpdateMessage ? false : isAction,
   };
   ctx.status = 200;
   await next();
@@ -360,7 +361,12 @@ export async function getTgBotInventory(ctx, next) {
   const translates = new Translates(languageCode, ctx.state.defaultLangCode);
   const $t = translates.getTranslate();
 
-  const inventoryData = await ItemsModel.find({ chatId })
+  const inventoryData = await ItemsModel.find({
+    chatId,
+    count: {
+      $gt: 0,
+    },
+  })
     .then((itemsData) => inventoryHelper.makingInventoryTree(itemsData, languageCode, ctx.state.defaultLangCode))
     .catch((e) => {
       console.error('[ERROR] userController getInventory ItemsModel find:', e.message);
