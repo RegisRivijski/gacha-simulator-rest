@@ -42,3 +42,10 @@
 <% } %>
 
 <i><%= $t('users.leaderboard.totalPlayers'); %></i>: <%= usersCount; %>
+
+<br>
+<br>
+
+<% if (currentUserPosition < 0) { %>
+    <i><%= $t('users.leaderboard.pleaseStartPrivate'); %></i>
+<% } %>
