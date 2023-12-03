@@ -217,7 +217,7 @@ export function getLeaderboardButtons({
     });
   }
 
-  if (page !== pageWithMe) {
+  if (page !== pageWithMe && pageWithMe > 0 && pageWithMe < pagesCount) {
     buttons.push({
       message: `${$t('users.leaderboard.showMe')} 🔍️️️️️️`,
       data: `${LEADERBOARD_ACTION_KEY} ow:${chatId} pg:${pageWithMe}`,

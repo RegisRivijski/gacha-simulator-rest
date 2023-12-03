@@ -36,6 +36,9 @@
 
 <br>
 
-<i><%= $t('users.leaderboard.yourPosition'); %></i>: <%= currentUserPosition; %>
-<br>
+<% if (currentUserPosition >= 0) { %>
+    <i><%= $t('users.leaderboard.yourPosition'); %></i>: <%= currentUserPosition; %>
+    <br>
+<% } %>
+
 <i><%= $t('users.leaderboard.totalPlayers'); %></i>: <%= usersCount; %>

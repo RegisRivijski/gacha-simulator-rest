@@ -507,7 +507,7 @@ export async function getTgBotLeaderboard(ctx, next) {
     });
 
   const usersCount = leaderboard.length;
-  let currentUserPosition = 0;
+  let currentUserPosition = -1;
   leaderboard = leaderboard.map((user, index) => {
     const position = index + 1;
     if (user.chatId === Number(chatId)) {
