@@ -36,6 +36,21 @@ export function getUserData(chatId) {
     });
 }
 
+export function getUserByBot(chatId, defaultLangCode) {
+  return UsersByBots.findOne({ chatId, defaultLangCode })
+    .then((userData) => {
+      if (userData) {
+        return userData;
+      }
+      return new UsersModel({
+        chatId,
+        defaultLangCode,
+        isActive: true,
+      })
+        .save();
+    });
+}
+
 export function validateCurrentBanner({ currentBanner }) {
   const isValid = bannersKeys.includes(currentBanner);
   return {

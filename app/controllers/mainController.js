@@ -25,6 +25,19 @@ export async function start(ctx, next) {
       ctx.throw(500);
     });
 
+  const userByBotData = await userHelper.getUserByBot(chatId, ctx.state.defaultLangCode)
+    .catch((e) => {
+      console.error('[ERROR] mainController start getUserByBot:', e.message);
+    });
+
+  if (!userByBotData?.isActive) {
+    userByBotData.isActive = true;
+    await userByBotData.save()
+      .catch((e) => {
+        console.error('[ERROR] mainController start getUserByBot save:', e.message);
+      });
+  }
+
   let { startData } = ctx.query;
   if (startData) {
     try {
