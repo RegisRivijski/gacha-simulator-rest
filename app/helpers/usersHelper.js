@@ -42,7 +42,7 @@ export function getUserByBot(chatId, defaultLangCode) {
       if (userData) {
         return userData;
       }
-      return new UsersModel({
+      return new UsersByBots({
         chatId,
         defaultLangCode,
         isActive: true,

@@ -30,7 +30,7 @@ export async function start(ctx, next) {
       console.error('[ERROR] mainController start getUserByBot:', e.message);
     });
 
-  if (!userByBotData?.isActive) {
+  if (userByBotData?.isActive !== undefined && !userData.isActive) {
     userByBotData.isActive = true;
     await userByBotData.save()
       .catch((e) => {
