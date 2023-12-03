@@ -33,7 +33,7 @@ export const DEFAULT_BANNER_FOR_USERS = 'Symphony of Friendliness';
 export const USERS_HISTORY_ACTION_WISH = 'wish';
 export const USERS_HISTORY_ACTION_PRIMOGEMS = 'primogems';
 export const USERS_HISTORY_LOGS_PER_PAGE = 8;
-export const USERS_LEADERBOARD_LOGS_PER_PAGE = 10;
+export const USERS_LEADERBOARD_LOGS_PER_PAGE = 20;
 
 export const MEDIA_TYPE_PHOTO = 'photo';
 export const MEDIA_TYPE_STICKER = 'sticker';
