@@ -9,6 +9,7 @@ import {
 } from '../constants/economy.js';
 
 import UsersModel from '../models/genshinImpactTgBot/users.js';
+import UsersByBots from '../models/genshinImpactTgBot/usersByBots.js';
 
 import * as bannersHelper from './bannersHelper.js';
 import * as timeHelper from './timeHelper.js';
@@ -84,4 +85,39 @@ export function getAdditionalData(userData) {
     hoursFromLastPrimogemsAdded,
     howManyUserCanBuy,
   };
+}
+
+export function getLeaderboard(defaultLangCode = 'ru') {
+  return UsersByBots.aggregate([
+    {
+      $match: {
+        isActive: true,
+        defaultLangCode,
+      },
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'chatId',
+        foreignField: 'chatId',
+        as: 'userData',
+      },
+    },
+    {
+      $unwind: '$userData',
+    },
+    {
+      $project: {
+        chatId: '$userData.chatId',
+        firstName: '$userData.firstName',
+        lastName: '$userData.lastName',
+        primogems: '$userData.primogems',
+      },
+    },
+    {
+      $sort: {
+        primogems: -1,
+      },
+    },
+  ]);
 }

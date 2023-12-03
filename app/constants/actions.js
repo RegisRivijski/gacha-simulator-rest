@@ -5,5 +5,6 @@ export const PROFILE_PRIMOGEMS_GET_ACTION_KEY = 'get_pr';
 export const PROFILE_CHANGE_BANNER_ACTION_KEY = 'chng_pr';
 export const INVENTORY_ACTION_KEY = 'in';
 export const HISTORY_ACTION_KEY = 'hi';
+export const LEADERBOARD_ACTION_KEY = 'le';
 export const SETTINGS_ACTION_KEY = 'sett';
 export const BLANK_ACTION_KEY = 'blank';

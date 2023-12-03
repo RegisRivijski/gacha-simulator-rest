@@ -6,6 +6,7 @@ import {
   PROFILE_CHANGE_BANNER_ACTION_KEY,
   INVENTORY_ACTION_KEY,
   HISTORY_ACTION_KEY,
+  LEADERBOARD_ACTION_KEY,
   SETTINGS_ACTION_KEY,
 } from '../constants/actions.js';
 
@@ -81,6 +82,12 @@ export function getProfileButtons({
       {
         message: `${$t('users.history.name')} 📖`,
         data: `${HISTORY_ACTION_KEY} ow:${chatId}`,
+      },
+    ],
+    [
+      {
+        message: `🏆 ${$t('users.leaderboard.globalTitle')} ✦ 🏆`,
+        data: `${LEADERBOARD_ACTION_KEY} ow:${chatId}`,
       },
     ],
   );
@@ -166,5 +173,59 @@ export function getSettingsButtons({
         },
       ]
     )),
+  ];
+}
+
+export function getLeaderboardButtons({
+  $t,
+  chatId,
+  page,
+  pagesCount,
+  pageWithMe,
+}) {
+  const arrowForward = '▶️';
+  const arrowBack = '◀️';
+
+  const pagination = [];
+  const buttons = [
+    {
+      message: `${$t('users.profile.name')} ✨`,
+      data: `${PROFILE_ACTION_KEY} ow:${chatId}`,
+    },
+  ];
+
+  if (page > 0) {
+    pagination.push({
+      message: arrowBack,
+      data: `${LEADERBOARD_ACTION_KEY} ow:${chatId} pg:${page - 1}`,
+    });
+  }
+
+  pagination.push({
+    message: `${$t('users.history.page')} ${page + 1}`,
+    data: `${LEADERBOARD_ACTION_KEY} ow:${chatId} pg:${
+      page === 0
+        ? pagesCount - 1
+        : 0
+    }`,
+  });
+
+  if (page + 1 < pagesCount) {
+    pagination.push({
+      message: arrowForward,
+      data: `${LEADERBOARD_ACTION_KEY} ow:${chatId} pg:${page + 1}`,
+    });
+  }
+
+  if (page !== pageWithMe) {
+    buttons.push({
+      message: `${$t('users.leaderboard.showMe')} 🔍️️️️️️`,
+      data: `${LEADERBOARD_ACTION_KEY} ow:${chatId} pg:${pageWithMe}`,
+    });
+  }
+
+  return [
+    pagination,
+    buttons,
   ];
 }

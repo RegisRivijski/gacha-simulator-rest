@@ -33,6 +33,7 @@ export const privateRouter = new Router()
   .get('/tg-bot/user/:chatId/profile', userController.getTgBotProfile)
   .get('/tg-bot/user/:chatId/history/:page', userController.getTgBotHistory)
   .get('/tg-bot/user/:chatId/inventory', userController.getTgBotInventory)
+  .get('/tg-bot/user/:chatId/leaderboard/:page', userController.getTgBotLeaderboard)
 
   .get('/tg-bot/user/:chatId/primogems', userController.getTgBotPrimogems)
   .get('/tg-bot/user/:chatId/referral', userController.getTgBotReferral)

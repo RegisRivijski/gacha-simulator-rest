@@ -1,0 +1,19 @@
+🏆 <b><%= $t('users.leaderboard.globalTitle'); %></b> 🏆
+
+<br>
+<br>
+
+<% leaderboard.forEach((log) => { %>
+    <% const showName = `${log.firstName} ${log.lastName}`.trim(); %>
+
+    <code><%= log.position; %>.</code> <i><%= showName %></i> - <b><%= log.primogems; %></b> <%= $t('currency.primogems'); %> ✦
+
+    <br>
+    <br>
+<% }); %>
+
+<br>
+
+<i><%= $t('users.leaderboard.yourPosition'); %></i>: <%= currentUserPosition; %>
+<br>
+<i><%= $t('users.leaderboard.totalPlayers'); %></i>: <%= usersCount; %>

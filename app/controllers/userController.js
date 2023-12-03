@@ -11,6 +11,7 @@ import {
   USERS_HISTORY_ACTION_WISH,
   USERS_HISTORY_ACTION_PRIMOGEMS,
   USERS_HISTORY_LOGS_PER_PAGE,
+  USERS_LEADERBOARD_LOGS_PER_PAGE,
   MEDIA_TYPE_STICKER,
 } from '../constants/index.js';
 import {
@@ -22,6 +23,7 @@ import HistoryModel from '../models/genshinImpactTgBot/histories.js';
 import ItemsModel from '../models/genshinImpactTgBot/items.js';
 
 import Translates from '../classes/Translates.js';
+import cacheWrapper from '../helpers/cacheWrapper.js';
 
 import * as documentsHelper from '../helpers/documentsHelper.js';
 import * as bannersHelper from '../helpers/bannersHelper.js';
@@ -33,6 +35,8 @@ import * as inventoryHelper from '../helpers/inventoryHelper.js';
 import * as minify from '../helpers/minify.js';
 import * as linksHelper from '../helpers/linksHelper.js';
 import * as telegramButtons from '../helpers/telegramButtons.js';
+
+const userHelperCache = cacheWrapper(userHelper, 60);
 
 /**
  * Get userData by chatId with additional data for crons or analytics
@@ -477,5 +481,72 @@ export async function getTgBotReferral(ctx, next) {
     messageTemplate,
   };
   ctx.status = 200;
+  await next();
+}
+
+export async function getTgBotLeaderboard(ctx, next) {
+  const { isAction } = ctx.state;
+  const { chatId } = ctx.request.params;
+  const page = Number(ctx.request.params.page);
+  ctx.assert(chatId, 400, 'chatId is required');
+
+  const { userData } = await userHelper.getUserData(chatId)
+    .catch((e) => {
+      console.error('[ERROR] userController getTgBotLeaderboard UsersModel findOne:', e.message);
+      ctx.throw(500);
+    });
+
+  const { languageCode } = userData;
+  const translates = new Translates(languageCode, ctx.state.defaultLangCode);
+  const $t = translates.getTranslate();
+
+  let leaderboard = await userHelperCache.getLeaderboard(ctx.state.defaultLangCode)
+    .catch((e) => {
+      console.error('[ERROR] app/controllers/userController getTgBotLeaderboard getLeaderboardWithPagination:', e.message);
+      ctx.throw(500);
+    });
+
+  const usersCount = leaderboard.length;
+  let currentUserPosition = 0;
+  leaderboard = leaderboard.map((user, index) => {
+    const position = index + 1;
+    if (user.chatId === Number(chatId)) {
+      currentUserPosition = position;
+    }
+    return {
+      ...user,
+      position,
+    };
+  });
+
+  const pagesCount = Math.ceil(leaderboard.length / USERS_LEADERBOARD_LOGS_PER_PAGE);
+  const pageWithMe = Math.floor((currentUserPosition - 1) / USERS_LEADERBOARD_LOGS_PER_PAGE);
+
+  leaderboard = documentsHelper.paginateArray(leaderboard, page, USERS_LEADERBOARD_LOGS_PER_PAGE);
+
+  let messageTemplate = await ejs.renderFile('./templates/tgBot/leaderboard.ejs', {
+    $t,
+    userData,
+    usersCount,
+    currentUserPosition,
+    leaderboard,
+  });
+
+  messageTemplate = minify.minifyTgBot(messageTemplate);
+
+  ctx.body = {
+    userData,
+    messageTemplate,
+    media: {
+      mediaMarkupButtons: telegramButtons.getLeaderboardButtons({
+        $t,
+        chatId,
+        page,
+        pagesCount,
+        pageWithMe,
+      }),
+    },
+    updateMessage: isAction,
+  };
   await next();
 }

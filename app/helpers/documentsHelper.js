@@ -47,3 +47,9 @@ export function incrementNumberWithLimit(numberParam, limitParam) {
   }
   return 1;
 }
+
+export function paginateArray(array, page, pageSize) {
+  const startIndex = page * pageSize;
+  const endIndex = startIndex + pageSize;
+  return array.slice(startIndex, endIndex);
+}

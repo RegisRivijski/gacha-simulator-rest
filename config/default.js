@@ -1,4 +1,4 @@
-import packageJson from '../package.json' assert { type: "json" };
+import packageJson from '../package.json' assert { type: 'json' };
 
 export default {
   application: {
@@ -56,6 +56,12 @@ export default {
         socketTimeoutMS: 45000,
         family: 4,
       },
+    },
+    redis: {
+      url: process.env.REDIS_URL,
+      host: process.env.REDIS_HOSTNAME,
+      port: process.env.REDIS_PORT,
+      password: process.env.REDIS_PASSWORD,
     },
   },
   rest: {
