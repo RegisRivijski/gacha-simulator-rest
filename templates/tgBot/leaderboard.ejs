@@ -6,9 +6,17 @@
 <% leaderboard.forEach((log) => { %>
     <% const showName = `${log.firstName} ${log.lastName}`.trim(); %>
 
-    <code>
-        <%= log.position; %>.
-    </code>
+    <% if (log.position === 1) { %>
+        🥇.
+    <% } else if (log.position === 2) { %>
+        🥈.
+    <% } else if (log.position === 3) { %>
+        🥉.
+    <% } else { %>
+        <code>
+            <%= log.position; %>.
+        </code>
+    <% }%>
 
     <% if (userData.chatId === Number(log.chatId)) { %>
         <u>
