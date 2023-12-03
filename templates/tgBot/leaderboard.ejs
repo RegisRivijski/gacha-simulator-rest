@@ -6,7 +6,22 @@
 <% leaderboard.forEach((log) => { %>
     <% const showName = `${log.firstName} ${log.lastName}`.trim(); %>
 
-    <code><%= log.position; %>.</code> <i><%= showName %></i> - <b><%= log.primogems; %></b> <%= $t('currency.primogems'); %> ✦
+    <code>
+        <%= log.position; %>.
+    </code>
+
+    <% if (userData.chatId === Number(log.chatId)) { %>
+        <u>
+            <i>
+                <%= showName %>
+            </i>
+        </u>
+    <% } else { %>
+        <i>
+            <%= showName %>
+        </i>
+    <% } %>
+    - <b><%= log.primogems; %></b> <%= $t('currency.primogems'); %> ✦
 
     <br>
     <br>
