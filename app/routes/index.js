@@ -15,6 +15,7 @@ import * as templatesController from '../controllers/templatesController.js';
 import * as userController from '../controllers/userController.js';
 import * as wishController from '../controllers/wishController.js';
 import * as mainController from '../controllers/mainController.js';
+import * as promocodesController from '../controllers/promocodesController.js';
 
 export const privateRouter = new Router()
   .use(koaBody())
@@ -37,7 +38,7 @@ export const privateRouter = new Router()
 
   .get('/tg-bot/user/:chatId/primogems', userController.getTgBotPrimogems)
   .get('/tg-bot/user/:chatId/referral', userController.getTgBotReferral)
-  .get('/tg-bot/user/:chatId/promocode', userController.getTgBotPromocode)
+  .get('/tg-bot/user/:chatId/promocode', promocodesController.getTgBotPromocode)
   .get('/tg-bot/user/:chatId/wish', wishController.getWish)
   .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10)
 
@@ -66,11 +67,16 @@ export const publicRouter = new Router()
   .get('/admin/me', adminAuthController.me)
 
   .get('/banners-all', securityMiddlewares.session, bannersController.getAllBanners)
-
   .get('/banners/:id', securityMiddlewares.session, bannersController.getBannersById)
   .delete('/banners/:id', securityMiddlewares.session, bannersController.deleteBanners)
   .post('/banners', securityMiddlewares.session, bannersController.createBanners)
   .put('/banners', securityMiddlewares.session, bannersController.changeBannersById)
+
+  .get('/promocodes-all', securityMiddlewares.session, promocodesController.getAllPromocodes)
+  .get('/promocodes/:id', securityMiddlewares.session, promocodesController.getPromocodeById)
+  .delete('/promocodes/:id', securityMiddlewares.session, promocodesController.deletePromocode)
+  .post('/promocodes', securityMiddlewares.session, promocodesController.createPromocode)
+  .put('/promocodes', securityMiddlewares.session, promocodesController.changePromocodeById)
 
   .get('/analytics/users-and-group-chats-list', analyticsController.getUsersAndGroupChatsList)
   .get('/analytics/users-and-group-chats', analyticsController.getUsersAndGroupChats);
