@@ -174,6 +174,7 @@ export async function settings(ctx, next) {
     messageTemplate,
     media: {
       mediaMarkupButtons: telegramButtons.getSettingsButtons({
+        $t,
         chatId,
         languages,
         languageCode,

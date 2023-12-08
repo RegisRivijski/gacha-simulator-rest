@@ -34,10 +34,26 @@ export function getForWish({
     ];
   }
   return [
-    {
-      message: `${$t('users.profile.name')} ✨`,
-      data: `${PROFILE_WITHOUT_UPDATE_ACTION_KEY} ow:${chatId}`,
-    },
+    [
+      {
+        message: `${$t('users.profile.name')} ✨`,
+        data: `${PROFILE_WITHOUT_UPDATE_ACTION_KEY} ow:${chatId}`,
+      },
+    ],
+    [
+      {
+        message: $t('phrases.genshinGachaChat'),
+        data: CHAT_LINK,
+        type: BUTTON_TYPE_URL,
+      },
+    ],
+    [
+      {
+        message: $t('phrases.genshinGachaChannel'),
+        data: CHANNEL_LINK,
+        type: BUTTON_TYPE_URL,
+      },
+    ],
   ];
 }
 
@@ -55,10 +71,26 @@ export function getForWishX10({
     ];
   }
   return [
-    {
-      message: `${$t('users.profile.name')} ✨`,
-      data: `${PROFILE_WITHOUT_UPDATE_ACTION_KEY} ow:${chatId}`,
-    },
+    [
+      {
+        message: `${$t('users.profile.name')} ✨`,
+        data: `${PROFILE_WITHOUT_UPDATE_ACTION_KEY} ow:${chatId}`,
+      },
+    ],
+    [
+      {
+        message: $t('phrases.genshinGachaChat'),
+        data: CHAT_LINK,
+        type: BUTTON_TYPE_URL,
+      },
+    ],
+    [
+      {
+        message: $t('phrases.genshinGachaChannel'),
+        data: CHANNEL_LINK,
+        type: BUTTON_TYPE_URL,
+      },
+    ],
   ];
 }
 
@@ -168,6 +200,7 @@ export function getHistoryButtons({
 }
 
 export function getSettingsButtons({
+  $t,
   chatId,
   languages,
   languageCode,
@@ -183,6 +216,20 @@ export function getSettingsButtons({
         },
       ]
     )),
+    [
+      {
+        message: $t('phrases.genshinGachaChat'),
+        data: CHAT_LINK,
+        type: BUTTON_TYPE_URL,
+      },
+    ],
+    [
+      {
+        message: $t('phrases.genshinGachaChannel'),
+        data: CHANNEL_LINK,
+        type: BUTTON_TYPE_URL,
+      },
+    ],
   ];
 }
 
