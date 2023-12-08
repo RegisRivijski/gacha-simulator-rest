@@ -49,7 +49,6 @@ export const privateRouter = new Router()
   .get('/:languageCode/translate', templatesController.getTranslate)
 
   .get('/cron/primogems-limit', cronController.getAllActiveUsersWithPrimogemsLimit)
-  .get('/cron/how-many-user-can-buy', cronController.getAllActiveUsersHowManyCanBuyWishes)
 
   .post('/analytics/active-telegram-bot', analyticsController.activeTelegramBot);
 
