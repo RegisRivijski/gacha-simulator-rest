@@ -42,3 +42,5 @@ export const WISH_GIF_TTL = 6300;
 
 export const TELEGRAM_USER_TYPE = 'userType';
 export const TELEGRAM_GROUP_TYPE = 'groupType';
+
+export const BUTTON_TYPE_URL = 'url';

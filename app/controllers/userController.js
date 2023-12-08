@@ -21,6 +21,7 @@ import {
 import UsersModel from '../models/genshinImpactTgBot/users.js';
 import HistoryModel from '../models/genshinImpactTgBot/histories.js';
 import ItemsModel from '../models/genshinImpactTgBot/items.js';
+import Promocodes from '../models/genshinImpactTgBot/promocodes.js';
 
 import Translates from '../classes/Translates.js';
 import cacheWrapper from '../helpers/cacheWrapper.js';
@@ -554,5 +555,79 @@ export async function getTgBotLeaderboard(ctx, next) {
     },
     updateMessage: isAction,
   };
+  await next();
+}
+
+export async function getTgBotPromocode(ctx, next) {
+  const { chatId } = ctx.request.params;
+  const { promocode } = ctx.request.query;
+
+  ctx.assert(chatId, 400, 'chatId is required');
+
+  const { userData } = await userHelper.getUserData(chatId)
+    .catch((e) => {
+      console.error('[ERROR] userController getTgBotPromocode UsersModel findOne:', e.message);
+      ctx.throw(500);
+    });
+  ctx.assert(userData?.chatId, 404, 'User not found.');
+
+  const { languageCode } = userData;
+  const translates = new Translates(languageCode, ctx.state.defaultLangCode);
+  const $t = translates.getTranslate();
+
+  let promocodeData;
+  let promocodeSuccess = false;
+  if (promocode) {
+    promocodeData = await Promocodes.findOne({
+      promocode,
+    })
+      .catch((e) => {
+        console.error('[ERROR] app/controllers/userController getTgBotPromocode Promocodes.findOne:', e.message);
+      });
+  }
+
+  if (promocodeData?.count > 0 && !promocodeData?.chatIds?.includes(userData.chatId)) {
+    userData.primogems += promocodeData.primogems;
+    userData.starglitter += promocodeData.starglitter;
+    userData.stardust += promocodeData.stardust;
+
+    await userData.save()
+      .catch((e) => {
+        console.error('[ERROR] app/controllers getTgBotPromocode userData.save', e.message);
+        ctx.throw(500);
+      });
+
+    promocodeData.count -= 1;
+    promocodeData.chatIds.push(userData.chatId);
+
+    await promocodeData.save()
+      .catch((e) => {
+        console.error('[ERROR] app/controllers/userController promocodeData.save', e.message);
+      });
+
+    promocodeSuccess = true;
+  }
+
+  let messageTemplate = await ejs.renderFile('./templates/tgBot/promocodes.ejs', {
+    $t,
+    userData,
+    promocode,
+    promocodeData,
+    promocodeSuccess,
+  });
+
+  messageTemplate = minify.minifyTgBot(messageTemplate);
+
+  ctx.body = {
+    userData,
+    messageTemplate,
+    media: {
+      mediaMarkupButtons: telegramButtons.getPromocodesButtons({
+        $t,
+        promocodeSuccess,
+      }),
+    },
+  };
+
   await next();
 }

@@ -1,0 +1,36 @@
+<% if (!promocode) { %>
+    🌟 <%= $t('phrases.hello'); %>, <%- include('./blocks/firstName', { $t, userData }); %>!
+    <%= $t('users.promocodes.hello') %> 💎
+
+    <br>
+    <br>
+
+    ⚠️<%= $t('users.promocodes.instruction'); %> 👍
+<% } else { %>
+    <% if (promocodeSuccess) { %>
+        🎉 <%= $t('phrases.success'); %>, <%- include('./blocks/firstName', { $t, userData }); %>!
+        <%= $t('users.promocodes.success'); %>. <%= $t('users.promocodes.balance'); %>:
+
+        <br>
+        <br>
+
+        <% if (promocodeData.primogems) { %>
+            - <%- $t('users.profile.primogems'); %>: <%= userData.primogems; %> ✦ (+<%= promocodeData.primogems %>)
+            <br>
+        <% } %>
+
+        <% if (promocodeData.stardust) { %>
+            - <%- $t('users.profile.stardust'); %>: <%= userData.stardust; %> ✨ (+<%= promocodeData.stardust %>)
+            <br>
+        <% } %>
+        <% if (promocodeData.starglitter) { %>
+            - <%- $t('users.profile.starglitter'); %>: <%= userData.starglitter; %> 🌟 (+<%= promocodeData.starglitter %>)
+            <br>
+        <% } %>
+
+        <br>
+        <%= $t('phrases.journey'); %> 🚀
+    <% } else { %>
+        ❌ <%= $t('users.promocodes.error'); %> 🌈
+    <% } %>
+<% } %>

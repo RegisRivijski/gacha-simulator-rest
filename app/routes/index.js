@@ -37,7 +37,7 @@ export const privateRouter = new Router()
 
   .get('/tg-bot/user/:chatId/primogems', userController.getTgBotPrimogems)
   .get('/tg-bot/user/:chatId/referral', userController.getTgBotReferral)
-
+  .get('/tg-bot/user/:chatId/promocode', userController.getTgBotPromocode)
   .get('/tg-bot/user/:chatId/wish', wishController.getWish)
   .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10)
 

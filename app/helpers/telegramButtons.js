@@ -11,6 +11,15 @@ import {
   SETTINGS_ACTION_KEY,
 } from '../constants/actions.js';
 
+import {
+  BUTTON_TYPE_URL,
+} from '../constants/index.js';
+
+import {
+  CHAT_LINK,
+  CHANNEL_LINK,
+} from '../constants/links.js';
+
 export function getForWish({
   $t,
   canBuyOneMoreTime,
@@ -229,4 +238,29 @@ export function getLeaderboardButtons({
     pagination,
     buttons,
   ];
+}
+
+export function getPromocodesButtons({
+  $t,
+  promocodeSuccess,
+}) {
+  if (!promocodeSuccess) {
+    return [
+      [
+        {
+          message: $t('phrases.genshinGachaChat'),
+          data: CHAT_LINK,
+          type: BUTTON_TYPE_URL,
+        },
+      ],
+      [
+        {
+          message: $t('phrases.genshinGachaChannel'),
+          data: CHANNEL_LINK,
+          type: BUTTON_TYPE_URL,
+        },
+      ],
+    ];
+  }
+  return [];
 }
