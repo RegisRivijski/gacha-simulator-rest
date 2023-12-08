@@ -199,6 +199,27 @@ export function getHistoryButtons({
   ];
 }
 
+export function getMainLinks({
+  $t,
+}) {
+  return [
+    [
+      {
+        message: $t('phrases.genshinGachaChat'),
+        data: CHAT_LINK,
+        type: BUTTON_TYPE_URL,
+      },
+    ],
+    [
+      {
+        message: $t('phrases.genshinGachaChannel'),
+        data: CHANNEL_LINK,
+        type: BUTTON_TYPE_URL,
+      },
+    ],
+  ];
+}
+
 export function getSettingsButtons({
   $t,
   chatId,

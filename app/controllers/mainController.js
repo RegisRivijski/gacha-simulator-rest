@@ -81,6 +81,9 @@ export async function start(ctx, next) {
     media: {
       media,
       mediaType,
+      mediaMarkupButtons: telegramButtons.getMainLinks({
+        $t,
+      }),
     },
     messageAfterMedia: true,
   };
@@ -105,6 +108,11 @@ export async function help(ctx, next) {
   ctx.body = {
     userData,
     messageTemplate: $t('replies.help'),
+    media: {
+      mediaMarkupButtons: telegramButtons.getMainLinks({
+        $t,
+      }),
+    },
   };
   ctx.status = 200;
   await next();
