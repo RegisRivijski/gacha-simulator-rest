@@ -1,9 +1,15 @@
 <% if (!promocode) { %>
     🌟 <%= $t('phrases.hello'); %>, <%- include('./blocks/firstName', { $t, userData }); %>!
-    <%= $t('users.promocodes.hello') %> 💎
+    <%= $t('users.promocodes.hello') %> 💎⚡️
 
     <br>
     <br>
+
+    <% if (howManyPromocodesCanActive) { %>
+        <%= $t('users.promocodes.canActivate'); %>: <%= howManyPromocodesCanActive %> 🎉
+        <br>
+        <br>
+    <% } %>
 
     ⚠️<%= $t('users.promocodes.instruction'); %> 👍
 <% } else { %>
@@ -32,5 +38,11 @@
         <%= $t('phrases.journey'); %> 🚀
     <% } else { %>
         ❌ <%= $t('users.promocodes.error'); %> 🌈
+
+        <% if (howManyPromocodesCanActive) { %>
+            <br>
+            <br>
+            <%= $t('users.promocodes.canActivate'); %>: <%= howManyPromocodesCanActive %> 🎉
+        <% } %>
     <% } %>
 <% } %>

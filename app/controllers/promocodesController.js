@@ -26,6 +26,7 @@ export async function getTgBotPromocode(ctx, next) {
 
   let promocodeData;
   let promocodeSuccess = false;
+  let howManyPromocodesCanActive = 0;
   if (promocode) {
     promocodeData = await PromocodesModel.findOne({
       promocode,
@@ -33,6 +34,17 @@ export async function getTgBotPromocode(ctx, next) {
       .catch((e) => {
         console.error('[ERROR] app/controllers/userController getTgBotPromocode Promocodes.findOne:', e.message);
       });
+  } else {
+    const allPromocodes = await PromocodesModel.find({})
+      .catch((e) => {
+        console.error('[ERROR] app/controllers/promocodesController getTgBotPromocodes find({})', e.message);
+        return [];
+      });
+    for (const promocodeDataItem of allPromocodes) {
+      if (promocodeDataItem?.count > 0 && !promocodeDataItem?.chatIds?.includes(userData.chatId)) {
+        howManyPromocodesCanActive += 1;
+      }
+    }
   }
 
   if (promocodeData?.count > 0 && !promocodeData?.chatIds?.includes(userData.chatId)) {
@@ -63,6 +75,7 @@ export async function getTgBotPromocode(ctx, next) {
     promocode,
     promocodeData,
     promocodeSuccess,
+    howManyPromocodesCanActive,
   });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);

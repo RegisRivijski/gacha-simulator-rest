@@ -12,8 +12,10 @@ export default async function errorsHandler(ctx, next) {
     await next();
   } catch (e) {
     Sentry.captureException(e);
+
     console.error('Fatal error!');
     console.error(' =>', e.message);
+
     ctx.status = e.status || 500;
     ctx.body = {
       error: {
