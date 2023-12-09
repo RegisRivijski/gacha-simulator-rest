@@ -34,17 +34,6 @@ export async function getTgBotPromocode(ctx, next) {
       .catch((e) => {
         console.error('[ERROR] app/controllers/userController getTgBotPromocode Promocodes.findOne:', e.message);
       });
-  } else {
-    const allPromocodes = await PromocodesModel.find({})
-      .catch((e) => {
-        console.error('[ERROR] app/controllers/promocodesController getTgBotPromocodes find({})', e.message);
-        return [];
-      });
-    for (const promocodeDataItem of allPromocodes) {
-      if (promocodeDataItem?.count > 0 && !promocodeDataItem?.chatIds?.includes(userData.chatId)) {
-        howManyPromocodesCanActive += 1;
-      }
-    }
   }
 
   if (promocodeData?.count > 0 && !promocodeData?.chatIds?.includes(userData.chatId)) {
@@ -67,6 +56,19 @@ export async function getTgBotPromocode(ctx, next) {
       });
 
     promocodeSuccess = true;
+  }
+
+  if (!promocodeSuccess) {
+    const allPromocodes = await PromocodesModel.find({})
+      .catch((e) => {
+        console.error('[ERROR] app/controllers/promocodesController getTgBotPromocodes find({})', e.message);
+        return [];
+      });
+    for (const promocodeDataItem of allPromocodes) {
+      if (promocodeDataItem?.count > 0 && !promocodeDataItem?.chatIds?.includes(userData.chatId)) {
+        howManyPromocodesCanActive += 1;
+      }
+    }
   }
 
   let messageTemplate = await ejs.renderFile('./templates/tgBot/promocodes.ejs', {
