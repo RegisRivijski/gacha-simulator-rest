@@ -445,6 +445,10 @@ export async function getTgBotPrimogems(ctx, next) {
     userData,
     messageTemplate,
     media: {
+      mediaMarkupButtons: telegramButtons.getPrimogemsButtons({
+        $t,
+        chatId,
+      }),
       mediaType,
       media,
     },

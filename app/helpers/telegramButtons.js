@@ -318,3 +318,24 @@ export function getPromocodesButtons({
   }
   return [];
 }
+
+export function getPrimogemsButtons({
+  $t,
+  chatId,
+}) {
+  return [
+    [
+      {
+        message: `${$t('users.profile.name')} ✨`,
+        data: `${PROFILE_WITHOUT_UPDATE_ACTION_KEY} ow:${chatId}`,
+      },
+    ],
+    [
+      {
+        message: $t('phrases.genshinGachaChannel'),
+        data: CHANNEL_LINK,
+        type: BUTTON_TYPE_URL,
+      },
+    ],
+  ];
+}
