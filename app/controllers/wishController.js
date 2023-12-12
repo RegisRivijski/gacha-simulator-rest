@@ -13,8 +13,10 @@ import {
   MEDIA_TYPE_STICKER,
 
   WISH_GIF_TTL,
+  BANNER_RATE_LIMIT_TTL,
 } from '../constants/index.js';
 
+import RedisSingleton from '../classes/RedisSingleton.js';
 import Translates from '../classes/Translates.js';
 
 import * as wishHelper from '../helpers/wishHelper.js';
@@ -26,6 +28,8 @@ import * as linksHelper from '../helpers/linksHelper.js';
 import * as telegramButtons from '../helpers/telegramButtons.js';
 
 import * as minify from '../helpers/minify.js';
+
+const redisClient = RedisSingleton.getRedisClient();
 
 /**
  * Getting templates for telegram bot wish command
@@ -43,7 +47,28 @@ export async function getWish(ctx, next) {
       ctx.throw(500);
     });
 
+  ctx.assert(userData, 404, 'userData is not found');
+
   const { currentBanner } = userHelper.validateCurrentBanner(userData);
+  const { gifEnable } = userData;
+
+  if (gifEnable) {
+    const key = `spin_${chatId}}`;
+    const isSpin = await redisClient.get(key)
+      .catch((e) => {
+        console.error('[ERROR] app/controllers/wishController getWish redis get:', e.message);
+      });
+
+    ctx.assert(!isSpin, 429);
+
+    if (!isSpin) {
+      const currentDate = String(new Date().getTime());
+      await redisClient.set(key, currentDate, 'EX', BANNER_RATE_LIMIT_TTL)
+        .catch((e) => {
+          console.error('[ERROR] app/controllers/wishController getWish redis set:', e.message);
+        });
+    }
+  }
 
   let currentBannerData = bannersHelper.getBannerData(currentBanner);
   currentBannerData = {
@@ -162,12 +187,16 @@ export async function getWish(ctx, next) {
       mediaMarkupButtons,
       mediaMarkupButtonsRemoveAfterClick: true,
     },
-    gifBeforeMessage: {
+  };
+
+  if (gifEnable) {
+    ctx.body.gifBeforeMessage = {
       media: mediaGif,
       mediaGifMessage,
       ttl: WISH_GIF_TTL,
-    },
-  };
+    };
+  }
+
   ctx.status = 200;
   await next();
 }
@@ -188,7 +217,28 @@ export async function getWishX10(ctx, next) {
       ctx.throw(500);
     });
 
+  ctx.assert(userData, 404, 'userData is not found');
+
   const { currentBanner } = userHelper.validateCurrentBanner(userData);
+  const { gifEnable } = userData;
+
+  if (gifEnable) {
+    const key = `spin_${chatId}}`;
+    const isSpin = await redisClient.get(key)
+      .catch((e) => {
+        console.error('[ERROR] app/controllers/wishController getWishX10 redis get:', e.message);
+      });
+
+    ctx.assert(!isSpin, 429);
+
+    if (!isSpin) {
+      const currentDate = String(new Date().getTime());
+      await redisClient.set(key, currentDate, 'EX', BANNER_RATE_LIMIT_TTL)
+        .catch((e) => {
+          console.error('[ERROR] app/controllers/wishController getWisX10 redis set:', e.message);
+        });
+    }
+  }
 
   const wishesCount = 10;
   let currentBannerData = bannersHelper.getBannerData(currentBanner);
@@ -310,12 +360,16 @@ export async function getWishX10(ctx, next) {
       mediaMarkupButtons,
       mediaMarkupButtonsRemoveAfterClick: true,
     },
-    gifBeforeMessage: {
+  };
+
+  if (gifEnable) {
+    ctx.body.gifBeforeMessage = {
       media: mediaGif,
       mediaGifMessage,
       ttl: WISH_GIF_TTL,
-    },
-  };
+    };
+  }
+
   ctx.status = 200;
   await next();
 }

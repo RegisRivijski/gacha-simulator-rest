@@ -107,6 +107,10 @@ const usersSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  gifEnable: {
+    type: Boolean,
+    default: true,
+  },
   updated: {
     type: Date,
     default: Date.now,

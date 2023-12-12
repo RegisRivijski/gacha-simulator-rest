@@ -209,6 +209,7 @@ export function getMainLinks({
 export function getSettingsButtons({
   $t,
   chatId,
+  userData,
   languages,
   languageCode,
 }) {
@@ -223,6 +224,12 @@ export function getSettingsButtons({
         },
       ]
     )),
+    [
+      {
+        message: userData.gifEnable ? 'GIF Enabled ✅' : 'GIF Disabled ☑️',
+        data: `${SETTINGS_ACTION_KEY} ow:${userData.chatId} gif:${!userData.gifEnable}`,
+      },
+    ],
     [
       {
         message: $t('phrases.genshinGachaChat'),

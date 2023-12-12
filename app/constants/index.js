@@ -39,6 +39,7 @@ export const MEDIA_TYPE_PHOTO = 'photo';
 export const MEDIA_TYPE_STICKER = 'sticker';
 
 export const WISH_GIF_TTL = 6300;
+export const BANNER_RATE_LIMIT_TTL = 6;
 
 export const TELEGRAM_USER_TYPE = 'userType';
 export const TELEGRAM_GROUP_TYPE = 'groupType';

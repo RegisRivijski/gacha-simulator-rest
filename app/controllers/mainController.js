@@ -123,7 +123,7 @@ export async function settings(ctx, next) {
   const { isAction } = ctx.state;
   ctx.assert(chatId, 400, 'chatId is required');
 
-  const { languageCodeSettings } = ctx.request.query;
+  const { languageCodeSettings, gifEnable } = ctx.request.query;
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
@@ -133,7 +133,15 @@ export async function settings(ctx, next) {
 
   if (languageCodeSettings) {
     userData.languageCode = languageCodeSettings;
-    userData.save()
+    await userData.save()
+      .catch((e) => {
+        console.error('[ERROR] mainController settings UsersModel save:', e.message);
+      });
+  }
+
+  if (gifEnable) {
+    userData.gifEnable = gifEnable === 'true';
+    await userData.save()
       .catch((e) => {
         console.error('[ERROR] mainController settings UsersModel save:', e.message);
       });
@@ -184,6 +192,7 @@ export async function settings(ctx, next) {
       mediaMarkupButtons: telegramButtons.getSettingsButtons({
         $t,
         chatId,
+        userData,
         languages,
         languageCode,
       }),
