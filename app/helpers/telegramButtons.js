@@ -208,7 +208,6 @@ export function getMainLinks({
 
 export function getSettingsButtons({
   $t,
-  chatId,
   userData,
   languages,
   languageCode,
@@ -220,7 +219,7 @@ export function getSettingsButtons({
           message: languageCode === data.code
             ? `✅ ${data.name}`
             : data.name,
-          data: `${SETTINGS_ACTION_KEY} ow:${chatId} cd:${data.code}`,
+          data: `${SETTINGS_ACTION_KEY} ow:${userData.chatId} cd:${data.code}`,
         },
       ]
     )),
@@ -228,6 +227,12 @@ export function getSettingsButtons({
       {
         message: userData.gifEnable ? 'GIF Enabled ✅' : 'GIF Disabled ☑️',
         data: `${SETTINGS_ACTION_KEY} ow:${userData.chatId} gif:${!userData.gifEnable}`,
+      },
+    ],
+    [
+      {
+        message: userData.notificationsEnable ? 'Notifications Enabled ✅' : 'Notifications Disabled ☑️',
+        data: `${SETTINGS_ACTION_KEY} ow:${userData.chatId} not:${!userData.notificationsEnable}`,
       },
     ],
     [

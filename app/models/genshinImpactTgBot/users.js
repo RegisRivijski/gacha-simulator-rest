@@ -111,6 +111,10 @@ const usersSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  notificationsEnable: {
+    type: Boolean,
+    default: true,
+  },
   updated: {
     type: Date,
     default: Date.now,

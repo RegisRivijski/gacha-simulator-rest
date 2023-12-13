@@ -123,7 +123,11 @@ export async function settings(ctx, next) {
   const { isAction } = ctx.state;
   ctx.assert(chatId, 400, 'chatId is required');
 
-  const { languageCodeSettings, gifEnable } = ctx.request.query;
+  const {
+    languageCodeSettings,
+    gifEnable,
+    notificationsEnable,
+  } = ctx.request.query;
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
@@ -133,14 +137,21 @@ export async function settings(ctx, next) {
 
   if (languageCodeSettings) {
     userData.languageCode = languageCodeSettings;
-    await userData.save()
-      .catch((e) => {
-        console.error('[ERROR] mainController settings UsersModel save:', e.message);
-      });
   }
 
   if (gifEnable) {
     userData.gifEnable = gifEnable === 'true';
+  }
+
+  if (notificationsEnable) {
+    userData.notificationsEnable = notificationsEnable === 'true';
+  }
+
+  if (
+    languageCodeSettings
+    || gifEnable
+    || notificationsEnable
+  ) {
     await userData.save()
       .catch((e) => {
         console.error('[ERROR] mainController settings UsersModel save:', e.message);
