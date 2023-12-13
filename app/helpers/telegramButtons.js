@@ -217,7 +217,7 @@ export function getSettingsButtons({
       [
         {
           message: languageCode === data.code
-            ? `✅ ${data.name}`
+            ? `${data.name} ✅`
             : data.name,
           data: `${SETTINGS_ACTION_KEY} ow:${userData.chatId} cd:${data.code}`,
         },
