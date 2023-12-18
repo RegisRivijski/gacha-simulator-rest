@@ -1,5 +1,6 @@
 import UsersByBots from '../models/genshinImpactTgBot/usersByBots.js';
 import UsersModel from '../models/genshinImpactTgBot/users.js';
+import GroupsByBots from '../models/genshinImpactTgBot/groupsByBots.js';
 
 import * as userHelper from '../helpers/usersHelper.js';
 
@@ -27,6 +28,36 @@ export async function getAllActiveUsersWithPrimogemsLimit(ctx, next) {
   });
 
   ctx.body = allUsersWithPrimogemsLimit.map(({ chatId }) => chatId);
+  ctx.status = 200;
+  await next();
+}
+
+export async function getAllActiveUsers(ctx, next) {
+  const activeUsers = await UsersByBots.find({
+    isActive: true,
+    defaultLangCode: ctx.state.defaultLangCode,
+  })
+    .catch((e) => {
+      console.error('[ERROR] cronController getAllActiveUsers UsersByBots find:', e.message);
+      ctx.throw(500);
+    });
+
+  ctx.body = activeUsers;
+  ctx.status = 200;
+  await next();
+}
+
+export async function getAllActiveGroups(ctx, next) {
+  const activeGroups = await GroupsByBots.find({
+    isActive: true,
+    defaultLangCode: ctx.state.defaultLangCode,
+  })
+    .catch((e) => {
+      console.error('[ERROR] cronController getAllActiveGroups GroupsByBots find:', e.message);
+      ctx.throw(500);
+    });
+
+  ctx.body = activeGroups;
   ctx.status = 200;
   await next();
 }

@@ -16,6 +16,7 @@ import * as userController from '../controllers/userController.js';
 import * as wishController from '../controllers/wishController.js';
 import * as mainController from '../controllers/mainController.js';
 import * as promocodesController from '../controllers/promocodesController.js';
+import * as advertisementsController from '../controllers/advertisementsController.js';
 
 export const privateRouter = new Router()
   .use(koaBody())
@@ -48,7 +49,11 @@ export const privateRouter = new Router()
 
   .get('/:languageCode/translate', templatesController.getTranslate)
 
+  .get('/cron/active-users', cronController.getAllActiveUsers)
+  .get('/cron/active-groups', cronController.getAllActiveGroups)
   .get('/cron/primogems-limit', cronController.getAllActiveUsersWithPrimogemsLimit)
+  .get('/cron/active-advertisement', advertisementsController.getActiveAdvertisement)
+  .put('/cron/advertisements', advertisementsController.changeAdvertisementById)
 
   .post('/analytics/active-telegram-bot', analyticsController.activeTelegramBot);
 
@@ -76,6 +81,12 @@ export const publicRouter = new Router()
   .delete('/promocodes/:id', securityMiddlewares.session, promocodesController.deletePromocode)
   .post('/promocodes', securityMiddlewares.session, promocodesController.createPromocode)
   .put('/promocodes', securityMiddlewares.session, promocodesController.changePromocodeById)
+
+  .get('/advertisements-all', securityMiddlewares.session, advertisementsController.getAllAdvertisement)
+  .get('/advertisements/:id', securityMiddlewares.session, advertisementsController.getAdvertisementById)
+  .delete('/advertisements/:id', securityMiddlewares.session, advertisementsController.deleteAdvertisement)
+  .post('/advertisements', securityMiddlewares.session, advertisementsController.createAdvertisement)
+  .put('/advertisements', securityMiddlewares.session, advertisementsController.changeAdvertisementById)
 
   .get('/analytics/users-and-group-chats-list', analyticsController.getUsersAndGroupChatsList)
   .get('/analytics/users-and-group-chats', analyticsController.getUsersAndGroupChats);
