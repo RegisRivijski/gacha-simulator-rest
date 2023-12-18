@@ -42,7 +42,7 @@ export async function getAllActiveUsers(ctx, next) {
       ctx.throw(500);
     });
 
-  ctx.body = activeUsers;
+  ctx.body = activeUsers.map(({ chatId }) => chatId);
   ctx.status = 200;
   await next();
 }
@@ -57,7 +57,7 @@ export async function getAllActiveGroups(ctx, next) {
       ctx.throw(500);
     });
 
-  ctx.body = activeGroups;
+  ctx.body = activeGroups.map(({ groupChatId }) => groupChatId);
   ctx.status = 200;
   await next();
 }
