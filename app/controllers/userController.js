@@ -448,6 +448,7 @@ export async function getTgBotPrimogems(ctx, next) {
       mediaMarkupButtons: telegramButtons.getPrimogemsButtons({
         $t,
         chatId,
+        defaultLangCode: ctx.state.defaultLangCode,
       }),
       mediaType,
       media,

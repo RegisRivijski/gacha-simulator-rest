@@ -17,13 +17,15 @@ import {
 
 import {
   CHAT_LINK,
-  CHANNEL_LINK,
+  CHANNEL_LINK_RU,
+  CHANNEL_LINK_EU,
 } from '../constants/links.js';
 
 export function getForWish({
   $t,
   canBuyOneMoreTime,
   chatId,
+  defaultLangCode,
 }) {
   if (canBuyOneMoreTime) {
     return [
@@ -43,7 +45,7 @@ export function getForWish({
     [
       {
         message: $t('phrases.genshinGachaChannel'),
-        data: CHANNEL_LINK,
+        data: defaultLangCode === 'ru' ? CHANNEL_LINK_RU : CHANNEL_LINK_EU,
         type: BUTTON_TYPE_URL,
       },
     ],
@@ -54,6 +56,7 @@ export function getForWishX10({
   $t,
   canBuyOneMoreTime,
   chatId,
+  defaultLangCode,
 }) {
   if (canBuyOneMoreTime) {
     return [
@@ -73,7 +76,7 @@ export function getForWishX10({
     [
       {
         message: $t('phrases.genshinGachaChannel'),
-        data: CHANNEL_LINK,
+        data: defaultLangCode === 'ru' ? CHANNEL_LINK_RU : CHANNEL_LINK_EU,
         type: BUTTON_TYPE_URL,
       },
     ],
@@ -187,6 +190,7 @@ export function getHistoryButtons({
 
 export function getMainLinks({
   $t,
+  defaultLangCode,
 }) {
   return [
     [
@@ -199,7 +203,7 @@ export function getMainLinks({
     [
       {
         message: $t('phrases.genshinGachaChannel'),
-        data: CHANNEL_LINK,
+        data: defaultLangCode === 'ru' ? CHANNEL_LINK_RU : CHANNEL_LINK_EU,
         type: BUTTON_TYPE_URL,
       },
     ],
@@ -211,6 +215,7 @@ export function getSettingsButtons({
   userData,
   languages,
   languageCode,
+  defaultLangCode,
 }) {
   return [
     ...languages.map((data) => (
@@ -245,7 +250,7 @@ export function getSettingsButtons({
     [
       {
         message: $t('phrases.genshinGachaChannel'),
-        data: CHANNEL_LINK,
+        data: defaultLangCode === 'ru' ? CHANNEL_LINK_RU : CHANNEL_LINK_EU,
         type: BUTTON_TYPE_URL,
       },
     ],
@@ -309,6 +314,7 @@ export function getLeaderboardButtons({
 export function getPromocodesButtons({
   $t,
   promocodeSuccess,
+  defaultLangCode,
 }) {
   if (!promocodeSuccess) {
     return [
@@ -322,7 +328,7 @@ export function getPromocodesButtons({
       [
         {
           message: $t('phrases.genshinGachaChannel'),
-          data: CHANNEL_LINK,
+          data: defaultLangCode === 'ru' ? CHANNEL_LINK_RU : CHANNEL_LINK_EU,
           type: BUTTON_TYPE_URL,
         },
       ],
@@ -334,6 +340,7 @@ export function getPromocodesButtons({
 export function getPrimogemsButtons({
   $t,
   chatId,
+  defaultLangCode,
 }) {
   return [
     [
@@ -345,7 +352,7 @@ export function getPrimogemsButtons({
     [
       {
         message: $t('phrases.genshinGachaChannel'),
-        data: CHANNEL_LINK,
+        data: defaultLangCode === 'ru' ? CHANNEL_LINK_RU : CHANNEL_LINK_EU,
         type: BUTTON_TYPE_URL,
       },
     ],

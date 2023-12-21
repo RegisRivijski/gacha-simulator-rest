@@ -83,6 +83,7 @@ export async function start(ctx, next) {
       mediaType,
       mediaMarkupButtons: telegramButtons.getMainLinks({
         $t,
+        defaultLangCode: ctx.state.defaultLangCode,
       }),
     },
     messageAfterMedia: true,
@@ -111,6 +112,7 @@ export async function help(ctx, next) {
     media: {
       mediaMarkupButtons: telegramButtons.getMainLinks({
         $t,
+        defaultLangCode: ctx.state.defaultLangCode,
       }),
     },
   };
@@ -206,6 +208,7 @@ export async function settings(ctx, next) {
         userData,
         languages,
         languageCode,
+        defaultLangCode: ctx.state.defaultLangCode,
       }),
     },
     updateMessage: isAction,

@@ -89,6 +89,7 @@ export async function getTgBotPromocode(ctx, next) {
       mediaMarkupButtons: telegramButtons.getPromocodesButtons({
         $t,
         promocodeSuccess,
+        defaultLangCode: ctx.state.defaultLangCode,
       }),
     },
   };

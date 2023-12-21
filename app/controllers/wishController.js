@@ -158,6 +158,7 @@ export async function getWish(ctx, next) {
     $t,
     canBuyOneMoreTime,
     chatId,
+    defaultLangCode: ctx.state.defaultLangCode,
   });
 
   let messageTemplate = await ejs.renderFile('./templates/tgBot/wish.ejs', {
@@ -329,6 +330,7 @@ export async function getWishX10(ctx, next) {
     $t,
     canBuyOneMoreTime,
     chatId,
+    defaultLangCode: ctx.state.defaultLangCode,
   });
 
   const templatePrices = documentsHelper.assignNumbersInObjects(
