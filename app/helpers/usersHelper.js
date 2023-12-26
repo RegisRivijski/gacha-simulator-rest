@@ -64,9 +64,9 @@ export function validateCurrentBanner({ currentBanner }) {
 export function getEventGuarantee(userData, bannerType, rarity) {
   switch (rarity) {
     case 4:
-      return _.result(userData, [bannerType, 'four'], false);
+      return _.result(userData, [bannerType, 'fourStarEventGuaranteed'], false);
     case 5:
-      return _.result(userData, [bannerType, 'five'], false);
+      return _.result(userData, [bannerType, 'fiveStarEventGuaranteed'], false);
     default:
       return false;
   }
