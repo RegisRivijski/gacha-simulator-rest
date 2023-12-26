@@ -187,8 +187,8 @@ export function getNewItems(userData) {
 
   const newItemRarity = randomizeHelper.getRandomItemByChances(currentDropChances);
   const newItemType = randomizeHelper.getRandomItemByChances(chancesType);
-  const newItemIsEvent = usersHelper.getEventGuarantee(userData, currentBannerType, newItemRarity)
-    || randomizeHelper.getRandomItemByChances(chancesEventGuarantee);
+  const newItemIsEvent = Boolean(usersHelper.getEventGuarantee(userData, currentBannerType, newItemRarity))
+    || Boolean(randomizeHelper.getRandomItemByChances(chancesEventGuarantee));
 
   switch (currentBannerCategory) {
     case EVENT_BANNER_CATEGORY_NAME:
