@@ -216,7 +216,16 @@ export function getSettingsButtons({
   languages,
   languageCode,
   defaultLangCode,
+  clearState = 0,
 }) {
+  let clearButtonMessage = 'Clear Inventory 🗑️';
+
+  if (clearState === 1) {
+    clearButtonMessage = 'Are you sure? 🗑️❓';
+  } else if (clearState === 2) {
+    clearButtonMessage = 'Confirm Clear 🗑️✅';
+  }
+
   return [
     ...languages.map((data) => (
       [
@@ -242,8 +251,8 @@ export function getSettingsButtons({
     ],
     [
       {
-        message: 'Clear Inventory 🗑️',
-        data: `${SETTINGS_ACTION_KEY} ow:${userData.chatId} clear:true`,
+        message: clearButtonMessage,
+        data: `${SETTINGS_ACTION_KEY} ow:${userData.chatId} clear:${clearState + 1}`,
       },
     ],
     [

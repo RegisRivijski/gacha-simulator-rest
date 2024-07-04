@@ -130,7 +130,7 @@ export async function settings(ctx, next) {
     languageCodeSettings,
     gifEnable,
     notificationsEnable,
-    removeAllItems,
+    clearState,
   } = ctx.request.query;
 
   const { userData } = await userHelper.getUserData(chatId)
@@ -138,6 +138,8 @@ export async function settings(ctx, next) {
       console.error('[ERROR] mainController settings UsersModel findOne:', e.message);
       ctx.throw(500);
     });
+
+  let deletedCount = 0;
 
   if (languageCodeSettings) {
     userData.languageCode = languageCodeSettings;
@@ -151,8 +153,8 @@ export async function settings(ctx, next) {
     userData.notificationsEnable = notificationsEnable === 'true';
   }
 
-  if (removeAllItems === 'true') {
-    await inventoryHelper.removeAllItemsByChatId(chatId)
+  if (clearState === 2) {
+    deletedCount = await inventoryHelper.removeAllItemsByChatId(chatId)
       .catch((e) => {
         console.error('[ERROR] mainController settings removeAllItemsByChatId:', e.message);
       });
@@ -162,7 +164,6 @@ export async function settings(ctx, next) {
     languageCodeSettings
     || gifEnable
     || notificationsEnable
-    || removeAllItems === 'true'
   ) {
     await userData.save()
       .catch((e) => {
@@ -204,6 +205,7 @@ export async function settings(ctx, next) {
   let messageTemplate = await ejs.renderFile('./templates/tgBot/settings.ejs', {
     $t,
     userData,
+    deletedCount,
   });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);

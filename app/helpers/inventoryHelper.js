@@ -77,11 +77,6 @@ export function addingNewItem({ chatId, newItemObjKey, newItemType }) {
 export function removeAllItemsByChatId(chatId) {
   return ItemsModel.deleteMany({ chatId })
     .then((result) => ({
-      success: true,
       deletedCount: result.deletedCount,
-    }))
-    .catch((error) => ({
-      success: false,
-      error,
     }));
 }
