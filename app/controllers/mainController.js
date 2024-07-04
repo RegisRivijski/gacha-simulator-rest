@@ -135,6 +135,8 @@ export async function settings(ctx, next) {
     clearState,
   } = ctx.request.query;
 
+  clearState = Number(clearState) || 0;
+
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
       console.error('[ERROR] mainController settings UsersModel findOne:', e.message);
