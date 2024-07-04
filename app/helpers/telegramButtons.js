@@ -242,6 +242,12 @@ export function getSettingsButtons({
     ],
     [
       {
+        message: 'Clear Inventory 🗑️',
+        data: `${SETTINGS_ACTION_KEY} ow:${userData.chatId} clear:true`,
+      },
+    ],
+    [
+      {
         message: $t('phrases.genshinGachaChat'),
         data: CHAT_LINK,
         type: BUTTON_TYPE_URL,

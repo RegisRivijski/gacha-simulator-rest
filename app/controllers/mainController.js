@@ -14,6 +14,7 @@ import * as userHelper from '../helpers/usersHelper.js';
 import * as telegramButtons from '../helpers/telegramButtons.js';
 import * as minify from '../helpers/minify.js';
 import * as linksHelper from '../helpers/linksHelper.js';
+import * as inventoryHelper from '../helpers/inventoryHelper.js';
 
 export async function start(ctx, next) {
   const { chatId } = ctx.request.params;
@@ -129,6 +130,7 @@ export async function settings(ctx, next) {
     languageCodeSettings,
     gifEnable,
     notificationsEnable,
+    removeAllItems,
   } = ctx.request.query;
 
   const { userData } = await userHelper.getUserData(chatId)
@@ -149,10 +151,18 @@ export async function settings(ctx, next) {
     userData.notificationsEnable = notificationsEnable === 'true';
   }
 
+  if (removeAllItems === 'true') {
+    await inventoryHelper.removeAllItemsByChatId(chatId)
+      .catch((e) => {
+        console.error('[ERROR] mainController settings removeAllItemsByChatId:', e.message);
+      });
+  }
+
   if (
     languageCodeSettings
     || gifEnable
     || notificationsEnable
+    || removeAllItems === 'true'
   ) {
     await userData.save()
       .catch((e) => {
@@ -170,7 +180,7 @@ export async function settings(ctx, next) {
       code: 'uk',
     },
     {
-      name: 'English 🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+      name: 'English 🏴',
       code: 'en',
     },
     {
