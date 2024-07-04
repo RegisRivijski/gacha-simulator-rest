@@ -130,6 +130,8 @@ export async function settings(ctx, next) {
     languageCodeSettings,
     gifEnable,
     notificationsEnable,
+  } = ctx.request.query;
+  let {
     clearState,
   } = ctx.request.query;
 
@@ -153,11 +155,13 @@ export async function settings(ctx, next) {
     userData.notificationsEnable = notificationsEnable === 'true';
   }
 
-  if (clearState === 2) {
-    deletedCount = await inventoryHelper.removeAllItemsByChatId(chatId)
-      .catch((e) => {
-        console.error('[ERROR] mainController settings removeAllItemsByChatId:', e.message);
-      });
+  if (clearState > 2) {
+    try {
+      deletedCount = await inventoryHelper.removeAllItemsByChatId(chatId);
+      clearState = 0;
+    } catch (e) {
+      console.error('[ERROR] mainController settings removeAllItemsByChatId:', e.message);
+    }
   }
 
   if (
@@ -221,6 +225,7 @@ export async function settings(ctx, next) {
         languages,
         languageCode,
         defaultLangCode: ctx.state.defaultLangCode,
+        clearState,
       }),
     },
     updateMessage: isAction,
