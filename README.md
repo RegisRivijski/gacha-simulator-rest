@@ -66,5 +66,3 @@ Contributions are welcome! Please feel free to open issues or submit pull reques
 ## Disclaimer
 
 This service is intended for educational and entertainment purposes only. It simulates gacha mechanics and does not guarantee real-world probabilities.
-
-## Stay tuned and happy coding! 🎮
