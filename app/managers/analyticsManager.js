@@ -9,5 +9,6 @@ export function logEvent({
     event_type: eventType,
     user_id: userId,
     event_properties: eventProperties,
-  });
+  })
+    .then((response) => console.log(response));
 }
