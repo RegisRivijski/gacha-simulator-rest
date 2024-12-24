@@ -1,11 +1,15 @@
 import ejs from 'ejs';
 
+import * as analyticEventTypes from '../constants/analyticEventTypes.js';
+
 import Translates from '../classes/Translates.js';
 import PromocodesModel from '../models/genshinImpactTgBot/promocodes.js';
 
 import * as minify from '../helpers/minify.js';
 import * as userHelper from '../helpers/usersHelper.js';
 import * as telegramButtons from '../helpers/telegramButtons.js';
+
+import * as analyticsManager from '../managers/analyticsManager.js';
 
 export async function getTgBotPromocode(ctx, next) {
   const { chatId } = ctx.request.params;
@@ -32,7 +36,7 @@ export async function getTgBotPromocode(ctx, next) {
       promocode,
     })
       .catch((e) => {
-        console.error('[ERROR] app/controllers/userController getTgBotPromocode Promocodes.findOne:', e.message);
+        console.error('[ERROR] app/controllers/promocodesController getTgBotPromocode Promocodes.findOne:', e.message);
       });
   }
 
@@ -43,7 +47,7 @@ export async function getTgBotPromocode(ctx, next) {
 
     await userData.save()
       .catch((e) => {
-        console.error('[ERROR] app/controllers getTgBotPromocode userData.save', e.message);
+        console.error('[ERROR] app/controllers/promocodesController getTgBotPromocode userData.save', e.message);
         ctx.throw(500);
       });
 
@@ -52,10 +56,18 @@ export async function getTgBotPromocode(ctx, next) {
 
     await promocodeData.save()
       .catch((e) => {
-        console.error('[ERROR] app/controllers/userController promocodeData.save', e.message);
+        console.error('[ERROR] app/controllers/promocodesController promocodeData.save', e.message);
       });
 
     promocodeSuccess = true;
+
+    analyticsManager.logEvent({
+      eventType: analyticEventTypes.TG_PROMOCODE_SUCCESS,
+      userId: userData.chatId,
+    })
+      .catch((e) => {
+        console.error('[ERROR] promocodesController getTgBotPromocode analyticsManager logEvent:', e.message);
+      });
   }
 
   if (!promocodeSuccess) {
@@ -69,6 +81,14 @@ export async function getTgBotPromocode(ctx, next) {
         howManyPromocodesCanActive += 1;
       }
     }
+
+    analyticsManager.logEvent({
+      eventType: analyticEventTypes.TG_PROMOCODE,
+      userId: userData.chatId,
+    })
+      .catch((e) => {
+        console.error('[ERROR] promocodesController getTgBotPromocode analyticsManager logEvent:', e.message);
+      });
   }
 
   let messageTemplate = await ejs.renderFile('./templates/tgBot/promocodes.ejs', {
