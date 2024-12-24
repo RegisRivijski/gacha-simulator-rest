@@ -1,0 +1,31 @@
+export const NEW_USER = 'NEW_USER';
+
+export const USER_DATA_UPDATE = 'USER_DATA_UPDATE';
+
+export const TG_START = 'TG_START';
+
+export const TG_START_REFERRAL_ADDED = 'TG_START_REFERRAL_ADDED';
+
+export const TG_HELP = 'TG_HELP';
+
+export const TG_WISH = 'TG_WISH';
+export const TG_WISH_CANT = 'TG_WISH_CANT';
+
+export const TG_WISH_10 = 'TG_WISH_10';
+export const TG_WISH_10_CANT = 'TG_WISH_10_CANT';
+
+export const TG_PROFILE = 'TG_PROFILE';
+export const TG_PROFILE_PRIMOGEMS = 'TG_PROFILE_PRIMOGEMS';
+export const TG_PROFILE_CHANGE_BANNER = 'TG_PROFILE_CHANGE_BANNER';
+
+export const TG_HISTORY = 'TG_HISTORY';
+
+export const TG_INVENTORY = 'TG_INVENTORY';
+
+export const TG_PRIMOGEMS = 'TG_PRIMOGEMS';
+export const TG_PRIMOGEMS_NOT_ADDED = 'TG_PRIMOGEMS_NOT_ADDED';
+
+export const TG_REFERRAL = 'TG_REFERRAL';
+
+export const TG_LEADERBOARD = 'TG_LEADERBOARD';
+export const TG_LEADERBOARD_NOT_ACTIVE = 'TG_LEADERBOARD_NOT_ACTIVE';

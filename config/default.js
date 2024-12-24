@@ -30,6 +30,11 @@ export default {
     maxAge: 1000 * 60 * 60 * 24 * 31, // 1 month
     signed: true,
   },
+  analytics: {
+    Amplitude: {
+      key: process.env.AMPLITUDE_GACHA_SIMULATOR_REST_API_KEY,
+    },
+  },
   db: {
     mongodb: {
       url: process.env.MONGODB_1_HOSTNAME,

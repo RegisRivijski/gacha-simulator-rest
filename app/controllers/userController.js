@@ -18,6 +18,8 @@ import {
   PRIMOGEMS_REFERRAL_REWARD,
 } from '../constants/economy.js';
 
+import * as analyticEventTypes from '../constants/analyticEventTypes.js';
+
 import UsersModel from '../models/genshinImpactTgBot/users.js';
 import HistoryModel from '../models/genshinImpactTgBot/histories.js';
 import ItemsModel from '../models/genshinImpactTgBot/items.js';
@@ -35,6 +37,8 @@ import * as inventoryHelper from '../helpers/inventoryHelper.js';
 import * as minify from '../helpers/minify.js';
 import * as linksHelper from '../helpers/linksHelper.js';
 import * as telegramButtons from '../helpers/telegramButtons.js';
+
+import * as analyticsManager from '../managers/analyticsManager.js';
 
 const userHelperCache = cacheWrapper(userHelper, 60);
 
@@ -90,6 +94,14 @@ export async function updateUser(ctx, next) {
       ctx.throw(500);
     });
 
+  analyticsManager.logEvent({
+    eventType: analyticEventTypes.USER_DATA_UPDATE,
+    userId: userData.chatId,
+  })
+    .catch((e) => {
+      console.error('[ERROR] userController getWish analyticsManager logEvent:', e.message);
+    });
+
   ctx.body = userData;
   ctx.status = 200;
   await next();
@@ -133,6 +145,14 @@ export async function addUser(ctx, next) {
       ctx.throw(500);
     });
 
+  analyticsManager.logEvent({
+    eventType: analyticEventTypes.NEW_USER,
+    userId: userData.chatId,
+  })
+    .catch((e) => {
+      console.error('[ERROR] userController getWish analyticsManager logEvent:', e.message);
+    });
+
   ctx.body = userData;
   ctx.status = 200;
   await next();
@@ -158,6 +178,14 @@ export async function getTgBotProfile(ctx, next) {
 
   if (changeBanner) {
     userData.currentBanner = bannersHelper.getNextBanner(userData.currentBanner);
+
+    analyticsManager.logEvent({
+      eventType: analyticEventTypes.TG_PROFILE_CHANGE_BANNER,
+      userId: userData.chatId,
+    })
+      .catch((e) => {
+        console.error('[ERROR] userController getTgBotProfile analyticsManager logEvent:', e.message);
+      });
   }
 
   const {
@@ -170,6 +198,14 @@ export async function getTgBotProfile(ctx, next) {
   if (getPrimogems) {
     userData.primogems += primogemsAdded;
     userData.primogemsAdded = Date.now();
+
+    analyticsManager.logEvent({
+      eventType: analyticEventTypes.TG_PROFILE_PRIMOGEMS,
+      userId: userData.chatId,
+    })
+      .catch((e) => {
+        console.error('[ERROR] userController getTgBotProfile analyticsManager logEvent:', e.message);
+      });
   }
 
   if (!currentBannerIsValid) {
@@ -240,6 +276,14 @@ export async function getTgBotProfile(ctx, next) {
     TYPE_CHARACTERS_NAME,
     TYPE_WEAPONS_NAME,
   });
+
+  analyticsManager.logEvent({
+    eventType: analyticEventTypes.TG_PROFILE,
+    userId: userData.chatId,
+  })
+    .catch((e) => {
+      console.error('[ERROR] userController getTgBotProfile analyticsManager logEvent:', e.message);
+    });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
 
@@ -320,6 +364,14 @@ export async function getTgBotHistory(ctx, next) {
     USERS_HISTORY_ACTION_PRIMOGEMS,
   });
 
+  analyticsManager.logEvent({
+    eventType: analyticEventTypes.TG_HISTORY,
+    userId: userData.chatId,
+  })
+    .catch((e) => {
+      console.error('[ERROR] userController getTgBotHistory analyticsManager logEvent:', e.message);
+    });
+
   messageTemplate = minify.minifyTgBot(messageTemplate);
 
   ctx.body = {
@@ -379,6 +431,14 @@ export async function getTgBotInventory(ctx, next) {
     inventoryData,
   });
 
+  analyticsManager.logEvent({
+    eventType: analyticEventTypes.TG_INVENTORY,
+    userId: userData.chatId,
+  })
+    .catch((e) => {
+      console.error('[ERROR] userController getTgBotInventory analyticsManager logEvent:', e.message);
+    });
+
   messageTemplate = minify.minifyTgBot(messageTemplate);
 
   ctx.body = {
@@ -426,6 +486,22 @@ export async function getTgBotPrimogems(ctx, next) {
       .catch((e) => {
         console.error('[ERROR] userController getTgBotPrimogems UserModel userData save:', e.message);
         ctx.throw(500);
+      });
+
+    analyticsManager.logEvent({
+      eventType: analyticEventTypes.TG_PRIMOGEMS,
+      userId: userData.chatId,
+    })
+      .catch((e) => {
+        console.error('[ERROR] userController getTgBotPrimogems analyticsManager logEvent:', e.message);
+      });
+  } else {
+    analyticsManager.logEvent({
+      eventType: analyticEventTypes.TG_PRIMOGEMS_NOT_ADDED,
+      userId: userData.chatId,
+    })
+      .catch((e) => {
+        console.error('[ERROR] userController getTgBotPrimogems analyticsManager logEvent:', e.message);
       });
   }
 
@@ -485,6 +561,14 @@ export async function getTgBotReferral(ctx, next) {
     startData,
   });
 
+  analyticsManager.logEvent({
+    eventType: analyticEventTypes.TG_REFERRAL,
+    userId: userData.chatId,
+  })
+    .catch((e) => {
+      console.error('[ERROR] userController getTgBotReferral analyticsManager logEvent:', e.message);
+    });
+
   messageTemplate = minify.minifyTgBot(messageTemplate);
 
   ctx.body = {
@@ -542,6 +626,24 @@ export async function getTgBotLeaderboard(ctx, next) {
     currentUserPosition,
     leaderboard,
   });
+
+  if (currentUserPosition > 0) {
+    analyticsManager.logEvent({
+      eventType: analyticEventTypes.TG_LEADERBOARD,
+      userId: userData.chatId,
+    })
+      .catch((e) => {
+        console.error('[ERROR] userController getTgBotLeaderboard analyticsManager logEvent:', e.message);
+      });
+  } else {
+    analyticsManager.logEvent({
+      eventType: analyticEventTypes.TG_LEADERBOARD_NOT_ACTIVE,
+      userId: userData.chatId,
+    })
+      .catch((e) => {
+        console.error('[ERROR] userController getTgBotLeaderboard analyticsManager logEvent:', e.message);
+      });
+  }
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
 

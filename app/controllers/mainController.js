@@ -6,6 +6,8 @@ import {
   PRIMOGEMS_REFERRAL_REWARD,
 } from '../constants/economy.js';
 
+import * as analyticEventTypes from '../constants/analyticEventTypes.js';
+
 import Translates from '../classes/Translates.js';
 
 import UsersModel from '../models/genshinImpactTgBot/users.js';
@@ -15,6 +17,8 @@ import * as telegramButtons from '../helpers/telegramButtons.js';
 import * as minify from '../helpers/minify.js';
 import * as linksHelper from '../helpers/linksHelper.js';
 import * as inventoryHelper from '../helpers/inventoryHelper.js';
+
+import * as analyticsManager from '../managers/analyticsManager.js';
 
 export async function start(ctx, next) {
   const { chatId } = ctx.request.params;
@@ -63,10 +67,26 @@ export async function start(ctx, next) {
           .catch((e) => {
             console.error('[ERROR] mainController start userData.save():', e.message);
           });
+
+        analyticsManager.logEvent({
+          eventType: analyticEventTypes.TG_START_REFERRAL_ADDED,
+          userId: userData.chatId,
+        })
+          .catch((e) => {
+            console.error('[ERROR] mainController start analyticsManager logEvent:', e.message);
+          });
       }
     } catch (e) {
       console.warn('[WARN] mainController start JSON.parse(startData):', e.message);
     }
+  } else {
+    analyticsManager.logEvent({
+      eventType: analyticEventTypes.TG_START,
+      userId: userData.chatId,
+    })
+      .catch((e) => {
+        console.error('[ERROR] mainController start analyticsManager logEvent:', e.message);
+      });
   }
 
   const { languageCode } = userData;
@@ -106,6 +126,14 @@ export async function help(ctx, next) {
   const { languageCode } = userData;
   const translates = new Translates(languageCode, ctx.state.defaultLangCode);
   const $t = translates.getTranslate();
+
+  analyticsManager.logEvent({
+    eventType: analyticEventTypes.TG_HELP,
+    userId: userData.chatId,
+  })
+    .catch((e) => {
+      console.error('[ERROR] mainController start analyticsManager logEvent:', e.message);
+    });
 
   ctx.body = {
     userData,

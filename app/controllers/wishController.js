@@ -16,6 +16,8 @@ import {
   BANNER_RATE_LIMIT_TTL,
 } from '../constants/index.js';
 
+import * as analyticEventTypes from '../constants/analyticEventTypes.js';
+
 import RedisSingleton from '../classes/RedisSingleton.js';
 import Translates from '../classes/Translates.js';
 
@@ -26,6 +28,8 @@ import * as documentsHelper from '../helpers/documentsHelper.js';
 import * as financialOperationsHelper from '../helpers/financialOperationsHelper.js';
 import * as linksHelper from '../helpers/linksHelper.js';
 import * as telegramButtons from '../helpers/telegramButtons.js';
+
+import * as analyticsManager from '../managers/analyticsManager.js';
 
 import * as minify from '../helpers/minify.js';
 
@@ -142,9 +146,25 @@ export async function getWish(ctx, next) {
       .catch((e) => {
         console.error('[ERROR] wishController getWish UserModel userData save:', e.message);
       });
+
+    analyticsManager.logEvent({
+      eventType: analyticEventTypes.TG_WISH,
+      userId: userData.chatId,
+    })
+      .catch((e) => {
+        console.error('[ERROR] wishController getWish analyticsManager logEvent:', e.message);
+      });
   } else {
     mediaType = MEDIA_TYPE_STICKER;
     media = linksHelper.getLinkToFatesSticker(currentBannerType);
+
+    analyticsManager.logEvent({
+      eventType: analyticEventTypes.TG_WISH_CANT,
+      userId: userData.chatId,
+    })
+      .catch((e) => {
+        console.error('[ERROR] wishController getWish analyticsManager logEvent:', e.message);
+      });
   }
 
   const templatePrices = documentsHelper.assignNumbersInObjects(
@@ -318,9 +338,25 @@ export async function getWishX10(ctx, next) {
       .catch((e) => {
         console.error('[ERROR] wishController getWishX10 UserModel userData save:', e.message);
       });
+
+    analyticsManager.logEvent({
+      eventType: analyticEventTypes.TG_WISH_10,
+      userId: userData.chatId,
+    })
+      .catch((e) => {
+        console.error('[ERROR] wishController getWishX10 analyticsManager logEvent:', e.message);
+      });
   } else {
     mediaType = MEDIA_TYPE_STICKER;
     media = linksHelper.getLinkToFatesSticker(currentBannerType);
+
+    analyticsManager.logEvent({
+      eventType: analyticEventTypes.TG_WISH_10_CANT,
+      userId: userData.chatId,
+    })
+      .catch((e) => {
+        console.error('[ERROR] wishController getWishX10 analyticsManager logEvent:', e.message);
+      });
   }
 
   const nextPrices = financialOperationsHelper.determinePriceFewTimes(wallet, currentBannerPrices, wishesCount);

@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@amplitude/node": "^1.10.2",
     "@sentry/node": "^7.44.1",
     "@sentry/tracing": "^7.44.1",
     "axios": "^1.1.3",
