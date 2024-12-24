@@ -1,7 +1,11 @@
-import Amplitude from '@amplitude/node';
+import { init, OfflineRetryHandler } from '@amplitude/node';
 
 import config from '../../config/default.js';
 
-const client = Amplitude.init(config.analytics.Amplitude.key);
+const apiKey = config.analytics.Amplitude.key;
+
+const client = init(apiKey, {
+  retryClass: new OfflineRetryHandler(apiKey),
+});
 
 export default client;
