@@ -7,7 +7,7 @@ export function logEvent({
 }) {
   return AmplitudeSingleton.logEvent({
     event_type: eventType,
-    user_id: userId,
+    user_id: String(userId),
     event_properties: eventProperties,
   })
     .then((response) => console.log(response));
