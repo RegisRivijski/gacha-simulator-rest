@@ -30,6 +30,16 @@ export async function start(ctx, next) {
       ctx.throw(500);
     });
 
+  if (created) {
+    analyticsManager.logEvent({
+      eventType: analyticEventTypes.NEW_USER,
+      userId: userData.chatId,
+    })
+      .catch((e) => {
+        console.error('[ERROR] userController start analyticsManager logEvent:', e.message);
+      });
+  }
+
   const userByBotData = await userHelper.getUserByBot(chatId, ctx.state.defaultLangCode)
     .catch((e) => {
       console.error('[ERROR] mainController start getUserByBot:', e.message);
@@ -40,6 +50,14 @@ export async function start(ctx, next) {
     await userByBotData.save()
       .catch((e) => {
         console.error('[ERROR] mainController start getUserByBot save:', e.message);
+      });
+
+    analyticsManager.logEvent({
+      eventType: analyticEventTypes.USER_RETURNED,
+      userId: userData.chatId,
+    })
+      .catch((e) => {
+        console.error('[ERROR] userController start analyticsManager logEvent:', e.message);
       });
   }
 

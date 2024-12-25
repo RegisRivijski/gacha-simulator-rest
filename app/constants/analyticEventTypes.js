@@ -1,4 +1,5 @@
 export const NEW_USER = 'NEW_USER';
+export const USER_RETURNED = 'USER_RETURNED';
 
 export const USER_DATA_UPDATE = 'USER_DATA_UPDATE';
 
