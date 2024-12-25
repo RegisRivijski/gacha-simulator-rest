@@ -20,6 +20,10 @@ export default function main() {
   app.use(publicRouter.routes());
   app.use(publicRouter.allowedMethods());
 
+  process.on('uncaughtException', (e) => {
+    console.error(e);
+  });
+
   const server = http.createServer(app.callback());
 
   server.listen(config.server.port, async () => {
