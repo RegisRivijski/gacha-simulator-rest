@@ -55,6 +55,8 @@ export const privateRouter = new Router()
   .get('/cron/active-advertisement', advertisementsController.getActiveAdvertisement)
   .put('/cron/advertisements', advertisementsController.changeAdvertisementById)
 
+  .post('/automation/promocodes', promocodesController.createPromocode)
+
   .post('/analytics/active-telegram-bot', analyticsController.activeTelegramBot);
 
 export const publicRouter = new Router()
