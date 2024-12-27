@@ -46,6 +46,8 @@ export const privateRouter = new Router()
   .get('/tg-bot/user/:chatId/start', mainController.start)
   .get('/tg-bot/user/:chatId/help', mainController.help)
   .get('/tg-bot/user/:chatId/settings', mainController.settings)
+  .get('/tg-bot/user/:chatId/support', mainController.support)
+  .get('/tg-bot/user/:chatId/terms', mainController.terms)
 
   .get('/:languageCode/translate', templatesController.getTranslate)
 

@@ -281,3 +281,75 @@ export async function settings(ctx, next) {
   ctx.status = 200;
   await next();
 }
+
+export async function support(ctx, next) {
+  const { chatId } = ctx.request.params;
+  ctx.assert(chatId, 400, 'chatId is required');
+
+  const { userData } = await userHelper.getUserData(chatId)
+    .catch((e) => {
+      console.error('[ERROR] mainController support UsersModel findOne:', e.message);
+      ctx.throw(500);
+    });
+
+  const { languageCode } = userData;
+  const translates = new Translates(languageCode, ctx.state.defaultLangCode);
+  const $t = translates.getTranslate();
+
+  analyticsManager.logEvent({
+    eventType: analyticEventTypes.TG_HELP,
+    userId: userData.chatId,
+  })
+    .catch((e) => {
+      console.error('[ERROR] mainController support analyticsManager logEvent:', e.message);
+    });
+
+  ctx.body = {
+    userData,
+    messageTemplate: $t('replies.support'),
+    media: {
+      mediaMarkupButtons: telegramButtons.getMainLinks({
+        $t,
+        defaultLangCode: ctx.state.defaultLangCode,
+      }),
+    },
+  };
+  ctx.status = 200;
+  await next();
+}
+
+export async function terms(ctx, next) {
+  const { chatId } = ctx.request.params;
+  ctx.assert(chatId, 400, 'chatId is required');
+
+  const { userData } = await userHelper.getUserData(chatId)
+    .catch((e) => {
+      console.error('[ERROR] mainController terms UsersModel findOne:', e.message);
+      ctx.throw(500);
+    });
+
+  const { languageCode } = userData;
+  const translates = new Translates(languageCode, ctx.state.defaultLangCode);
+  const $t = translates.getTranslate();
+
+  analyticsManager.logEvent({
+    eventType: analyticEventTypes.TG_HELP,
+    userId: userData.chatId,
+  })
+    .catch((e) => {
+      console.error('[ERROR] mainController terms analyticsManager logEvent:', e.message);
+    });
+
+  ctx.body = {
+    userData,
+    messageTemplate: $t('replies.terms'),
+    media: {
+      mediaMarkupButtons: telegramButtons.getMainLinks({
+        $t,
+        defaultLangCode: ctx.state.defaultLangCode,
+      }),
+    },
+  };
+  ctx.status = 200;
+  await next();
+}
