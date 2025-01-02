@@ -1,15 +1,7 @@
-import {
-  WISH_ACTION_KEY,
-  WISH_10_ACTION_KEY,
-  PROFILE_ACTION_KEY,
-  PROFILE_PRIMOGEMS_GET_ACTION_KEY,
-  PROFILE_CHANGE_BANNER_ACTION_KEY,
-  PROFILE_WITHOUT_UPDATE_ACTION_KEY,
-  INVENTORY_ACTION_KEY,
-  HISTORY_ACTION_KEY,
-  LEADERBOARD_ACTION_KEY,
-  SETTINGS_ACTION_KEY,
-} from '../constants/actions.js';
+/* eslint max-len: 0 */
+
+import * as actions from '../constants/actions.js';
+import * as actionsData from '../constants/actionsData.js';
 
 import {
   BUTTON_TYPE_URL,
@@ -31,7 +23,7 @@ export function getForWish({
     return [
       {
         message: `${$t('wish.makeWishAgain')} 💫`,
-        data: `${WISH_ACTION_KEY} ow:${chatId}`,
+        data: `${actions.WISH_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId}`,
       },
     ];
   }
@@ -39,7 +31,7 @@ export function getForWish({
     [
       {
         message: `${$t('users.profile.name')} ✨`,
-        data: `${PROFILE_WITHOUT_UPDATE_ACTION_KEY} ow:${chatId}`,
+        data: `${actions.PROFILE_WITHOUT_UPDATE_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId}`,
       },
     ],
     [
@@ -62,7 +54,7 @@ export function getForWishX10({
     return [
       {
         message: `${$t('wish.makeWishAgain')} 💫`,
-        data: `${WISH_10_ACTION_KEY} ow:${chatId}`,
+        data: `${actions.WISH_10_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId}`,
       },
     ];
   }
@@ -70,7 +62,7 @@ export function getForWishX10({
     [
       {
         message: `${$t('users.profile.name')} ✨`,
-        data: `${PROFILE_WITHOUT_UPDATE_ACTION_KEY} ow:${chatId}`,
+        data: `${actions.PROFILE_WITHOUT_UPDATE_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId}`,
       },
     ],
     [
@@ -94,7 +86,7 @@ export function getProfileButtons({
     markupButtons.push([
       {
         message: `${$t('users.profile.primogemsEarned')} +${primogemsAdded} ✦`,
-        data: `${PROFILE_PRIMOGEMS_GET_ACTION_KEY} ow:${chatId}`,
+        data: `${actions.PROFILE_PRIMOGEMS_GET_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId}`,
       },
     ]);
   }
@@ -102,23 +94,23 @@ export function getProfileButtons({
     [
       {
         message: `${$t('banners.change')} 💫`,
-        data: `${PROFILE_CHANGE_BANNER_ACTION_KEY} ow:${chatId}`,
+        data: `${actions.PROFILE_CHANGE_BANNER_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId}`,
       },
     ],
     [
       {
         message: `${$t('users.inventory.name')} 🎒`,
-        data: `${INVENTORY_ACTION_KEY} ow:${chatId}`,
+        data: `${actions.INVENTORY_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId}`,
       },
       {
         message: `${$t('users.history.name')} 📖`,
-        data: `${HISTORY_ACTION_KEY} ow:${chatId}`,
+        data: `${actions.HISTORY_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId}`,
       },
     ],
     [
       {
         message: `🏆 ${$t('users.leaderboard.globalTitle')} ✦ 🏆`,
-        data: `${LEADERBOARD_ACTION_KEY} ow:${chatId}`,
+        data: `${actions.LEADERBOARD_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId}`,
       },
     ],
   );
@@ -132,11 +124,11 @@ export function getInventoryButtons({
   return [
     {
       message: `${$t('users.profile.name')} ✨`,
-      data: `${PROFILE_ACTION_KEY} ow:${chatId}`,
+      data: `${actions.PROFILE_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId}`,
     },
     {
       message: `${$t('users.history.name')} 📖`,
-      data: `${HISTORY_ACTION_KEY} ow:${chatId}`,
+      data: `${actions.HISTORY_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId}`,
     },
   ];
 }
@@ -154,13 +146,13 @@ export function getHistoryButtons({
   if (page > 0) {
     pagination.push({
       message: arrowBack,
-      data: `${HISTORY_ACTION_KEY} ow:${chatId} pg:${page - 1}`,
+      data: `${actions.HISTORY_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId} ${actionsData.PAGINATION_PAGE}:${page - 1}`,
     });
   }
 
   pagination.push({
     message: `${$t('users.history.page')} ${page + 1}`,
-    data: `${HISTORY_ACTION_KEY} ow:${chatId} pg:${
+    data: `${actions.HISTORY_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId} ${actionsData.PAGINATION_PAGE}:${
       page === 0
         ? pagesCount - 1
         : 0
@@ -170,7 +162,7 @@ export function getHistoryButtons({
   if (page + 1 < pagesCount) {
     pagination.push({
       message: arrowForward,
-      data: `${HISTORY_ACTION_KEY} ow:${chatId} pg:${page + 1}`,
+      data: `${actions.HISTORY_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId} ${actionsData.PAGINATION_PAGE}:${page + 1}`,
     });
   }
   return [
@@ -178,11 +170,11 @@ export function getHistoryButtons({
     [
       {
         message: `${$t('users.profile.name')} ✨`,
-        data: `${PROFILE_ACTION_KEY} ow:${chatId}`,
+        data: `${actions.PROFILE_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId}`,
       },
       {
         message: `${$t('users.inventory.name')} 🎒`,
-        data: `${INVENTORY_ACTION_KEY} ow:${chatId}`,
+        data: `${actions.INVENTORY_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId}`,
       },
     ],
   ];
@@ -233,26 +225,26 @@ export function getSettingsButtons({
           message: languageCode === data.code
             ? `${data.name} ✅`
             : data.name,
-          data: `${SETTINGS_ACTION_KEY} ow:${userData.chatId} cd:${data.code}`,
+          data: `${actions.SETTINGS_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${userData.chatId} ${actionsData.SETTINGS_LANGUAGE_CODE}:${data.code}`,
         },
       ]
     )),
     [
       {
         message: userData.gifEnable ? 'GIF Enabled ✅' : 'GIF Disabled ☑️',
-        data: `${SETTINGS_ACTION_KEY} ow:${userData.chatId} gif:${!userData.gifEnable}`,
+        data: `${actions.SETTINGS_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${userData.chatId} ${actionsData.SETTINGS_GIF_ENABLE}:${!userData.gifEnable}`,
       },
     ],
     [
       {
         message: userData.notificationsEnable ? 'Notifications Enabled ✅' : 'Notifications Disabled ☑️',
-        data: `${SETTINGS_ACTION_KEY} ow:${userData.chatId} not:${!userData.notificationsEnable}`,
+        data: `${actions.SETTINGS_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${userData.chatId} ${actionsData.SETTINGS_NOTIFICATION_ENABLE}:${!userData.notificationsEnable}`,
       },
     ],
     [
       {
         message: clearButtonMessage,
-        data: `${SETTINGS_ACTION_KEY} ow:${userData.chatId} clear:${clearState + 1}`,
+        data: `${actions.SETTINGS_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${userData.chatId} ${actionsData.SETTINGS_CLEAR_INVENTORY}:${clearState + 1}`,
       },
     ],
     [
@@ -286,20 +278,20 @@ export function getLeaderboardButtons({
   const buttons = [
     {
       message: `${$t('users.profile.name')} ✨`,
-      data: `${PROFILE_ACTION_KEY} ow:${chatId}`,
+      data: `${actions.PROFILE_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId}`,
     },
   ];
 
   if (page > 0) {
     pagination.push({
       message: arrowBack,
-      data: `${LEADERBOARD_ACTION_KEY} ow:${chatId} pg:${page - 1}`,
+      data: `${actions.LEADERBOARD_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId} ${actionsData.PAGINATION_PAGE}:${page - 1}`,
     });
   }
 
   pagination.push({
     message: `${$t('users.history.page')} ${page + 1}`,
-    data: `${LEADERBOARD_ACTION_KEY} ow:${chatId} pg:${
+    data: `${actions.LEADERBOARD_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId} ${actionsData.PAGINATION_PAGE}:${
       page === 0
         ? pagesCount - 1
         : 0
@@ -309,14 +301,14 @@ export function getLeaderboardButtons({
   if (page + 1 < pagesCount) {
     pagination.push({
       message: arrowForward,
-      data: `${LEADERBOARD_ACTION_KEY} ow:${chatId} pg:${page + 1}`,
+      data: `${actions.LEADERBOARD_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId} ${actionsData.PAGINATION_PAGE}:${page + 1}`,
     });
   }
 
   if (page !== pageWithMe && pageWithMe >= 0 && pageWithMe < pagesCount) {
     buttons.push({
       message: `${$t('users.leaderboard.showMe')} 🔍️️️️️️`,
-      data: `${LEADERBOARD_ACTION_KEY} ow:${chatId} pg:${pageWithMe}`,
+      data: `${actions.LEADERBOARD_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId} ${actionsData.PAGINATION_PAGE}:${pageWithMe}`,
     });
   }
 
@@ -361,7 +353,7 @@ export function getPrimogemsButtons({
     [
       {
         message: `${$t('users.profile.name')} ✨`,
-        data: `${PROFILE_WITHOUT_UPDATE_ACTION_KEY} ow:${chatId}`,
+        data: `${actions.PROFILE_WITHOUT_UPDATE_ACTION_KEY} ${actionsData.OWNER_CHAT_ID}:${chatId}`,
       },
     ],
     [
@@ -372,4 +364,13 @@ export function getPrimogemsButtons({
       },
     ],
   ];
+}
+
+export function getShopButtons({ $t, shopItems }) {
+  return shopItems.map((item) => [
+    {
+      message: `Telegram Stars ${item.starsCost} ⭐️ - ${item.count} ${$t(`shop.currency.${item.currencyType}`)} ${$t(`currency.${item.currencyType}`)}`,
+      data: `${actions.SHOP_BUY_ITEM_ACTION_KEY} ${actionsData.SHOP_ITEM_ID}:${item.shopItemId}`,
+    },
+  ]);
 }

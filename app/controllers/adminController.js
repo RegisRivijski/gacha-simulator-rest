@@ -4,18 +4,6 @@ import config from '../../config/default.js';
 
 import AdminsModel from '../models/genshinImpactTgBot/admins.js';
 
-export async function getAdmin(ctx, next) {
-  const adminData = await AdminsModel.find()
-    .catch((e) => {
-      console.error('[ERROR] adminController getAdmin AdminsModel findOne:', e.message);
-      ctx.throw(500);
-    });
-
-  ctx.body = adminData;
-  ctx.status = 200;
-  await next();
-}
-
 export async function addAdmin(ctx, next) {
   const { fields, login, password } = ctx.request.body;
 

@@ -115,6 +115,14 @@ const usersSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  sponsor: {
+    type: Boolean,
+    default: false,
+  },
+  starsDonated: {
+    type: Number,
+    default: 0,
+  },
   updated: {
     type: Date,
     default: Date.now,

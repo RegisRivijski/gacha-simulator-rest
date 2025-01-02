@@ -79,3 +79,7 @@ export function getBotLinkByLangCode(langCode) {
       return BOT_LINK_EN;
   }
 }
+
+export function getLinkForShopItem() {
+  return `${arturOrigin}/public/gacha-simulator-static-data/assets/img/currencies/primogems.png`;
+}

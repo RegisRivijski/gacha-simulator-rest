@@ -1,0 +1,18 @@
+🎉 <b><%- $t('shop.purchaseSuccess.title'); %></b> 🎉<br><br>
+
+<%- $t('shop.purchaseSuccess.thankYou'); %> ❤️<br><br>
+
+<b><%- $t('shop.purchaseSuccess.itemPurchased'); %>:</b><br>
+<%= $t(`users.profile.${shopItemData.currencyType}`) %>: <%= shopItemData.count %> <%= $t(`shop.currency.${shopItemData.currencyType}`) %><br>
+
+<br>
+
+<b><%- $t('shop.purchaseSuccess.newBalance'); %>:</b><br>
+<%- $t('users.profile.primogems'); %>: <%= userData.primogems; %> ✦<br>
+<%- $t('users.profile.stardust'); %>: <%= userData.stardust; %> ✨<br>
+<%- $t('users.profile.starglitter'); %>: <%= userData.starglitter; %> 🌟<br>
+<%- $t('users.profile.canBuyWishes'); %>: <%= additionalData.canBuyWishes %> 💫<br>
+
+<br>
+
+<%- $t('shop.purchaseSuccess.enjoy'); %>! 🎮

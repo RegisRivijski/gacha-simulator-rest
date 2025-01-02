@@ -17,6 +17,7 @@ import * as wishController from '../controllers/wishController.js';
 import * as mainController from '../controllers/mainController.js';
 import * as promocodesController from '../controllers/promocodesController.js';
 import * as advertisementsController from '../controllers/advertisementsController.js';
+import * as shopController from '../controllers/shopController.js';
 
 export const privateRouter = new Router()
   .use(koaBody())
@@ -43,6 +44,10 @@ export const privateRouter = new Router()
   .get('/tg-bot/user/:chatId/wish', wishController.getWish)
   .get('/tg-bot/user/:chatId/wish-x10', wishController.getWishX10)
 
+  .get('/tg-bot/user/:chatId/shop', shopController.getTgBotShopItems)
+  .get('/tg-bot/user/:chatId/shop/:id', shopController.getTgBotBuyShopItems)
+  .get('/tg-bot/user/:chatId/shop/:id/proceed', shopController.getTgBotProceedPayment)
+
   .get('/tg-bot/user/:chatId/start', mainController.start)
   .get('/tg-bot/user/:chatId/help', mainController.help)
   .get('/tg-bot/user/:chatId/settings', mainController.settings)
@@ -57,6 +62,8 @@ export const privateRouter = new Router()
   .get('/cron/active-advertisement', advertisementsController.getActiveAdvertisement)
   .put('/cron/advertisements', advertisementsController.changeAdvertisementById)
 
+  .post('/payments/successful', shopController.createSuccessfulPayments)
+
   .post('/automation/promocodes', promocodesController.createPromocode)
 
   .post('/analytics/active-telegram-bot', analyticsController.activeTelegramBot);
@@ -67,7 +74,6 @@ export const publicRouter = new Router()
   .get('/ping', systemController.ping)
   .get('/memory', systemController.memory)
 
-  .get('/admin/all', adminController.getAdmin)
   .post('/admin', adminController.addAdmin)
 
   .post('/admin/login', adminAuthController.loginAction)
@@ -91,6 +97,12 @@ export const publicRouter = new Router()
   .delete('/advertisements/:id', securityMiddlewares.session, advertisementsController.deleteAdvertisement)
   .post('/advertisements', securityMiddlewares.session, advertisementsController.createAdvertisement)
   .put('/advertisements', securityMiddlewares.session, advertisementsController.changeAdvertisementById)
+
+  .get('/shop-items-all', securityMiddlewares.session, shopController.getAllShopItems)
+  .get('/shop-items/:id', securityMiddlewares.session, shopController.getShopItemById)
+  .put('/shop-items', securityMiddlewares.session, shopController.changeShopItemById)
+  .delete('/shop-items/:id', securityMiddlewares.session, shopController.deleteShopItem)
+  .post('/shop-items', securityMiddlewares.session, shopController.createShopItem)
 
   .get('/analytics/users-and-group-chats-list', analyticsController.getUsersAndGroupChatsList)
   .get('/analytics/users-and-group-chats', analyticsController.getUsersAndGroupChats);
