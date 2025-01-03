@@ -44,7 +44,7 @@ export function getInvoice({
 }) {
   return {
     title: premiumData.title,
-    photo_url: linksHelper.getLinkForShopItem(),
+    photo_url: linksHelper.getLinkForPremium(),
     description: messageTemplate,
     currency: TELEGRAM_STARS_CURRENCY,
     payload: `${actionsData.PREMIUM_TYPE}:${premiumData.type}`,

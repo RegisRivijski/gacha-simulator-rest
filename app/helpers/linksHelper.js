@@ -83,3 +83,7 @@ export function getBotLinkByLangCode(langCode) {
 export function getLinkForShopItem() {
   return `${arturOrigin}/public/gacha-simulator-static-data/assets/img/currencies/primogems.png`;
 }
+
+export function getLinkForPremium() {
+  return `${arturOrigin}/public/img/gacha-simulator/stickers/hmmPaimon.webp`;
+}
