@@ -8,6 +8,15 @@
 
 <br>
 
+<% if (additionalData.isPremium) { %>
+    💎 <b><%- $t('premium.status.active'); %></b><br>
+    ⏳ <%- $t('premium.remainingDays').replace('{{days}}', additionalData.premiumDays); %><br>
+<% } else { %>
+    💎 <b><%- $t('premium.status.inactive'); %></b><br>
+<% } %>
+
+<br>
+
 ⏳<b><%- $t('banners.eventProfile'); %></b><br>
 <% activeEventBanners.forEach((banner) => { %>
     <% if (banner.objKey === userData.currentBanner) { %>

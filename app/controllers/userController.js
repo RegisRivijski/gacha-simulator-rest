@@ -193,7 +193,8 @@ export async function getTgBotProfile(ctx, next) {
     currentBanner,
   } = userHelper.validateCurrentBanner(userData);
 
-  const primogemsAdded = userHelper.getPrimogems(userData);
+  const additionalData = userHelper.getAdditionalData(userData);
+  const primogemsAdded = additionalData.primogemsGet;
 
   if (getPrimogems) {
     userData.primogems += primogemsAdded;
@@ -266,7 +267,7 @@ export async function getTgBotProfile(ctx, next) {
     activeUniversalBanners,
     currentBannerData,
     currentBannerChances,
-    additionalData: userHelper.getAdditionalData(userData),
+    additionalData,
     defaultLangCode: ctx.state.defaultLangCode,
     bannersHelper,
     STANDARD_BANNER_TYPE_NAME,
@@ -477,7 +478,8 @@ export async function getTgBotPrimogems(ctx, next) {
   const translates = new Translates(languageCode, ctx.state.defaultLangCode);
   const $t = translates.getTranslate();
 
-  const primogemsAdded = userHelper.getPrimogems(userData);
+  const additionalData = userHelper.getAdditionalData(userData);
+  const primogemsAdded = additionalData.primogemsGet;
 
   if (primogemsAdded) {
     userData.primogems += primogemsAdded;
@@ -509,7 +511,7 @@ export async function getTgBotPrimogems(ctx, next) {
     $t,
     userData,
     primogemsAdded,
-    additionalData: userHelper.getAdditionalData(userData),
+    additionalData,
   });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);

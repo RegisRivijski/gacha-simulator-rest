@@ -47,3 +47,6 @@ export const TELEGRAM_GROUP_TYPE = 'groupType';
 export const BUTTON_TYPE_URL = 'url';
 
 export const TELEGRAM_STARS_CURRENCY = 'XTR';
+export const TELEGRAM_PAYMENTS_PROVIDER = 'digital';
+export const TELEGRAM_PAYMENTS_PROVIDER_TOKEN = 'digital';
+export const TELEGRAM_PAYMENTS_PPOPER_TOKEN = 'digital';

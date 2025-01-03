@@ -1,5 +1,7 @@
 /* eslint max-len: 0 */
 
+import _ from 'lodash';
+
 import * as actions from '../constants/actions.js';
 import * as actionsData from '../constants/actionsData.js';
 
@@ -12,6 +14,11 @@ import {
   CHANNEL_LINK_RU,
   CHANNEL_LINK_EU,
 } from '../constants/links.js';
+
+import {
+  PREMIUM_TYPE_MONTH,
+  PREMIUM_TYPE_FOREVER,
+} from '../constants/economy.js';
 
 export function getForWish({
   $t,
@@ -373,4 +380,21 @@ export function getShopButtons({ $t, shopItems }) {
       data: `${actions.SHOP_BUY_ITEM_ACTION_KEY} ${actionsData.SHOP_ITEM_ID}:${item.shopItemId}`,
     },
   ]);
+}
+
+export function getPremiumButtons({ $t }) {
+  return [
+    [
+      {
+        message: `${$t('phrases.buy')} ${$t('premium.cost.month')}`,
+        data: `${actions.PREMIUM_BUY} ${actionsData.PREMIUM_TYPE}:${PREMIUM_TYPE_MONTH}`,
+      },
+    ],
+    [
+      {
+        message: `${$t('phrases.buy')} ${_.lowerFirst($t('premium.cost.forever'))}`,
+        data: `${actions.PREMIUM_BUY} ${actionsData.PREMIUM_TYPE}:${PREMIUM_TYPE_FOREVER}`,
+      },
+    ],
+  ];
 }

@@ -8,3 +8,5 @@ export const SETTINGS_CLEAR_INVENTORY = 'clear';
 export const PAGINATION_PAGE = 'pg';
 
 export const SHOP_ITEM_ID = 'sid';
+
+export const PREMIUM_TYPE = 'tprm';

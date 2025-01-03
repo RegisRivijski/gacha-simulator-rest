@@ -123,6 +123,18 @@ const usersSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  premiumDailyAdded: {
+    type: Date,
+    default: Date.now,
+  },
+  premiumForever: {
+    type: Boolean,
+    default: false,
+  },
+  premiumDate: {
+    type: Date,
+    default: Date.now,
+  },
   updated: {
     type: Date,
     default: Date.now,

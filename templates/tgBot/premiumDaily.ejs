@@ -1,0 +1,22 @@
+<% if (!additionalData.isPremium) { %>
+    ❌ <%- $t('daily.noPremium'); %> ❌<br>
+    💡 <%- $t('daily.upgradeHint'); %>: <b>/premium</b> 💡<br>
+<% } else if (!isDailyCanBeReceived) { %>
+    ⏳ <%- $t('daily.alreadyClaimed'); %> ⏳<br>
+    ⏰ <%- $t('daily.comeBackTomorrow'); %> ⏰<br>
+<% } else { %>
+    🎉 <%- $t('daily.claimSuccess'); %> 🎉<br>
+    <br>
+    ✨ <%- $t('daily.youReceived'); %>: +<b><%= PRIMOGEMS_DAILY_PREMIUM %> ✦</b> ✨<br>
+    <br>
+    📊 <b><%- $t('daily.currentBalance'); %></b> 📊<br>
+    <%- $t('users.profile.primogems'); %>: <%= userData.primogems; %> ✦<br>
+    <%- $t('users.profile.stardust'); %>: <%= userData.stardust; %> ✨<br>
+    <%- $t('users.profile.starglitter'); %>: <%= userData.starglitter; %> 🌟<br>
+    <%- $t('users.profile.canBuyWishes'); %>: <%= additionalData.canBuyWishes %> 💫<br>
+    <br>
+    ⏳ <%- $t('daily.remainingPremiumDays').replace('{{days}}', additionalData.premiumDays); %> ⏳<br>
+<% } %>
+
+<br>
+💡 <%- $t('daily.hint'); %> 💡

@@ -18,6 +18,7 @@ import * as mainController from '../controllers/mainController.js';
 import * as promocodesController from '../controllers/promocodesController.js';
 import * as advertisementsController from '../controllers/advertisementsController.js';
 import * as shopController from '../controllers/shopController.js';
+import * as premiumController from '../controllers/premiumController.js';
 
 export const privateRouter = new Router()
   .use(koaBody())
@@ -47,6 +48,11 @@ export const privateRouter = new Router()
   .get('/tg-bot/user/:chatId/shop', shopController.getTgBotShopItems)
   .get('/tg-bot/user/:chatId/shop/:id', shopController.getTgBotBuyShopItems)
   .get('/tg-bot/user/:chatId/shop/:id/proceed', shopController.getTgBotProceedPayment)
+
+  .get('/tg-bot/user/:chatId/premium', premiumController.getTgBotPremium)
+  .get('/tg-bot/user/:chatId/premium/:id', premiumController.getTgBotBuyPremium)
+  .get('/tg-bot/user/:chatId/premium/:id/proceed', premiumController.getTgBotProceedPayment)
+  .get('/tg-bot/user/:chatId/daily', premiumController.getTgBotPremiumDaily)
 
   .get('/tg-bot/user/:chatId/start', mainController.start)
   .get('/tg-bot/user/:chatId/help', mainController.help)

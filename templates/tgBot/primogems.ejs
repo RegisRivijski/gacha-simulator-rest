@@ -10,3 +10,8 @@
 <% } else { %>
     , <%- $t('shop.primogemsEmpty'); %>. <%- $t('phrases.commandLater'); %>.
 <% } %>
+
+<% if (!additionalData.isPremium) { %>
+    <br><br>
+    <%- $t('shop.premiumMotivation').replace('{{value}}', additionalData.primogemsData.benefit); %>
+<% } %>

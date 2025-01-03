@@ -1,0 +1,25 @@
+<% if (additionalData.isPremium) { %>
+    🎉 <b><%- $t('premium.active.title'); %></b> 🎉<br>
+    <br>
+    <%- include('./blocks/premiumRealTimeExample', { $t, additionalData }); %>
+    <br>
+    ⏳ <%- $t('premium.active.remainingDays').replace('{{days}}', additionalData.premiumDays); %>.<br>
+    💎 <%- $t('premium.active.dailyReminder'); %><br>
+    <br>
+    💡 <i><%- $t('premium.active.enjoy'); %></i>
+<% } else { %>
+    🎉 <b><%- $t('premium.welcome'); %></b> 🎉<br>
+    <br>
+    🧐 <b><%- $t('premium.benefits'); %></b><br>
+    🔸 <%- $t('premium.benefit.limit').replace('{{valuePremium}}', PRIMOGEMS_GET_MAX_PREMIUM).replace('{{valueDefault}}', PRIMOGEMS_GET_MAX); %><br>
+    🔸 <%- $t('premium.benefit.speed'); %>: <b>+100%</b><br>
+    🔸 <%- $t('premium.benefit.dailyBonus'); %>: <b>+1000</b> ✦<br>
+    <br>
+    <%- include('./blocks/premiumRealTimeExample', { $t, additionalData }); %>
+    <br>
+    💝 <b><%- $t('shop.price'); %></b><br>
+    🔹 <%- $t('premium.cost.month'); %>: <b>299 ⭐</b>.<br>
+    🔹 <%- $t('premium.cost.forever'); %>: <b>999 ⭐</b>.<br>
+    <br>
+    💡 <i><%- $t('premium.motivation'); %></i>
+<% } %>

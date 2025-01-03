@@ -17,3 +17,5 @@ export const LEADERBOARD_ACTION_KEY = 'le';
 export const SETTINGS_ACTION_KEY = 'sett';
 
 export const SHOP_BUY_ITEM_ACTION_KEY = 'sbi';
+
+export const PREMIUM_BUY = 'prm';

@@ -1,5 +1,8 @@
 import {
   TELEGRAM_STARS_CURRENCY,
+  TELEGRAM_PAYMENTS_PROVIDER,
+  TELEGRAM_PAYMENTS_PROVIDER_TOKEN,
+  TELEGRAM_PAYMENTS_PPOPER_TOKEN,
 } from '../constants/index.js';
 import {
   SHOP_ITEM_ID,
@@ -33,9 +36,9 @@ export function getInvoice({
     description: messageTemplate,
     currency: TELEGRAM_STARS_CURRENCY,
     payload: `${SHOP_ITEM_ID}:${shopItemData?.shopItemId}`,
-    provider: 'digital',
-    provider_token: 'digital',
-    proper_token: 'digital',
+    provider: TELEGRAM_PAYMENTS_PROVIDER,
+    provider_token: TELEGRAM_PAYMENTS_PROVIDER_TOKEN,
+    proper_token: TELEGRAM_PAYMENTS_PPOPER_TOKEN,
     prices: [
       { label: title, amount: shopItemData.starsCost },
     ],

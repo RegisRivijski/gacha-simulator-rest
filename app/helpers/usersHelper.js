@@ -6,6 +6,9 @@ import {
 import {
   PRIMOGEMS_GET_MAX,
   PRIMOGEMS_COEFFICIENT,
+
+  PRIMOGEMS_GET_MAX_PREMIUM,
+  PRIMOGEMS_COEFFICIENT_PREMIUM,
 } from '../constants/economy.js';
 
 import UsersModel from '../models/genshinImpactTgBot/users.js';
@@ -72,26 +75,67 @@ export function getEventGuarantee(userData, bannerType, rarity) {
   }
 }
 
-export function getPrimogems({ primogemsAdded }) {
-  const primogems = Math.floor(timeHelper.howManyMinutesPast(primogemsAdded) * PRIMOGEMS_COEFFICIENT);
-  return primogems > PRIMOGEMS_GET_MAX ? PRIMOGEMS_GET_MAX : primogems;
+export function calculateIsPremium({ premiumForever, premiumDate }) {
+  return premiumForever || Boolean(timeHelper.daysUntil(premiumDate));
+}
+
+export function getPrimogems(userData) {
+  const howManyMinutesPast = timeHelper.howManyMinutesPast(userData.primogemsAdded);
+
+  let primogemsDefault = 0;
+  let primogemsPremium = 0;
+
+  primogemsDefault = Math.floor(howManyMinutesPast * PRIMOGEMS_COEFFICIENT);
+  primogemsDefault = primogemsDefault > PRIMOGEMS_GET_MAX ? PRIMOGEMS_GET_MAX : primogemsDefault;
+
+  primogemsPremium = Math.floor(howManyMinutesPast * PRIMOGEMS_COEFFICIENT_PREMIUM);
+  primogemsPremium = primogemsPremium > PRIMOGEMS_GET_MAX_PREMIUM ? PRIMOGEMS_GET_MAX_PREMIUM : primogemsPremium;
+
+  return {
+    primogemsDefault,
+    primogemsDefaultGetMaxLimit: primogemsDefault === PRIMOGEMS_GET_MAX,
+    primogemsPremium,
+    primogemsPremiumGetMaxLimit: primogemsPremium === PRIMOGEMS_GET_MAX_PREMIUM,
+    benefit: primogemsPremium - primogemsDefault,
+  };
 }
 
 export function getAdditionalData(userData) {
   const { currentBanner } = validateCurrentBanner(userData);
+
+  const isPremium = calculateIsPremium(userData);
 
   const currentBannerData = bannersHelper.getBannerData(currentBanner);
   const currentBannerType = _.result(currentBannerData, 'type');
   const currentBannerPrices = bannersHelper.getBannerPrices(currentBannerType);
   const wallet = _.result(userData, '_doc', {});
 
-  const primogemsGet = getPrimogems(userData);
-  const primogemsGetMaxLimit = primogemsGet === PRIMOGEMS_GET_MAX;
+  const primogemsData = getPrimogems(userData);
   const prices = financialOperationsHelper.determinePriceFewTimes(wallet, currentBannerPrices, 9999);
   const hoursFromLastWish = timeHelper.howManyHoursPast(userData.updated);
   const hoursFromLastPrimogemsAdded = timeHelper.howManyHoursPast(userData.primogemsAdded);
 
+  let primogemsGet = 0;
+  let primogemsGetMaxLimit = false;
+  let premiumDays = 0;
+
+  if (isPremium) {
+    primogemsGet = primogemsData.primogemsPremium;
+    primogemsGetMaxLimit = primogemsData.primogemsPremiumGetMaxLimit;
+    if (userData.premiumForever) {
+      premiumDays = '∞';
+    } else {
+      premiumDays = timeHelper.daysUntil(userData.premiumDate);
+    }
+  } else {
+    primogemsGet = primogemsData.primogemsDefault;
+    primogemsGetMaxLimit = primogemsData.primogemsDefaultGetMaxLimit;
+  }
+
   return {
+    isPremium,
+    premiumDays,
+    primogemsData,
     primogemsGet,
     primogemsGetMaxLimit,
     canBuyWishes: prices.length,
