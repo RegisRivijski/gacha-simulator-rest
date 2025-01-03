@@ -85,5 +85,5 @@ export function getLinkForShopItem() {
 }
 
 export function getLinkForPremium() {
-  return `${arturOrigin}/public/gacha-simulator-static-data/assets/img/currencies/primogems.png`;
+  return `${arturOrigin}/public/img/gacha-simulator/stickers/hmmPaimon.png`;
 }
