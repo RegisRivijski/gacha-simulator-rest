@@ -1,7 +1,10 @@
 export const NEW_USER = 'NEW_USER';
+export const NEW_GROUP_CHAT = 'NEW_GROUP_CHAT';
+
 export const USER_RETURNED = 'USER_RETURNED';
 
 export const USER_DATA_UPDATE = 'USER_DATA_UPDATE';
+export const GROUP_CHAT_UPDATE = 'GROUP_CHAT_UPDATE';
 
 export const TG_START = 'TG_START';
 

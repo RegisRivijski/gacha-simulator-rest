@@ -1,4 +1,8 @@
+import * as analyticEventTypes from '../constants/analyticEventTypes.js';
+
 import GroupChats from '../models/genshinImpactTgBot/groupChats.js';
+
+import * as analyticsManager from '../managers/analyticsManager.js';
 import * as documentsHelper from '../helpers/documentsHelper.js';
 
 export async function getGroupChat(ctx, next) {
@@ -40,6 +44,14 @@ export async function updateGroupChat(ctx, next) {
       ctx.throw(500);
     });
 
+  analyticsManager.logEvent({
+    eventType: analyticEventTypes.GROUP_CHAT_UPDATE,
+    userId: groupChatId,
+  })
+    .catch((e) => {
+      console.error('[ERROR] groupChatController updateGroupChat analyticsManager logEvent:', e.message);
+    });
+
   ctx.body = groupChatData;
   ctx.status = 200;
   await next();
@@ -71,6 +83,14 @@ export async function addGroupChat(ctx, next) {
     .catch((e) => {
       console.error('[ERROR] groupChatController addGroupChat GroupChats groupChatData save:', e.message);
       ctx.throw(500);
+    });
+
+  analyticsManager.logEvent({
+    eventType: analyticEventTypes.NEW_GROUP_CHAT,
+    userId: groupChatId,
+  })
+    .catch((e) => {
+      console.error('[ERROR] groupChatController addGroupChat analyticsManager logEvent:', e.message);
     });
 
   ctx.body = groupChatData;
