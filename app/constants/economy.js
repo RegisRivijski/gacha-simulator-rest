@@ -18,4 +18,4 @@ export const PREMIUM_TYPE_MONTH = 1;
 export const PREMIUM_TYPE_FOREVER = 2;
 
 export const PREMIUM_TYPE_MONTH_COST = 149;
-export const PREMIUM_TYPE_FOREVER_COST = 399;
+export const PREMIUM_TYPE_FOREVER_COST = 349;
