@@ -125,7 +125,7 @@ const usersSchema = new mongoose.Schema({
   },
   premiumDailyAdded: {
     type: Date,
-    default: Date.now,
+    default: () => new Date(0),
   },
   premiumForever: {
     type: Boolean,
