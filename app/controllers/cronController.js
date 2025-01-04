@@ -22,12 +22,17 @@ export async function getAllActiveUsersWithPrimogemsLimit(ctx, next) {
       ctx.throw(500);
     });
 
-  const allUsersWithPrimogemsLimit = allUsersData.filter((userData) => {
-    const additionalData = userHelper.getAdditionalData(userData);
-    return additionalData?.primogemsGetMaxLimit;
-  });
+  const allUsersWithPrimogemsLimit = allUsersData
+    .filter((userData) => {
+      const additionalData = userHelper.getAdditionalData(userData);
+      return additionalData?.primogemsGetMaxLimit && userData?.notificationsEnable;
+    })
+    .map((userData) => ({
+      chatId: userData.chatId,
+      languageCode: userData.languageCode || ctx.state.defaultLangCode,
+    }));
 
-  ctx.body = allUsersWithPrimogemsLimit.map(({ chatId }) => chatId);
+  ctx.body = allUsersWithPrimogemsLimit;
   ctx.status = 200;
   await next();
 }
