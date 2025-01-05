@@ -2,12 +2,12 @@ export const PRIMOGEMS_NAME = 'primogems';
 export const STARDUST_NAME = 'stardust';
 export const STARGLITTER_NAME = 'starglitter';
 
-export const START_PRIMOGEMS_COUNT = 9000;
+export const START_PRIMOGEMS_COUNT = 5000;
 
-export const PRIMOGEMS_REFERRAL_REWARD = 15000;
+export const PRIMOGEMS_REFERRAL_REWARD = 5000;
 
 export const PRIMOGEMS_GET_MAX = 1600;
-export const PRIMOGEMS_COEFFICIENT = 0.9;
+export const PRIMOGEMS_COEFFICIENT = 0.6;
 
 export const PRIMOGEMS_GET_MAX_PREMIUM = 5000;
 export const PRIMOGEMS_COEFFICIENT_PREMIUM = 1.9;

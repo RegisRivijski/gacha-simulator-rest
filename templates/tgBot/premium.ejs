@@ -12,8 +12,8 @@
     <br>
     🧐 <b><%- $t('premium.benefits'); %></b><br>
     🔸 <%- $t('premium.benefit.limit').replace('{{valuePremium}}', PRIMOGEMS_GET_MAX_PREMIUM).replace('{{valueDefault}}', PRIMOGEMS_GET_MAX); %><br>
-    🔸 <%- $t('premium.benefit.speed'); %>: <b>+100%</b><br>
-    🔸 <%- $t('premium.benefit.dailyBonus'); %>: <b>+1000</b> ✦<br>
+    🔸 <%- $t('premium.benefit.speed'); %>: <b>+200%</b><br>
+    🔸 <%- $t('premium.benefit.dailyBonus'); %>: <b>+<%= PRIMOGEMS_DAILY_PREMIUM; %></b> ✦<br>
     <br>
     <%- include('./blocks/premiumRealTimeExample', { $t, additionalData }); %>
     <br>

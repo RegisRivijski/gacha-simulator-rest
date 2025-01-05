@@ -44,6 +44,7 @@ export async function getTgBotPremium(ctx, next) {
     additionalData,
     PRIMOGEMS_GET_MAX,
     PRIMOGEMS_GET_MAX_PREMIUM,
+    PRIMOGEMS_DAILY_PREMIUM,
   });
 
   analyticsManager.logEvent({
