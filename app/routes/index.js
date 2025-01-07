@@ -72,15 +72,15 @@ export const privateRouter = new Router()
 
   .post('/automation/promocodes', promocodesController.createPromocode)
 
-  .post('/analytics/active-telegram-bot', analyticsController.activeTelegramBot);
+  .post('/analytics/active-telegram-bot', analyticsController.activeTelegramBot)
+
+  .post('/admin', adminController.addAdmin);
 
 export const publicRouter = new Router()
   .use(koaBody())
   .get('/', systemController.about)
   .get('/ping', systemController.ping)
   .get('/memory', systemController.memory)
-
-  .post('/admin', adminController.addAdmin)
 
   .post('/admin/login', adminAuthController.loginAction)
   .post('/admin/exit', adminAuthController.exit)
