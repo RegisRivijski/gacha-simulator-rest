@@ -1,6 +1,6 @@
-<%- $t('premium.invoice.purchase'); %><br>
+<%= $t('premium.invoice.purchase'); %><br>
 <%= $t('premium.invoice.type').replace('{{duration}}', premiumData.duration); %><br>
-<%- $t('premium.invoice.itemPrice'); %>: <%= premiumData.starsCost %> ⭐️<br>
+<%= $t('premium.invoice.itemPrice'); %>: <%= premiumData.starsCost %> ⭐️(<%= $t('premium.oldPrice') %> <%= premiumData.starsCostOld %> ⭐️)<br>
 <br>
-❤️ <%- $t('premium.invoice.motivation'); %><br>
-<%- $t('premium.invoice.motivationDetails'); %><br>
+❤️ <%= $t('premium.invoice.motivation'); %><br>
+<%= $t('premium.invoice.motivationDetails'); %><br>

@@ -12,6 +12,8 @@ import {
 
   PREMIUM_TYPE_FOREVER,
   PREMIUM_TYPE_FOREVER_COST,
+  PREMIUM_TYPE_FOREVER_COST_OLD,
+  PREMIUM_TYPE_MONTH_COST_OLD,
 } from '../constants/economy.js';
 
 import * as actionsData from '../constants/actionsData.js';
@@ -28,6 +30,7 @@ export function getValidPremiumTypeData({
       duration: _.lowerFirst($t('premium.cost.forever')),
       type: PREMIUM_TYPE_FOREVER,
       starsCost: PREMIUM_TYPE_FOREVER_COST,
+      starsCostOld: PREMIUM_TYPE_FOREVER_COST_OLD,
     };
   }
   return {
@@ -35,6 +38,7 @@ export function getValidPremiumTypeData({
     duration: $t('premium.cost.month'),
     type: PREMIUM_TYPE_MONTH,
     starsCost: PREMIUM_TYPE_MONTH_COST,
+    starsCostOld: PREMIUM_TYPE_MONTH_COST_OLD,
   };
 }
 
