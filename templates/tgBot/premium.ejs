@@ -15,7 +15,7 @@
     🔸 <%- $t('premium.benefit.limit').replace('{{valuePremium}}', economy.PRIMOGEMS_GET_MAX_PREMIUM).replace('{{valueDefault}}', economy.PRIMOGEMS_GET_MAX); %><br>
     🔸 <%- $t('premium.benefit.dailyBonus'); %>: <b>+<%= economy.PRIMOGEMS_DAILY_PREMIUM; %></b> ✦<br>
     <br>
-    💰 <%= $t('premium.invoice.itemPrice'); %><br>
+    💰 <b><%= $t('premium.invoice.itemPrice'); %></b><br>
     🔸 <b><%= $t('premium.cost.month'); %></b>: <%= economy.PREMIUM_TYPE_MONTH_COST %> ⭐️(<s><%= $t('premium.oldPrice'); %> <%= economy.PREMIUM_TYPE_MONTH_COST_OLD %> ⭐️</s>)<br>
     🔸 <b><%= $t('premium.cost.forever'); %></b>: <%= economy.PREMIUM_TYPE_FOREVER_COST %> ⭐️(<s><%= $t('premium.oldPrice'); %> <%= economy.PREMIUM_TYPE_FOREVER_COST_OLD %> ⭐️</s>)<br>
     <br>
