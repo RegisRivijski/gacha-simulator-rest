@@ -1,14 +1,6 @@
 import ejs from 'ejs';
 
-import {
-  PRIMOGEMS_GET_MAX,
-  PRIMOGEMS_GET_MAX_PREMIUM,
-
-  PREMIUM_TYPE_MONTH,
-  PREMIUM_TYPE_FOREVER,
-
-  PRIMOGEMS_DAILY_PREMIUM,
-} from '../constants/economy.js';
+import * as economy from '../constants/economy.js';
 
 import * as analyticEventTypes from '../constants/analyticEventTypes.js';
 
@@ -42,9 +34,7 @@ export async function getTgBotPremium(ctx, next) {
     $t,
     userData,
     additionalData,
-    PRIMOGEMS_GET_MAX,
-    PRIMOGEMS_GET_MAX_PREMIUM,
-    PRIMOGEMS_DAILY_PREMIUM,
+    economy,
   });
 
   analyticsManager.logEvent({
@@ -142,9 +132,9 @@ export async function getTgBotProceedPayment(ctx, next) {
     ctx.throw(400, 'user is already have premium status');
   }
 
-  if (premiumType === PREMIUM_TYPE_FOREVER) {
+  if (premiumType === economy.PREMIUM_TYPE_FOREVER) {
     userData.premiumForever = true;
-  } else if (premiumType === PREMIUM_TYPE_MONTH) {
+  } else if (premiumType === economy.PREMIUM_TYPE_MONTH) {
     userData.premiumDate = timeHelper.addThirtyDays();
   } else {
     ctx.throw(400);
@@ -206,7 +196,7 @@ export async function getTgBotPremiumDaily(ctx, next) {
   const isDailyCanBeReceived = timeHelper.isNextDay(userData.premiumDailyAdded);
 
   if (additionalData.isPremium && isDailyCanBeReceived) {
-    userData.primogems += PRIMOGEMS_DAILY_PREMIUM;
+    userData.primogems += economy.PRIMOGEMS_DAILY_PREMIUM;
     userData.premiumDailyAdded = Date.now();
     additionalData = userHelper.getAdditionalData(userData);
     await userData.save()
@@ -244,7 +234,7 @@ export async function getTgBotPremiumDaily(ctx, next) {
     userData,
     additionalData,
     isDailyCanBeReceived,
-    PRIMOGEMS_DAILY_PREMIUM,
+    economy,
   });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
