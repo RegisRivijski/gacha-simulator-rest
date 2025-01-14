@@ -1,6 +1,6 @@
 <% if (!additionalData.isPremium) { %>
-    ❌ <%- $t('daily.noPremium'); %> ❌<br>
-    💡 <%- $t('daily.upgradeHint'); %>: <b>/premium</b> 💡<br>
+    ❌ <%- $t('daily.noPremium'); %><br>
+    💡 <%- $t('daily.upgradeHint'); %>: <b>/premium</b><br>
 <% } else if (!isDailyCanBeReceived) { %>
     ⏳ <%- $t('daily.alreadyClaimed'); %> ⏳<br>
     ⏰ <%- $t('daily.comeBackTomorrow'); %> ⏰<br>
@@ -19,4 +19,4 @@
 <% } %>
 
 <br>
-💡 <%- $t('daily.hint'); %> 💡
+💡 <%- $t('daily.hint'); %>
