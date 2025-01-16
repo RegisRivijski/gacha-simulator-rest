@@ -10,6 +10,7 @@ import {
   WEAPONS_BANNER_TYPE_NAME,
 } from '../constants/index.js';
 
+import LoggerService from '../classes/ActionServices/LoggerService.js';
 import HistoryModel from '../models/genshinImpactTgBot/histories.js';
 
 import * as itemsHelper from './itemsHelper.js';
@@ -76,7 +77,7 @@ export async function makeWish({
     currencyCount: price.value,
   }).save()
     .catch((e) => {
-      console.error('[ERROR] wishHelper makeWish new HistoryModel save', e.message);
+      LoggerService.error('wishHelper makeWish new HistoryModel save', e);
     });
   return {
     newItem,

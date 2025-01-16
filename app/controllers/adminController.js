@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 
 import config from '../../config/default.js';
 
+import LoggerService from '../classes/ActionServices/LoggerService.js';
 import AdminsModel from '../models/genshinImpactTgBot/admins.js';
 
 export async function addAdmin(ctx, next) {
@@ -15,7 +16,7 @@ export async function addAdmin(ctx, next) {
     const salt = bcrypt.genSaltSync(config.bcrypt.saltRounds);
     hash = bcrypt.hashSync(password, salt);
   } catch (e) {
-    console.error('[ERROR] app/controllers/adminController.js addAdmin genSaltSync hashSync:', e.message);
+    LoggerService.error('app/controllers/adminController.js addAdmin genSaltSync hashSync', e);
     ctx.throw(500);
   }
 
@@ -27,7 +28,7 @@ export async function addAdmin(ctx, next) {
 
   adminData = await adminData.save()
     .catch((e) => {
-      console.error('[ERROR] adminController addAdmin AdminsModel adminData save:', e.message);
+      LoggerService.error('adminController addAdmin AdminsModel adminData save', e);
       ctx.throw(500);
     });
 

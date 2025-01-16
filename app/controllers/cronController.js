@@ -1,3 +1,5 @@
+import LoggerService from '../classes/ActionServices/LoggerService.js';
+
 import UsersByBots from '../models/genshinImpactTgBot/usersByBots.js';
 import UsersModel from '../models/genshinImpactTgBot/users.js';
 import GroupsByBots from '../models/genshinImpactTgBot/groupsByBots.js';
@@ -10,7 +12,7 @@ export async function getAllActiveUsersWithPrimogemsLimit(ctx, next) {
     defaultLangCode: ctx.state.defaultLangCode,
   })
     .catch((e) => {
-      console.error('[ERROR] cronController getAllActiveUsersWithPrimogemsLimit UsersByBots find:', e.message);
+      LoggerService.error('cronController getAllActiveUsersWithPrimogemsLimit UsersByBots find:', e);
       ctx.throw(500);
     });
 
@@ -18,7 +20,7 @@ export async function getAllActiveUsersWithPrimogemsLimit(ctx, next) {
     chatId: activeUsers.map(({ chatId }) => chatId),
   })
     .catch((e) => {
-      console.error('[ERROR] cronController getAllActiveUsersWithPrimogemsLimit UsersModel find:', e.message);
+      LoggerService.error('cronController getAllActiveUsersWithPrimogemsLimit UsersModel find:', e);
       ctx.throw(500);
     });
 
@@ -43,7 +45,7 @@ export async function getAllActiveUsers(ctx, next) {
     defaultLangCode: ctx.state.defaultLangCode,
   })
     .catch((e) => {
-      console.error('[ERROR] cronController getAllActiveUsers UsersByBots find:', e.message);
+      LoggerService.error('cronController getAllActiveUsers UsersByBots find:', e);
       ctx.throw(500);
     });
 
@@ -58,7 +60,7 @@ export async function getAllActiveGroups(ctx, next) {
     defaultLangCode: ctx.state.defaultLangCode,
   })
     .catch((e) => {
-      console.error('[ERROR] cronController getAllActiveGroups GroupsByBots find:', e.message);
+      LoggerService.error('cronController getAllActiveGroups GroupsByBots find:', e);
       ctx.throw(500);
     });
 

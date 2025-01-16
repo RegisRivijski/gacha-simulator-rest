@@ -18,7 +18,9 @@ import {
 
 import * as analyticEventTypes from '../constants/analyticEventTypes.js';
 
-import RedisSingleton from '../classes/RedisSingleton.js';
+import AnalyticService from '../classes/ActionServices/AnalyticService.js';
+import LoggerService from '../classes/ActionServices/LoggerService.js';
+import RedisSingleton from '../classes/ServiceSingletons/RedisSingleton.js';
 import Translates from '../classes/Translates.js';
 
 import * as wishHelper from '../helpers/wishHelper.js';
@@ -28,8 +30,6 @@ import * as documentsHelper from '../helpers/documentsHelper.js';
 import * as financialOperationsHelper from '../helpers/financialOperationsHelper.js';
 import * as linksHelper from '../helpers/linksHelper.js';
 import * as telegramButtons from '../helpers/telegramButtons.js';
-
-import * as analyticsManager from '../managers/analyticsManager.js';
 
 import * as minify from '../helpers/minify.js';
 
@@ -47,7 +47,7 @@ export async function getWish(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] wishController getWish UsersModel findOne:', e.message);
+      LoggerService.error('wishController getWish UsersModel findOne:', e);
       ctx.throw(500);
     });
 
@@ -60,7 +60,7 @@ export async function getWish(ctx, next) {
     const key = `spin_${chatId}}`;
     const isSpin = await redisClient.get(key)
       .catch((e) => {
-        console.error('[ERROR] app/controllers/wishController getWish redis get:', e.message);
+        LoggerService.error('app/controllers/wishController getWish redis get:', e);
       });
 
     ctx.assert(!isSpin, 429);
@@ -69,7 +69,7 @@ export async function getWish(ctx, next) {
       const currentDate = String(new Date().getTime());
       await redisClient.set(key, currentDate, 'EX', BANNER_RATE_LIMIT_TTL)
         .catch((e) => {
-          console.error('[ERROR] app/controllers/wishController getWish redis set:', e.message);
+          LoggerService.error('app/controllers/wishController getWish redis set:', e);
         });
     }
   }
@@ -108,7 +108,7 @@ export async function getWish(ctx, next) {
       defaultLangCode: ctx.state.defaultLangCode,
     })
       .catch((e) => {
-        console.error('[ERROR] wishController getWish wishHelper makeWish:', e.message);
+        LoggerService.error('wishController getWish wishHelper makeWish:', e);
         ctx.throw(500);
       });
 
@@ -144,26 +144,26 @@ export async function getWish(ctx, next) {
     userData.updated = Date.now();
     userData.save()
       .catch((e) => {
-        console.error('[ERROR] wishController getWish UserModel userData save:', e.message);
+        LoggerService.error('wishController getWish UserModel userData save:', e);
       });
 
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_WISH,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] wishController getWish analyticsManager logEvent:', e.message);
+        LoggerService.error('wishController getWish AnalyticService logEvent:', e);
       });
   } else {
     mediaType = MEDIA_TYPE_STICKER;
     media = linksHelper.getLinkToFatesSticker(currentBannerType);
 
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_WISH_CANT,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] wishController getWish analyticsManager logEvent:', e.message);
+        LoggerService.error('wishController getWish AnalyticService logEvent:', e);
       });
   }
 
@@ -234,7 +234,7 @@ export async function getWishX10(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] wishController getWishX10 UsersModel findOne:', e.message);
+      LoggerService.error('wishController getWishX10 UsersModel findOne:', e);
       ctx.throw(500);
     });
 
@@ -247,7 +247,7 @@ export async function getWishX10(ctx, next) {
     const key = `spin_${chatId}}`;
     const isSpin = await redisClient.get(key)
       .catch((e) => {
-        console.error('[ERROR] app/controllers/wishController getWishX10 redis get:', e.message);
+        LoggerService.error('app/controllers/wishController getWishX10 redis get:', e);
       });
 
     ctx.assert(!isSpin, 429);
@@ -256,7 +256,7 @@ export async function getWishX10(ctx, next) {
       const currentDate = String(new Date().getTime());
       await redisClient.set(key, currentDate, 'EX', BANNER_RATE_LIMIT_TTL)
         .catch((e) => {
-          console.error('[ERROR] app/controllers/wishController getWisX10 redis set:', e.message);
+          LoggerService.error('app/controllers/wishController getWisX10 redis set:', e);
         });
     }
   }
@@ -296,7 +296,7 @@ export async function getWishX10(ctx, next) {
       defaultLangCode: ctx.state.defaultLangCode,
     })
       .catch((e) => {
-        console.error('[ERROR] wishController getWishX10 wishHelper makeWishFewTimes:', e.message);
+        LoggerService.error('wishController getWishX10 wishHelper makeWishFewTimes:', e);
         ctx.throw(500);
       });
 
@@ -336,26 +336,26 @@ export async function getWishX10(ctx, next) {
     userData.updated = Date.now();
     userData.save()
       .catch((e) => {
-        console.error('[ERROR] wishController getWishX10 UserModel userData save:', e.message);
+        LoggerService.error('wishController getWishX10 UserModel userData save:', e);
       });
 
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_WISH_10,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] wishController getWishX10 analyticsManager logEvent:', e.message);
+        LoggerService.error('wishController getWishX10 AnalyticService logEvent:', e);
       });
   } else {
     mediaType = MEDIA_TYPE_STICKER;
     media = linksHelper.getLinkToFatesSticker(currentBannerType);
 
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_WISH_10_CANT,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] wishController getWishX10 analyticsManager logEvent:', e.message);
+        LoggerService.error('wishController getWishX10 AnalyticService logEvent:', e);
       });
   }
 

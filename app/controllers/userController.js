@@ -20,11 +20,14 @@ import {
 
 import * as analyticEventTypes from '../constants/analyticEventTypes.js';
 
+import AnalyticService from '../classes/ActionServices/AnalyticService.js';
+import LoggerService from '../classes/ActionServices/LoggerService.js';
+import Translates from '../classes/Translates.js';
+
 import UsersModel from '../models/genshinImpactTgBot/users.js';
 import HistoryModel from '../models/genshinImpactTgBot/histories.js';
 import ItemsModel from '../models/genshinImpactTgBot/items.js';
 
-import Translates from '../classes/Translates.js';
 import cacheWrapper from '../helpers/cacheWrapper.js';
 
 import * as documentsHelper from '../helpers/documentsHelper.js';
@@ -37,8 +40,6 @@ import * as inventoryHelper from '../helpers/inventoryHelper.js';
 import * as minify from '../helpers/minify.js';
 import * as linksHelper from '../helpers/linksHelper.js';
 import * as telegramButtons from '../helpers/telegramButtons.js';
-
-import * as analyticsManager from '../managers/analyticsManager.js';
 
 const userHelperCache = cacheWrapper(userHelper, 60);
 
@@ -54,7 +55,7 @@ export async function getUser(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] userController getProfile UsersModel findOne:', e.message);
+      LoggerService.error('userController getProfile UsersModel findOne:', e);
       ctx.throw(500);
     });
 
@@ -82,7 +83,7 @@ export async function updateUser(ctx, next) {
 
   let { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] userController getProfile UsersModel findOne:', e.message);
+      LoggerService.error('userController getProfile UsersModel findOne:', e);
       ctx.throw(500);
     });
 
@@ -90,16 +91,16 @@ export async function updateUser(ctx, next) {
 
   userData = await userData.save()
     .catch((e) => {
-      console.error('[ERROR] userController changeUser UsersModel userData save:', e.message);
+      LoggerService.error('userController changeUser UsersModel userData save:', e);
       ctx.throw(500);
     });
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.USER_DATA_UPDATE,
     userId: userData.chatId,
   })
     .catch((e) => {
-      console.error('[ERROR] userController getWish analyticsManager logEvent:', e.message);
+      LoggerService.error('userController getWish AnalyticService logEvent:', e);
     });
 
   ctx.body = userData;
@@ -119,7 +120,7 @@ export async function addUser(ctx, next) {
 
   let userData = await UsersModel.findOne({ chatId })
     .catch((e) => {
-      console.error('[ERROR] userController getUser UsersModel findOne:', e.message);
+      LoggerService.error('userController getUser UsersModel findOne:', e);
       ctx.throw(500);
     });
   ctx.assert(!userData?.chatId, 400, 'User is already created.');
@@ -141,16 +142,16 @@ export async function addUser(ctx, next) {
 
   userData = await userData.save()
     .catch((e) => {
-      console.error('[ERROR] userController addUser UsersModel userData save:', e.message);
+      LoggerService.error('userController addUser UsersModel userData save:', e);
       ctx.throw(500);
     });
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.NEW_USER,
     userId: userData.chatId,
   })
     .catch((e) => {
-      console.error('[ERROR] userController getWish analyticsManager logEvent:', e.message);
+      LoggerService.error('userController getWish AnalyticService logEvent:', e);
     });
 
   ctx.body = userData;
@@ -172,19 +173,19 @@ export async function getTgBotProfile(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] userController getProfile UsersModel findOne:', e.message);
+      LoggerService.error('userController getProfile UsersModel findOne:', e);
       ctx.throw(500);
     });
 
   if (changeBanner) {
     userData.currentBanner = bannersHelper.getNextBanner(userData.currentBanner);
 
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_PROFILE_CHANGE_BANNER,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] userController getTgBotProfile analyticsManager logEvent:', e.message);
+        LoggerService.error('userController getTgBotProfile AnalyticService logEvent:', e);
       });
   }
 
@@ -200,12 +201,12 @@ export async function getTgBotProfile(ctx, next) {
     userData.primogems += primogemsAdded;
     userData.primogemsAdded = Date.now();
 
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_PROFILE_PRIMOGEMS,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] userController getTgBotProfile analyticsManager logEvent:', e.message);
+        LoggerService.error('userController getTgBotProfile AnalyticService logEvent:', e);
       });
   }
 
@@ -216,7 +217,7 @@ export async function getTgBotProfile(ctx, next) {
   if (!currentBannerIsValid || (getPrimogems && primogemsAdded) || changeBanner) {
     userData.save()
       .catch((e) => {
-        console.error('[ERROR] userController getProfile UserModel userData save:', e.message);
+        LoggerService.error('userController getProfile UserModel userData save:', e);
       });
   }
 
@@ -278,12 +279,12 @@ export async function getTgBotProfile(ctx, next) {
     TYPE_WEAPONS_NAME,
   });
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.TG_PROFILE,
     userId: userData.chatId,
   })
     .catch((e) => {
-      console.error('[ERROR] userController getTgBotProfile analyticsManager logEvent:', e.message);
+      LoggerService.error('userController getTgBotProfile AnalyticService logEvent:', e);
     });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
@@ -320,7 +321,7 @@ export async function getTgBotHistory(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] userController getHistory UsersModel findOne:', e.message);
+      LoggerService.error('userController getHistory UsersModel findOne:', e);
       ctx.throw(500);
     });
 
@@ -342,13 +343,13 @@ export async function getTgBotHistory(ctx, next) {
     })
       .then((data) => historyHelper.addingDataToLogsForTemplate(data, languageCode, ctx.state.defaultLangCode))
       .catch((e) => {
-        console.error('[ERROR] userController getHistory HistoryModel find:', e.message);
+        LoggerService.error('userController getHistory HistoryModel find:', e);
         ctx.throw(500);
       }),
     // historyLogsCount
     HistoryModel.count({ chatId })
       .catch((e) => {
-        console.error('[ERROR] userController getHistory HistoryModel count:', e.message);
+        LoggerService.error('userController getHistory HistoryModel count:', e);
         return 0;
       }),
   ]);
@@ -365,12 +366,12 @@ export async function getTgBotHistory(ctx, next) {
     USERS_HISTORY_ACTION_PRIMOGEMS,
   });
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.TG_HISTORY,
     userId: userData.chatId,
   })
     .catch((e) => {
-      console.error('[ERROR] userController getTgBotHistory analyticsManager logEvent:', e.message);
+      LoggerService.error('userController getTgBotHistory AnalyticService logEvent:', e);
     });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
@@ -406,7 +407,7 @@ export async function getTgBotInventory(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] userController getInventory UsersModel findOne:', e.message);
+      LoggerService.error('userController getInventory UsersModel findOne:', e);
       ctx.throw(500);
     });
 
@@ -422,7 +423,7 @@ export async function getTgBotInventory(ctx, next) {
   })
     .then((itemsData) => inventoryHelper.makingInventoryTree(itemsData, languageCode, ctx.state.defaultLangCode))
     .catch((e) => {
-      console.error('[ERROR] userController getInventory ItemsModel find:', e.message);
+      LoggerService.error('userController getInventory ItemsModel find:', e);
       ctx.throw(500);
     });
 
@@ -432,12 +433,12 @@ export async function getTgBotInventory(ctx, next) {
     inventoryData,
   });
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.TG_INVENTORY,
     userId: userData.chatId,
   })
     .catch((e) => {
-      console.error('[ERROR] userController getTgBotInventory analyticsManager logEvent:', e.message);
+      LoggerService.error('userController getTgBotInventory AnalyticService logEvent:', e);
     });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
@@ -469,7 +470,7 @@ export async function getTgBotPrimogems(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] userController getTgBotPrimogems UsersModel findOne:', e.message);
+      LoggerService.error('userController getTgBotPrimogems UsersModel findOne:', e);
       ctx.throw(500);
     });
   ctx.assert(userData?.chatId, 404, 'User not found.');
@@ -486,24 +487,24 @@ export async function getTgBotPrimogems(ctx, next) {
     userData.primogemsAdded = Date.now();
     await userData.save()
       .catch((e) => {
-        console.error('[ERROR] userController getTgBotPrimogems UserModel userData save:', e.message);
+        LoggerService.error('userController getTgBotPrimogems UserModel userData save:', e);
         ctx.throw(500);
       });
 
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_PRIMOGEMS,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] userController getTgBotPrimogems analyticsManager logEvent:', e.message);
+        LoggerService.error('userController getTgBotPrimogems AnalyticService logEvent:', e);
       });
   } else {
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_PRIMOGEMS_NOT_ADDED,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] userController getTgBotPrimogems analyticsManager logEvent:', e.message);
+        LoggerService.error('userController getTgBotPrimogems AnalyticService logEvent:', e);
       });
   }
 
@@ -542,7 +543,7 @@ export async function getTgBotReferral(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] userController getTgBotReferral UsersModel findOne:', e.message);
+      LoggerService.error('userController getTgBotReferral UsersModel findOne:', e);
       ctx.throw(500);
     });
 
@@ -563,12 +564,12 @@ export async function getTgBotReferral(ctx, next) {
     startData,
   });
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.TG_REFERRAL,
     userId: userData.chatId,
   })
     .catch((e) => {
-      console.error('[ERROR] userController getTgBotReferral analyticsManager logEvent:', e.message);
+      LoggerService.error('userController getTgBotReferral AnalyticService logEvent:', e);
     });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
@@ -589,7 +590,7 @@ export async function getTgBotLeaderboard(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] userController getTgBotLeaderboard UsersModel findOne:', e.message);
+      LoggerService.error('userController getTgBotLeaderboard UsersModel findOne:', e);
       ctx.throw(500);
     });
 
@@ -599,7 +600,7 @@ export async function getTgBotLeaderboard(ctx, next) {
 
   let leaderboard = await userHelperCache.getLeaderboard(ctx.state.defaultLangCode)
     .catch((e) => {
-      console.error('[ERROR] app/controllers/userController getTgBotLeaderboard getLeaderboardWithPagination:', e.message);
+      LoggerService.error('app/controllers/userController getTgBotLeaderboard getLeaderboardWithPagination:', e);
       ctx.throw(500);
     });
 
@@ -630,20 +631,20 @@ export async function getTgBotLeaderboard(ctx, next) {
   });
 
   if (currentUserPosition > 0) {
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_LEADERBOARD,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] userController getTgBotLeaderboard analyticsManager logEvent:', e.message);
+        LoggerService.error('userController getTgBotLeaderboard AnalyticService logEvent:', e);
       });
   } else {
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_LEADERBOARD_NOT_ACTIVE,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] userController getTgBotLeaderboard analyticsManager logEvent:', e.message);
+        LoggerService.error('userController getTgBotLeaderboard AnalyticService logEvent:', e);
       });
   }
 

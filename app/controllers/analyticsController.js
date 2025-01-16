@@ -5,6 +5,7 @@ import {
   TELEGRAM_USER_TYPE,
 } from '../constants/index.js';
 
+import LoggerService from '../classes/ActionServices/LoggerService.js';
 import GroupChats from '../models/genshinImpactTgBot/groupChats.js';
 import UsersModel from '../models/genshinImpactTgBot/users.js';
 
@@ -13,13 +14,13 @@ import * as cronHelper from '../helpers/analyticsHelper.js';
 export async function getUsersAndGroupChatsList(ctx, next) {
   const users = await UsersModel.find({})
     .catch((e) => {
-      console.error('[ERROR] analyticsController getUsersAndGroupChats UsersModel find:', e.message);
+      LoggerService.error('analyticsController getUsersAndGroupChats UsersModel find:', e);
       ctx.throw(500);
     });
 
   const groups = await GroupChats.find({})
     .catch((e) => {
-      console.error('[ERROR] analyticsController getUsersAndGroupChats GroupChats find:', e.message);
+      LoggerService.error('analyticsController getUsersAndGroupChats GroupChats find:', e);
       ctx.throw(500);
     });
 
@@ -34,13 +35,13 @@ export async function getUsersAndGroupChatsList(ctx, next) {
 export async function getUsersAndGroupChats(ctx, next) {
   const users = await UsersModel.find({})
     .catch((e) => {
-      console.error('[ERROR] analyticsController getAllUsersAndGroupChats UsersModel find:', e.message);
+      LoggerService.error('analyticsController getAllUsersAndGroupChats UsersModel find:', e);
       ctx.throw(500);
     });
 
   const groups = await GroupChats.find({})
     .catch((e) => {
-      console.error('[ERROR] analyticsController getAllUsersAndGroupChats GroupChats find:', e.message);
+      LoggerService.error('analyticsController getAllUsersAndGroupChats GroupChats find:', e);
       ctx.throw(500);
     });
 
@@ -65,7 +66,7 @@ export async function activeTelegramBot(ctx, next) {
         defaultLangCode: ctx.state.defaultLangCode,
       })
         .catch((e) => {
-          console.error('[ERROR] analyticsController activeTelegramBot cronHelper configureTelegramUsersForNotifications:', e.message);
+          LoggerService.error('analyticsController activeTelegramBot cronHelper configureTelegramUsersForNotifications:', e);
         });
       break;
     case TELEGRAM_GROUP_TYPE:
@@ -75,7 +76,7 @@ export async function activeTelegramBot(ctx, next) {
         defaultLangCode: ctx.state.defaultLangCode,
       })
         .catch((e) => {
-          console.error('[ERROR] analyticsController activeTelegramBot cronHelper configureTelegramGroupsForNotifications:', e.message);
+          LoggerService.error('analyticsController activeTelegramBot cronHelper configureTelegramGroupsForNotifications:', e);
         });
       break;
     default:

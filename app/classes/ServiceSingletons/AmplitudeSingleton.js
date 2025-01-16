@@ -1,6 +1,6 @@
 import { init, OfflineRetryHandler } from '@amplitude/node';
 
-import config from '../../config/default.js';
+import config from '../../../config/default.js';
 
 const apiKey = config.analytics.Amplitude.key;
 

@@ -1,4 +1,4 @@
-import RedisSingleton from '../classes/RedisSingleton.js';
+import RedisSingleton from '../classes/ServiceSingletons/RedisSingleton.js';
 
 const redisClient = RedisSingleton.getRedisClient();
 

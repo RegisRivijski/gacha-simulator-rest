@@ -22,8 +22,13 @@ export default {
     dsn: process.env.SENTRY_GENSHIN_GACHA_SIMULATOR_REST_API_DSN,
   },
   bcrypt: {
-    salt: 'say_my_name',
-    saltRounds: 10,
+    salt: process.env.GACHA_SIMULATOR_REST_BCRYPT_SALT,
+    saltRounds: process.env.GACHA_SIMULATOR_REST_BCRYPT_ROUNDS,
+  },
+  jwt: {
+    secret: process.env.GACHA_SIMULATOR_REST_JWT_SECRET,
+    expiresIn: process.env.GACHA_SIMULATOR_REST_JWT_EXPIRES_IN,
+    algorithm: process.env.GACHA_SIMULATOR_REST_JWT_ALGORITHM,
   },
   session: {
     key: 'gacha-simulator-rest',

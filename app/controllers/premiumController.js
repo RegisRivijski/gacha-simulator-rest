@@ -4,9 +4,9 @@ import * as economy from '../constants/economy.js';
 
 import * as analyticEventTypes from '../constants/analyticEventTypes.js';
 
+import AnalyticService from '../classes/ActionServices/AnalyticService.js';
+import LoggerService from '../classes/ActionServices/LoggerService.js';
 import Translates from '../classes/Translates.js';
-
-import * as analyticsManager from '../managers/analyticsManager.js';
 
 import * as minify from '../helpers/minify.js';
 import * as userHelper from '../helpers/usersHelper.js';
@@ -21,7 +21,7 @@ export async function getTgBotPremium(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] premiumController getTgBotPremium UsersModel findOne:', e.message);
+      LoggerService.error('premiumController getTgBotPremium UsersModel findOne:', e.message);
       ctx.throw(500);
     });
 
@@ -37,12 +37,12 @@ export async function getTgBotPremium(ctx, next) {
     economy,
   });
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.TG_PREMIUM,
     userId: userData.chatId,
   })
     .catch((e) => {
-      console.error('[ERROR] premiumController getTgBotPremium analyticsManager logEvent:', e.message);
+      LoggerService.error('premiumController getTgBotPremium AnalyticService logEvent:', e);
     });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
@@ -72,7 +72,7 @@ export async function getTgBotBuyPremium(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] premiumController getTgBotBuyPremium UsersModel findOne:', e.message);
+      LoggerService.error('premiumController getTgBotBuyPremium UsersModel findOne:', e);
       ctx.throw(500);
     });
 
@@ -90,12 +90,12 @@ export async function getTgBotBuyPremium(ctx, next) {
     premiumData,
   });
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.TG_PREMIUM_BUY,
     userId: userData.chatId,
   })
     .catch((e) => {
-      console.error('[ERROR] premiumController getTgBotShopItems analyticsManager logEvent:', e.message);
+      LoggerService.error('premiumController getTgBotShopItems AnalyticService logEvent:', e);
     });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
@@ -123,7 +123,7 @@ export async function getTgBotProceedPayment(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] premiumController getTgBotProceedPayment UsersModel findOne:', e.message);
+      LoggerService.error('premiumController getTgBotProceedPayment UsersModel findOne:', e);
       ctx.throw(500);
     });
   const additionalData = userHelper.getAdditionalData(userData);
@@ -142,7 +142,7 @@ export async function getTgBotProceedPayment(ctx, next) {
 
   userData.save()
     .catch((e) => {
-      console.error('[ERROR] premiumController getTgBotProceedPayment UsersModel save:', e.message);
+      LoggerService.error('premiumController getTgBotProceedPayment UsersModel save:', e);
       ctx.throw(500);
     });
 
@@ -154,12 +154,12 @@ export async function getTgBotProceedPayment(ctx, next) {
     $t,
   });
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.TG_PREMIUM_PROCEED,
     userId: userData.chatId,
   })
     .catch((e) => {
-      console.error('[ERROR] premiumController getTgBotProceedPayment analyticsManager logEvent:', e.message);
+      LoggerService.error('premiumController getTgBotProceedPayment AnalyticService logEvent:', e);
     });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
@@ -185,7 +185,7 @@ export async function getTgBotPremiumDaily(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] premiumController getTgBotBuyPremium UsersModel findOne:', e.message);
+      LoggerService.error('premiumController getTgBotBuyPremium UsersModel findOne:', e);
       ctx.throw(500);
     });
 
@@ -201,31 +201,31 @@ export async function getTgBotPremiumDaily(ctx, next) {
     additionalData = userHelper.getAdditionalData(userData);
     await userData.save()
       .catch((e) => {
-        console.error('[ERROR] premiumController getTgBotPremiumDaily userData.save:', e.message);
+        LoggerService.error('premiumController getTgBotPremiumDaily userData.save:', e);
       });
 
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_PREMIUM_DAILY_RECEIVED,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] premiumController getTgBotPremiumDaily analyticsManager logEvent:', e.message);
+        LoggerService.error('premiumController getTgBotPremiumDaily AnalyticService logEvent:', e);
       });
   } else if (additionalData.isPremium) {
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_PREMIUM_DAILY_ALREADY_RECEIVED,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] premiumController getTgBotPremiumDaily analyticsManager logEvent:', e.message);
+        LoggerService.error('premiumController getTgBotPremiumDaily AnalyticService logEvent:', e);
       });
   } else {
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_PREMIUM_DAILY_NON_ACTIVE,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] premiumController getTgBotPremiumDaily analyticsManager logEvent:', e.message);
+        LoggerService.error('premiumController getTgBotPremiumDaily AnalyticService logEvent:', e);
       });
   }
 

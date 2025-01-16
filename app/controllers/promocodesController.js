@@ -2,14 +2,14 @@ import ejs from 'ejs';
 
 import * as analyticEventTypes from '../constants/analyticEventTypes.js';
 
+import AnalyticService from '../classes/ActionServices/AnalyticService.js';
+import LoggerService from '../classes/ActionServices/LoggerService.js';
 import Translates from '../classes/Translates.js';
 import PromocodesModel from '../models/genshinImpactTgBot/promocodes.js';
 
 import * as minify from '../helpers/minify.js';
 import * as userHelper from '../helpers/usersHelper.js';
 import * as telegramButtons from '../helpers/telegramButtons.js';
-
-import * as analyticsManager from '../managers/analyticsManager.js';
 
 export async function getTgBotPromocode(ctx, next) {
   const { chatId } = ctx.request.params;
@@ -19,7 +19,7 @@ export async function getTgBotPromocode(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] userController getTgBotPromocode UsersModel findOne:', e.message);
+      LoggerService.error('userController getTgBotPromocode UsersModel findOne:', e.message);
       ctx.throw(500);
     });
   ctx.assert(userData?.chatId, 404, 'User not found.');
@@ -36,7 +36,7 @@ export async function getTgBotPromocode(ctx, next) {
       promocode,
     })
       .catch((e) => {
-        console.error('[ERROR] app/controllers/promocodesController getTgBotPromocode Promocodes.findOne:', e.message);
+        LoggerService.error('app/controllers/promocodesController getTgBotPromocode Promocodes.findOne:', e.message);
       });
   }
 
@@ -47,7 +47,7 @@ export async function getTgBotPromocode(ctx, next) {
 
     await userData.save()
       .catch((e) => {
-        console.error('[ERROR] app/controllers/promocodesController getTgBotPromocode userData.save', e.message);
+        LoggerService.error('app/controllers/promocodesController getTgBotPromocode userData.save', e.message);
         ctx.throw(500);
       });
 
@@ -56,24 +56,24 @@ export async function getTgBotPromocode(ctx, next) {
 
     await promocodeData.save()
       .catch((e) => {
-        console.error('[ERROR] app/controllers/promocodesController promocodeData.save', e.message);
+        LoggerService.error('app/controllers/promocodesController promocodeData.save', e.message);
       });
 
     promocodeSuccess = true;
 
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_PROMOCODE_SUCCESS,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] promocodesController getTgBotPromocode analyticsManager logEvent:', e.message);
+        LoggerService.error('promocodesController getTgBotPromocode AnalyticService logEvent:', e.message);
       });
   }
 
   if (!promocodeSuccess) {
     const allPromocodes = await PromocodesModel.find({})
       .catch((e) => {
-        console.error('[ERROR] app/controllers/promocodesController getTgBotPromocodes find({})', e.message);
+        LoggerService.error('app/controllers/promocodesController getTgBotPromocodes find({})', e.message);
         return [];
       });
     for (const promocodeDataItem of allPromocodes) {
@@ -82,12 +82,12 @@ export async function getTgBotPromocode(ctx, next) {
       }
     }
 
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_PROMOCODE,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] promocodesController getTgBotPromocode analyticsManager logEvent:', e.message);
+        LoggerService.error('promocodesController getTgBotPromocode AnalyticService logEvent:', e.message);
       });
   }
 
@@ -120,7 +120,7 @@ export async function getTgBotPromocode(ctx, next) {
 export async function getAllPromocodes(ctx, next) {
   const allPromocodes = await PromocodesModel.find({})
     .catch((e) => {
-      console.error('[ERROR] app/controllers/promocodesController.js getAllPromocodes find:', e.message);
+      LoggerService.error('app/controllers/promocodesController.js getAllPromocodes find:', e.message);
       ctx.throw(500);
     });
 
@@ -136,7 +136,7 @@ export async function getPromocodeById(ctx, next) {
 
   const promocodeData = await PromocodesModel.findOne({ _id: promocodeId })
     .catch((e) => {
-      console.error('[ERROR] app/controllers/promocodesController.js getPromocodeById findOne:', e.message);
+      LoggerService.error('app/controllers/promocodesController.js getPromocodeById findOne:', e.message);
       ctx.throw(500);
     });
 
@@ -156,7 +156,7 @@ export async function changePromocodeById(ctx, next) {
 
   promocodeData = await PromocodesModel.findOneAndUpdate({ _id: promocodeId }, promocodeData, { new: true })
     .catch((e) => {
-      console.error('[ERROR] app/controllers/promocodesController.js changePromocodeById findOne:', e.message);
+      LoggerService.error('app/controllers/promocodesController.js changePromocodeById findOne:', e.message);
       ctx.throw(500);
     });
 
@@ -173,13 +173,13 @@ export async function createPromocode(ctx, next) {
   try {
     promocodeData = new PromocodesModel(promocodeData);
   } catch (e) {
-    console.error('[ERROR] app/controllers/promocodesController createPromocode new PromocodesModel:', e.message);
+    LoggerService.error('app/controllers/promocodesController createPromocode new PromocodesModel:', e.message);
     ctx.throw(500);
   }
 
   await promocodeData.save()
     .catch((e) => {
-      console.error('[ERROR] app/controllers/promocodesController createPromocode save:', e.message);
+      LoggerService.error('app/controllers/promocodesController createPromocode save:', e.message);
       ctx.throw(500);
     });
 
@@ -195,7 +195,7 @@ export async function deletePromocode(ctx, next) {
 
   await PromocodesModel.deleteOne({ _id: promocodeId })
     .catch((e) => {
-      console.error('[ERROR] app/controllers/promocodesController deletePromocode deleteOne:', e.message);
+      LoggerService.error('app/controllers/promocodesController deletePromocode deleteOne:', e.message);
       ctx.throw(500);
     });
 

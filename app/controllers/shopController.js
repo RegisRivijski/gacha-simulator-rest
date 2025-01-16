@@ -3,12 +3,12 @@ import ejs from 'ejs';
 
 import * as analyticEventTypes from '../constants/analyticEventTypes.js';
 
-import ShopModel from '../models/genshinImpactTgBot/shop.js';
-import SuccessfulPayment from '../models/genshinImpactTgBot/successfulPayment.js';
-
+import AnalyticService from '../classes/ActionServices/AnalyticService.js';
+import LoggerService from '../classes/ActionServices/LoggerService.js';
 import Translates from '../classes/Translates.js';
 
-import * as analyticsManager from '../managers/analyticsManager.js';
+import ShopModel from '../models/genshinImpactTgBot/shop.js';
+import SuccessfulPayment from '../models/genshinImpactTgBot/successfulPayment.js';
 
 import * as userHelper from '../helpers/usersHelper.js';
 import * as shopHelper from '../helpers/shopHelper.js';
@@ -19,7 +19,7 @@ import * as telegramButtons from '../helpers/telegramButtons.js';
 export async function getAllShopItems(ctx, next) {
   const allShopItems = await ShopModel.find({})
     .catch((e) => {
-      console.error('[ERROR] app/controllers/shopController.js getAllShopItems find:', e.message);
+      LoggerService.error('app/controllers/shopController.js getAllShopItems find:', e);
       ctx.throw(500);
     });
 
@@ -35,7 +35,7 @@ export async function getShopItemById(ctx, next) {
 
   const shopItemData = await ShopModel.findOne({ shopItemId })
     .catch((e) => {
-      console.error('[ERROR] app/controllers/shopController.js getShopItemById findOne:', e.message);
+      LoggerService.error('app/controllers/shopController.js getShopItemById findOne:', e);
       ctx.throw(500);
     });
 
@@ -55,7 +55,7 @@ export async function changeShopItemById(ctx, next) {
 
   shopItemData = await ShopModel.findOneAndUpdate({ shopItemId }, shopItemData, { new: true })
     .catch((e) => {
-      console.error('[ERROR] app/controllers/shopController.js changeShopItemById findOneAndUpdate:', e.message);
+      LoggerService.error('app/controllers/shopController.js changeShopItemById findOneAndUpdate:', e);
       ctx.throw(500);
     });
 
@@ -73,13 +73,13 @@ export async function createShopItem(ctx, next) {
   try {
     shopItemData = new ShopModel(shopItemData);
   } catch (e) {
-    console.error('[ERROR] app/controllers/shopController.js createShopItem new ShopModel:', e.message);
+    LoggerService.error('app/controllers/shopController.js createShopItem new ShopModel:', e);
     ctx.throw(500);
   }
 
   await shopItemData.save()
     .catch((e) => {
-      console.error('[ERROR] app/controllers/shopController.js createShopItem save:', e.message);
+      LoggerService.error('app/controllers/shopController.js createShopItem save:', e);
       ctx.throw(500);
     });
 
@@ -95,7 +95,7 @@ export async function deleteShopItem(ctx, next) {
 
   await ShopModel.deleteOne({ shopItemId })
     .catch((e) => {
-      console.error('[ERROR] app/controllers/shopController.js deleteShopItem deleteOne:', e.message);
+      LoggerService.error('app/controllers/shopController.js deleteShopItem deleteOne:', e);
       ctx.throw(500);
     });
 
@@ -109,13 +109,13 @@ export async function getTgBotShopItems(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] shopController getShop UsersModel findOne:', e.message);
+      LoggerService.error('shopController getShop UsersModel findOne:', e);
       ctx.throw(500);
     });
 
   const shopItems = await shopHelper.getAvailableShopItems()
     .catch((e) => {
-      console.error('[ERROR] shopController getShop shopHelper getAvailableShopItems:', e.message);
+      LoggerService.error('shopController getShop shopHelper getAvailableShopItems:', e);
       ctx.throw(500);
     });
 
@@ -131,12 +131,12 @@ export async function getTgBotShopItems(ctx, next) {
     additionalData: userHelper.getAdditionalData(userData),
   });
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.TG_SHOP,
     userId: userData.chatId,
   })
     .catch((e) => {
-      console.error('[ERROR] shopController getTgBotShopItems analyticsManager logEvent:', e.message);
+      LoggerService.error('shopController getTgBotShopItems AnalyticService logEvent:', e);
     });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
@@ -164,13 +164,13 @@ export async function getTgBotBuyShopItems(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] shopController getShop UsersModel findOne:', e.message);
+      LoggerService.error('shopController getShop UsersModel findOne:', e);
       ctx.throw(500);
     });
 
   const shopItemData = await ShopModel.findOne({ shopItemId })
     .catch((e) => {
-      console.error('[ERROR] app/controllers/shopController.js getShopItemById findOne:', e.message);
+      LoggerService.error('app/controllers/shopController.js getShopItemById findOne:', e);
       ctx.throw(500);
     });
 
@@ -185,12 +185,12 @@ export async function getTgBotBuyShopItems(ctx, next) {
     shopItemData,
   });
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.TG_SHOP_BUY_ITEM,
     userId: userData.chatId,
   })
     .catch((e) => {
-      console.error('[ERROR] shopController getTgBotShopItems analyticsManager logEvent:', e.message);
+      LoggerService.error('shopController getTgBotShopItems AnalyticService logEvent:', e);
     });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
@@ -218,13 +218,13 @@ export async function getTgBotProceedPayment(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] shopController getTgBotProceedPayment UsersModel findOne:', e.message);
+      LoggerService.error('shopController getTgBotProceedPayment UsersModel findOne:', e);
       ctx.throw(500);
     });
 
   const shopItemData = await ShopModel.findOne({ shopItemId })
     .catch((e) => {
-      console.error('[ERROR] shopController getTgBotProceedPayment getShopItemById findOne:', e.message);
+      LoggerService.error('shopController getTgBotProceedPayment getShopItemById findOne:', e);
       ctx.throw(500);
     });
 
@@ -243,7 +243,7 @@ export async function getTgBotProceedPayment(ctx, next) {
 
   userData.save()
     .catch((e) => {
-      console.error('[ERROR] shopController getTgBotProceedPayment UsersModel save:', e.message);
+      LoggerService.error('shopController getTgBotProceedPayment UsersModel save:', e);
       ctx.throw(500);
     });
 
@@ -259,12 +259,12 @@ export async function getTgBotProceedPayment(ctx, next) {
     additionalData: userHelper.getAdditionalData(userData),
   });
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.TG_SHOP_PROCEED,
     userId: userData.chatId,
   })
     .catch((e) => {
-      console.error('[ERROR] shopController getTgBotProceedPayment analyticsManager logEvent:', e.message);
+      LoggerService.error('shopController getTgBotProceedPayment AnalyticService logEvent:', e);
     });
 
   messageTemplate = minify.minifyTgBot(messageTemplate);
@@ -289,13 +289,13 @@ export async function createSuccessfulPayments(ctx, next) {
   try {
     successfulPayment = new SuccessfulPayment(successfulPayment);
   } catch (e) {
-    console.error('[ERROR] app/controllers/shopController.js createSuccessfulPayments new SuccessfulPayment:', e.message);
+    LoggerService.error('app/controllers/shopController.js createSuccessfulPayments new SuccessfulPayment:', e);
     ctx.throw(500);
   }
 
   await successfulPayment.save()
     .catch((e) => {
-      console.error('[ERROR] app/controllers/shopController.js createSuccessfulPayments save:', e.message);
+      LoggerService.error('app/controllers/shopController.js createSuccessfulPayments save:', e);
       ctx.throw(500);
     });
 

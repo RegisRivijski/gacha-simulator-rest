@@ -1,20 +1,10 @@
-import Sentry from '@sentry/node';
-
-import config from '../../config/default.js';
-
-Sentry.init({
-  dsn: config.sentry.dsn,
-  tracesSampleRate: 1.0,
-});
+import LoggerService from '../classes/ActionServices/LoggerService.js';
 
 export default async function errorsHandler(ctx, next) {
   try {
     await next();
   } catch (e) {
-    Sentry.captureException(e);
-
-    console.error('Fatal error!');
-    console.error(' =>', e.message);
+    LoggerService.fatal('UNHANDLED', e);
 
     ctx.status = e.status || 500;
     ctx.body = {

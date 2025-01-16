@@ -1,9 +1,10 @@
+import LoggerService from '../classes/ActionServices/LoggerService.js';
 import BannersModel from '../models/genshinImpactStaticData/banners.js';
 
 export async function getAllBanners(ctx, next) {
   const allBannersData = await BannersModel.find({})
     .catch((e) => {
-      console.error('[ERROR] app/controllers/bannersController.js getAllBanners find:', e.message);
+      LoggerService.error('app/controllers/bannersController.js getAllBanners find:', e.message);
       ctx.throw(500);
     });
 
@@ -19,7 +20,7 @@ export async function getBannersById(ctx, next) {
 
   const bannerData = await BannersModel.findOne({ _id: bannerId })
     .catch((e) => {
-      console.error('[ERROR] app/controllers/bannersController.js getBannersById findOne:', e.message);
+      LoggerService.error('app/controllers/bannersController.js getBannersById findOne:', e.message);
       ctx.throw(500);
     });
 
@@ -39,7 +40,7 @@ export async function changeBannersById(ctx, next) {
 
   bannerData = await BannersModel.findOneAndUpdate({ _id: bannerId }, bannerData, { new: true })
     .catch((e) => {
-      console.error('[ERROR] app/controllers/bannersController.js changeBannersById findOne:', e.message);
+      LoggerService.error('app/controllers/bannersController.js changeBannersById findOne:', e.message);
       ctx.throw(500);
     });
 
@@ -56,13 +57,13 @@ export async function createBanners(ctx, next) {
   try {
     bannerData = new BannersModel(bannerData);
   } catch (e) {
-    console.error('[ERROR] app/controllers/bannersController createBanners new BannersModel:', e.message);
+    LoggerService.error('app/controllers/bannersController createBanners new BannersModel:', e.message);
     ctx.throw(500);
   }
 
   await bannerData.save()
     .catch((e) => {
-      console.error('[ERROR] app/controllers/bannersController createBanners save:', e.message);
+      LoggerService.error('app/controllers/bannersController createBanners save:', e.message);
       ctx.throw(500);
     });
 
@@ -78,7 +79,7 @@ export async function deleteBanners(ctx, next) {
 
   await BannersModel.deleteOne({ _id: bannerId })
     .catch((e) => {
-      console.error('[ERROR] app/controllers/bannersController deleteBanners deleteOne:', e.message);
+      LoggerService.error('app/controllers/bannersController deleteBanners deleteOne:', e.message);
       ctx.throw(500);
     });
 

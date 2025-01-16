@@ -1,4 +1,9 @@
 import bcrypt from 'bcrypt';
+import jsonWebToken from 'jsonwebtoken';
+
+import config from '../../config/default.js';
+
+import LoggerService from '../classes/ActionServices/LoggerService.js';
 import AdminsModel from '../models/genshinImpactTgBot/admins.js';
 
 export async function loginAction(ctx, next) {
@@ -8,7 +13,7 @@ export async function loginAction(ctx, next) {
 
   const adminData = await AdminsModel.findOne({ login })
     .catch((e) => {
-      console.error('[ERROR] adminController getAdmin AdminsModel findOne:', e.message);
+      LoggerService.error('adminController getAdmin AdminsModel findOne:', e);
       ctx.throw(500);
     });
 
@@ -16,13 +21,23 @@ export async function loginAction(ctx, next) {
 
   const match = await bcrypt.compare(password, adminData.hash)
     .catch((e) => {
-      console.error('[ERROR]', e.message);
+      LoggerService.error('adminController getAdmin bcrypt:', e);
       ctx.throw(500);
     });
 
   ctx.assert(match, 403);
 
-  ctx.session.user = adminData;
+  let jwt = '';
+  try {
+    jwt = jsonWebToken.sign(adminData, config.jwt.secret, {
+      expiresIn: config.jwt.expiresIn,
+      algorithm: config.jwt.algorithm,
+    });
+  } catch (e) {
+    LoggerService.error('adminController getAdmin jsonWebToken sign:', e);
+  }
+
+  ctx.session.user = jwt;
 
   ctx.body = adminData;
   ctx.status = 200;

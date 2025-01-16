@@ -8,6 +8,8 @@ import {
 
 import * as analyticEventTypes from '../constants/analyticEventTypes.js';
 
+import AnalyticService from '../classes/ActionServices/AnalyticService.js';
+import LoggerService from '../classes/ActionServices/LoggerService.js';
 import Translates from '../classes/Translates.js';
 
 import UsersModel from '../models/genshinImpactTgBot/users.js';
@@ -18,46 +20,44 @@ import * as minify from '../helpers/minify.js';
 import * as linksHelper from '../helpers/linksHelper.js';
 import * as inventoryHelper from '../helpers/inventoryHelper.js';
 
-import * as analyticsManager from '../managers/analyticsManager.js';
-
 export async function start(ctx, next) {
   const { chatId } = ctx.request.params;
   ctx.assert(chatId, 400, 'chatId is required');
 
   const { userData, created } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] mainController start UsersModel findOne:', e.message);
+      LoggerService.error('mainController start UsersModel findOne:', e);
       ctx.throw(500);
     });
 
   if (created) {
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.NEW_USER,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] userController start analyticsManager logEvent:', e.message);
+        LoggerService.error('userController start AnalyticService logEvent:', e);
       });
   }
 
   const userByBotData = await userHelper.getUserByBot(chatId, ctx.state.defaultLangCode)
     .catch((e) => {
-      console.error('[ERROR] mainController start getUserByBot:', e.message);
+      LoggerService.error('mainController start getUserByBot:', e);
     });
 
   if (userByBotData?.isActive !== undefined && !userData.isActive) {
     userByBotData.isActive = true;
     await userByBotData.save()
       .catch((e) => {
-        console.error('[ERROR] mainController start getUserByBot save:', e.message);
+        LoggerService.error('mainController start getUserByBot save:', e);
       });
 
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.USER_RETURNED,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] userController start analyticsManager logEvent:', e.message);
+        LoggerService.error('userController start AnalyticService logEvent:', e);
       });
   }
 
@@ -71,39 +71,39 @@ export async function start(ctx, next) {
           chatId: startData.referralInviteChatId,
         })
           .catch((e) => {
-            console.error('[ERROR] mainController start UsersModel.findOne():', e.message);
+            LoggerService.error('mainController start UsersModel.findOne():', e);
           });
 
         invitedUserData.primogems += PRIMOGEMS_REFERRAL_REWARD;
         invitedUserData.save()
           .catch((e) => {
-            console.error('[ERROR] mainController start invitedUserData.save():', e.message);
+            LoggerService.error('mainController start invitedUserData.save():', e);
           });
 
         userData.primogems += PRIMOGEMS_REFERRAL_REWARD;
         userData.save()
           .catch((e) => {
-            console.error('[ERROR] mainController start userData.save():', e.message);
+            LoggerService.error('mainController start userData.save():', e);
           });
 
-        analyticsManager.logEvent({
+        AnalyticService.logEvent({
           eventType: analyticEventTypes.TG_START_REFERRAL_ADDED,
           userId: userData.chatId,
         })
           .catch((e) => {
-            console.error('[ERROR] mainController start analyticsManager logEvent:', e.message);
+            LoggerService.error('mainController start AnalyticService logEvent:', e);
           });
       }
     } catch (e) {
-      console.warn('[WARN] mainController start JSON.parse(startData):', e.message);
+      console.warn('[WARN] mainController start JSON.parse(startData):', e);
     }
   } else {
-    analyticsManager.logEvent({
+    AnalyticService.logEvent({
       eventType: analyticEventTypes.TG_START,
       userId: userData.chatId,
     })
       .catch((e) => {
-        console.error('[ERROR] mainController start analyticsManager logEvent:', e.message);
+        LoggerService.error('mainController start AnalyticService logEvent:', e);
       });
   }
 
@@ -137,7 +137,7 @@ export async function help(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] mainController help UsersModel findOne:', e.message);
+      LoggerService.error('mainController help UsersModel findOne:', e);
       ctx.throw(500);
     });
 
@@ -145,12 +145,12 @@ export async function help(ctx, next) {
   const translates = new Translates(languageCode, ctx.state.defaultLangCode);
   const $t = translates.getTranslate();
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.TG_HELP,
     userId: userData.chatId,
   })
     .catch((e) => {
-      console.error('[ERROR] mainController start analyticsManager logEvent:', e.message);
+      LoggerService.error('mainController start AnalyticService logEvent:', e);
     });
 
   ctx.body = {
@@ -185,7 +185,7 @@ export async function settings(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] mainController settings UsersModel findOne:', e.message);
+      LoggerService.error('mainController settings UsersModel findOne:', e);
       ctx.throw(500);
     });
 
@@ -208,7 +208,7 @@ export async function settings(ctx, next) {
       deletedCount = await inventoryHelper.removeAllItemsByChatId(chatId);
       clearState = 0;
     } catch (e) {
-      console.error('[ERROR] mainController settings removeAllItemsByChatId:', e.message);
+      LoggerService.error('mainController settings removeAllItemsByChatId:', e);
     }
   }
 
@@ -219,7 +219,7 @@ export async function settings(ctx, next) {
   ) {
     await userData.save()
       .catch((e) => {
-        console.error('[ERROR] mainController settings UsersModel save:', e.message);
+        LoggerService.error('mainController settings UsersModel save:', e);
       });
   }
 
@@ -288,7 +288,7 @@ export async function support(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] mainController support UsersModel findOne:', e.message);
+      LoggerService.error('mainController support UsersModel findOne:', e);
       ctx.throw(500);
     });
 
@@ -296,12 +296,12 @@ export async function support(ctx, next) {
   const translates = new Translates(languageCode, ctx.state.defaultLangCode);
   const $t = translates.getTranslate();
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.TG_HELP,
     userId: userData.chatId,
   })
     .catch((e) => {
-      console.error('[ERROR] mainController support analyticsManager logEvent:', e.message);
+      LoggerService.error('mainController support AnalyticService logEvent:', e);
     });
 
   ctx.body = {
@@ -324,7 +324,7 @@ export async function terms(ctx, next) {
 
   const { userData } = await userHelper.getUserData(chatId)
     .catch((e) => {
-      console.error('[ERROR] mainController terms UsersModel findOne:', e.message);
+      LoggerService.error('mainController terms UsersModel findOne:', e);
       ctx.throw(500);
     });
 
@@ -332,12 +332,12 @@ export async function terms(ctx, next) {
   const translates = new Translates(languageCode, ctx.state.defaultLangCode);
   const $t = translates.getTranslate();
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.TG_HELP,
     userId: userData.chatId,
   })
     .catch((e) => {
-      console.error('[ERROR] mainController terms analyticsManager logEvent:', e.message);
+      LoggerService.error('mainController terms AnalyticService logEvent:', e);
     });
 
   ctx.body = {

@@ -1,8 +1,9 @@
 import * as analyticEventTypes from '../constants/analyticEventTypes.js';
 
+import AnalyticService from '../classes/ActionServices/AnalyticService.js';
+import LoggerService from '../classes/ActionServices/LoggerService.js';
 import GroupChats from '../models/genshinImpactTgBot/groupChats.js';
 
-import * as analyticsManager from '../managers/analyticsManager.js';
 import * as documentsHelper from '../helpers/documentsHelper.js';
 
 export async function getGroupChat(ctx, next) {
@@ -11,7 +12,7 @@ export async function getGroupChat(ctx, next) {
 
   const groupChatData = await GroupChats.findOne({ groupChatId })
     .catch((e) => {
-      console.error('[ERROR] groupChatController getGroupChat GroupChats findOne:', e.message);
+      LoggerService.error('groupChatController getGroupChat GroupChats findOne:', e);
       ctx.throw(500);
     });
   ctx.assert(groupChatData?.groupChatId, 404, 'User not found.');
@@ -30,7 +31,7 @@ export async function updateGroupChat(ctx, next) {
 
   let groupChatData = await GroupChats.findOne({ groupChatId })
     .catch((e) => {
-      console.error('[ERROR] groupChatController updateGroupChat GroupChats findOne:', e.message);
+      LoggerService.error('groupChatController updateGroupChat GroupChats findOne:', e);
       ctx.throw(500);
     });
   ctx.assert(groupChatData?.groupChatId, 404, 'User not found.');
@@ -40,16 +41,16 @@ export async function updateGroupChat(ctx, next) {
 
   groupChatData = await groupChatData.save()
     .catch((e) => {
-      console.error('[ERROR] groupChatController updateGroupChat GroupChats groupChatData save:', e.message);
+      LoggerService.error('groupChatController updateGroupChat GroupChats groupChatData save:', e);
       ctx.throw(500);
     });
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.GROUP_CHAT_UPDATE,
     userId: groupChatId,
   })
     .catch((e) => {
-      console.error('[ERROR] groupChatController updateGroupChat analyticsManager logEvent:', e.message);
+      LoggerService.error('groupChatController updateGroupChat AnalyticService logEvent:', e);
     });
 
   ctx.body = groupChatData;
@@ -63,7 +64,7 @@ export async function addGroupChat(ctx, next) {
 
   let groupChatData = await GroupChats.findOne({ groupChatId })
     .catch((e) => {
-      console.error('[ERROR] groupChatController addGroupChat GroupChats findOne:', e.message);
+      LoggerService.error('groupChatController addGroupChat GroupChats findOne:', e);
       ctx.throw(500);
     });
   ctx.assert(!groupChatData?.groupChatId, 400, 'GroupChat is already created.');
@@ -81,16 +82,16 @@ export async function addGroupChat(ctx, next) {
 
   groupChatData = await groupChatData.save()
     .catch((e) => {
-      console.error('[ERROR] groupChatController addGroupChat GroupChats groupChatData save:', e.message);
+      LoggerService.error('groupChatController addGroupChat GroupChats groupChatData save:', e);
       ctx.throw(500);
     });
 
-  analyticsManager.logEvent({
+  AnalyticService.logEvent({
     eventType: analyticEventTypes.NEW_GROUP_CHAT,
     userId: groupChatId,
   })
     .catch((e) => {
-      console.error('[ERROR] groupChatController addGroupChat analyticsManager logEvent:', e.message);
+      LoggerService.error('groupChatController addGroupChat AnalyticService logEvent:', e);
     });
 
   ctx.body = groupChatData;

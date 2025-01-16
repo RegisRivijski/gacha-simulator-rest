@@ -1,3 +1,4 @@
+import LoggerService from '../classes/ActionServices/LoggerService.js';
 import AdvertisementModel from '../models/genshinImpactTgBot/advertisement.js';
 
 export async function getActiveAdvertisement(ctx, next) {
@@ -8,7 +9,7 @@ export async function getActiveAdvertisement(ctx, next) {
     },
   })
     .catch((e) => {
-      console.error('[ERROR] app/controllers/advertisementsController.js getActiveAdvertisement', e.message);
+      LoggerService.error('app/controllers/advertisementsController.js getActiveAdvertisement', e);
       ctx.throw(500);
     });
 
@@ -20,7 +21,7 @@ export async function getActiveAdvertisement(ctx, next) {
 export async function getAllAdvertisement(ctx, next) {
   const allAdvertisement = await AdvertisementModel.find({})
     .catch((e) => {
-      console.error('[ERROR] app/controllers/advertisementsController.js getAllAdvertisement find:', e.message);
+      LoggerService.error('app/controllers/advertisementsController.js getAllAdvertisement find', e);
       ctx.throw(500);
     });
 
@@ -36,7 +37,7 @@ export async function getAdvertisementById(ctx, next) {
 
   const advertisementData = await AdvertisementModel.findOne({ _id: advertisementId })
     .catch((e) => {
-      console.error('[ERROR] app/controllers/advertisementsController.js getAdvertisementById findOne:', e.message);
+      LoggerService.error('app/controllers/advertisementsController.js getAdvertisementById findOne', e);
       ctx.throw(500);
     });
 
@@ -56,7 +57,7 @@ export async function changeAdvertisementById(ctx, next) {
 
   advertisementData = await AdvertisementModel.findOneAndUpdate({ _id: advertisementId }, advertisementData, { new: true })
     .catch((e) => {
-      console.error('[ERROR] app/controllers/advertisementsController.js changeAdvertisementById findOne:', e.message);
+      LoggerService.error('app/controllers/advertisementsController.js changeAdvertisementById findOne', e);
       ctx.throw(500);
     });
 
@@ -73,13 +74,13 @@ export async function createAdvertisement(ctx, next) {
   try {
     advertisementData = new AdvertisementModel(advertisementData);
   } catch (e) {
-    console.error('[ERROR] app/controllers/advertisementsController createAdvertisement new AdvertisementModel:', e.message);
+    LoggerService.error('app/controllers/advertisementsController createAdvertisement new AdvertisementModel', e);
     ctx.throw(500);
   }
 
   await advertisementData.save()
     .catch((e) => {
-      console.error('[ERROR] app/controllers/advertisementsController createAdvertisement save:', e.message);
+      LoggerService.error('app/controllers/advertisementsController createAdvertisement save', e);
       ctx.throw(500);
     });
 
@@ -95,7 +96,7 @@ export async function deleteAdvertisement(ctx, next) {
 
   await AdvertisementModel.deleteOne({ _id: advertisementId })
     .catch((e) => {
-      console.error('[ERROR] app/controllers/advertisementsController deleteAdvertisement deleteOne:', e.message);
+      LoggerService.error('app/controllers/advertisementsController deleteAdvertisement deleteOne', e);
       ctx.throw(500);
     });
 

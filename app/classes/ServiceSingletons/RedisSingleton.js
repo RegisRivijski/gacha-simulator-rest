@@ -1,17 +1,19 @@
 import Redis from 'ioredis';
 
-import config from '../../config/default.js';
+import LoggerService from '../ActionServices/LoggerService.js';
+
+import config from '../../../config/default.js';
 
 class RedisSingleton {
   constructor() {
     this.redisClient = new Redis(config.db.redis.url);
 
     this.redisClient.on('connect', () => {
-      console.info('Redis successfully connected');
+      LoggerService.info('Redis successfully connected');
     });
 
     this.redisClient.on('error', (err) => {
-      console.error('Redis connection error:', err);
+      LoggerService.error('Redis connection error', err);
     });
   }
 
