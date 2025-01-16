@@ -4,6 +4,8 @@ import session from 'koa-session';
 
 import config from '../config/default.js';
 
+import LoggerService from './classes/ActionServices/LoggerService.js';
+
 import { privateRouter, publicRouter } from './routes/index.js';
 import errorsHandler from './middlewares/errorsHandler.js';
 
@@ -23,10 +25,9 @@ export default function main() {
   const server = http.createServer(app.callback());
 
   server.listen(config.server.port, async () => {
-    console.table({
-      Application: config.application.name,
-      Version: config.application.version,
-      Port: config.server.port,
-    });
+    LoggerService.info('Application started!');
+    LoggerService.info(`Name: ${config.application.name}`);
+    LoggerService.info(`Version: ${config.application.version}`);
+    LoggerService.info(`Port: ${config.server.port}`);
   });
 }

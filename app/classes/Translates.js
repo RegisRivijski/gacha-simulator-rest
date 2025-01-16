@@ -6,9 +6,11 @@ import {
   DEFAULT_LANG_CODE,
 } from '../constants/index.js';
 
-import en from '../../staticData/translates/en.json' assert { type: "json" };
-import uk from '../../staticData/translates/uk.json' assert { type: "json" };
-import ru from '../../staticData/translates/ru.json' assert { type: "json" };
+import LoggerService from './ActionServices/LoggerService.js';
+
+import en from '../../staticData/translates/en.json' assert { type: 'json' };
+import uk from '../../staticData/translates/uk.json' assert { type: 'json' };
+import ru from '../../staticData/translates/ru.json' assert { type: 'json' };
 
 export default class Translates {
   #langCode = '';
@@ -35,6 +37,7 @@ export default class Translates {
       case 'en':
         return (key) => _.result(en, key, '');
       default:
+        LoggerService.warn('unknown language code', langCode);
         return this.getTranslate(this.#defaultLangCode);
     }
   }
