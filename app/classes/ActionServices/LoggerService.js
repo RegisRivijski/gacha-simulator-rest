@@ -24,12 +24,12 @@ class LoggerService {
   }
 
   error(message, Error) {
-    this.loggerInstance.error(message, Error.message);
+    this.loggerInstance.error(`${message} - ${Error.message}`);
     this.sentryInstance.captureException(Error);
   }
 
   fatal(message, Error) {
-    this.loggerInstance.fatal(message, Error.message);
+    this.loggerInstance.fatal(`${message} - ${Error.message}`);
     this.sentryInstance.captureException(Error);
   }
 }

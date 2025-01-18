@@ -95,7 +95,7 @@ export async function start(ctx, next) {
           });
       }
     } catch (e) {
-      console.warn('[WARN] mainController start JSON.parse(startData):', e);
+      LoggerService.warn('mainController start JSON.parse(startData)', e);
     }
   } else {
     AnalyticService.logEvent({

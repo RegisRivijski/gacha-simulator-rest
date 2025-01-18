@@ -1,6 +1,5 @@
 import Koa from 'koa';
 import http from 'http';
-import session from 'koa-session';
 
 import config from '../config/default.js';
 
@@ -12,10 +11,7 @@ import errorsHandler from './middlewares/errorsHandler.js';
 export default function main() {
   const app = new Koa();
 
-  app.keys = ['Hello, my name is Homer Simpson!'];
-
   app.use(errorsHandler);
-  app.use(session(config.session, app));
   app.use(privateRouter.routes());
   app.use(privateRouter.allowedMethods());
 

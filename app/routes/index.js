@@ -78,13 +78,15 @@ export const privateRouter = new Router()
 
 export const publicRouter = new Router()
   .use(koaBody())
+  .use(headers.getAuthorization)
+
   .get('/', systemController.about)
   .get('/ping', systemController.ping)
   .get('/memory', systemController.memory)
 
   .post('/admin/login', adminAuthController.loginAction)
-  .post('/admin/exit', adminAuthController.exit)
-  .get('/admin/me', adminAuthController.me)
+  .post('/admin/exit', securityMiddlewares.session, adminAuthController.exit)
+  .get('/admin/me', securityMiddlewares.session, adminAuthController.me)
 
   .get('/banners-all', securityMiddlewares.session, bannersController.getAllBanners)
   .get('/banners/:id', securityMiddlewares.session, bannersController.getBannersById)
