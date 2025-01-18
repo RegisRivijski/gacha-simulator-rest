@@ -33,8 +33,6 @@ import * as telegramButtons from '../helpers/telegramButtons.js';
 
 import * as minify from '../helpers/minify.js';
 
-const redisClient = RedisSingleton.getRedisClient();
-
 /**
  * Getting templates for telegram bot wish command
  * @param ctx
@@ -58,7 +56,7 @@ export async function getWish(ctx, next) {
 
   if (gifEnable) {
     const key = `spin_${chatId}}`;
-    const isSpin = await redisClient.get(key)
+    const isSpin = await RedisSingleton.get(key)
       .catch((e) => {
         LoggerService.error('app/controllers/wishController getWish redis get:', e);
       });
@@ -67,7 +65,7 @@ export async function getWish(ctx, next) {
 
     if (!isSpin) {
       const currentDate = String(new Date().getTime());
-      await redisClient.set(key, currentDate, 'EX', BANNER_RATE_LIMIT_TTL)
+      await RedisSingleton.set(key, currentDate, 'EX', BANNER_RATE_LIMIT_TTL)
         .catch((e) => {
           LoggerService.error('app/controllers/wishController getWish redis set:', e);
         });
@@ -245,7 +243,7 @@ export async function getWishX10(ctx, next) {
 
   if (gifEnable) {
     const key = `spin_${chatId}}`;
-    const isSpin = await redisClient.get(key)
+    const isSpin = await RedisSingleton.get(key)
       .catch((e) => {
         LoggerService.error('app/controllers/wishController getWishX10 redis get:', e);
       });
@@ -254,7 +252,7 @@ export async function getWishX10(ctx, next) {
 
     if (!isSpin) {
       const currentDate = String(new Date().getTime());
-      await redisClient.set(key, currentDate, 'EX', BANNER_RATE_LIMIT_TTL)
+      await RedisSingleton.set(key, currentDate, 'EX', BANNER_RATE_LIMIT_TTL)
         .catch((e) => {
           LoggerService.error('app/controllers/wishController getWisX10 redis set:', e);
         });

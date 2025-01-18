@@ -4,8 +4,6 @@ import RedisSingleton from '../classes/ServiceSingletons/RedisSingleton.js';
 
 import config from '../../config/default.js';
 
-const redis = RedisSingleton.getRedisClient();
-
 export function getToken(data) {
   return new Promise((resolve, reject) => {
     jsonWebToken.sign(data, config.jwt.secret, {
@@ -34,9 +32,9 @@ export function verifyToken(token) {
 }
 
 export function addTokenToBlackList(token, ttl) {
-  return redis.set(`bl_${token}`, true, 'EX', ttl);
+  return RedisSingleton.set(`bl_${token}`, true, 'EX', ttl);
 }
 
 export function getTokenFromBlackList(token) {
-  return redis.get(`bl_${token}`);
+  return RedisSingleton.get(`bl_${token}`);
 }
