@@ -37,7 +37,7 @@ export default class Translates {
       case 'en':
         return (key) => _.result(en, key, '');
       default:
-        LoggerService.warn('unknown language code', langCode);
+        LoggerService.warn(`unknown language code - ${langCode}`);
         return this.getTranslate(this.#defaultLangCode);
     }
   }
